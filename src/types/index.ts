@@ -24,7 +24,29 @@ export interface Area {
   icono: string;
   responsable: string;
   activo: boolean;
+  /** Tiempo de vida de la encuesta: hora de apertura (HH:MM, 24 h). Por defecto 07:00 */
+  horaInicio?: string;
+  /** Tiempo de vida de la encuesta: hora de cierre (HH:MM, 24 h). Por defecto 08:30 */
+  horaFin?: string;
   createdAt: string;
+}
+
+export type EstadoTiempo = 'EN_TIEMPO' | 'FUERA_DE_TIEMPO';
+
+export interface NotificacionCorreo {
+  id: string;
+  empleadoId: string;
+  numeroEmpleado: string;
+  nombreEmpleado: string;
+  areaId: number;
+  areaNombre: string;
+  fecha: string; // YYYY-MM-DD de la encuesta no contestada
+  tipo: 'ENCUESTA_VENCIDA' | 'PRUEBA';
+  destinatario: string;
+  estado: 'ENVIADO' | 'ERROR' | 'SIN_CONFIGURAR';
+  detalle?: string;
+  intentos: number;
+  enviadoEn: string;
 }
 
 export interface Empleado {
@@ -103,6 +125,10 @@ export interface ChecklistRecord {
   dispositivo: string;
   observacionesGenerales?: string;
   respuestas: RespuestaItem[];
+  /** Si se contestó dentro del tiempo de vida del área */
+  estadoTiempo?: EstadoTiempo;
+  /** Hora local de registro (HH:MM) */
+  horaRegistro?: string;
   createdAt: string;
 }
 
@@ -142,4 +168,5 @@ export interface DatabaseSchema {
   evidencias: Evidencia[];
   estadisticas: EstadisticaRegistro[];
   auditoria: AuditLog[];
+  notificaciones?: NotificacionCorreo[];
 }

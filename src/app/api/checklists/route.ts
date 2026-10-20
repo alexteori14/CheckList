@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getLocalISODate, readDb, registerAudit, writeDb } from '@/lib/db';
 import { verifyPassword, verifyToken } from '@/lib/auth';
+import { estadoVentana, evaluarTiempo, getVentana, localHHMM } from '@/lib/schedule';
 import {
   CaptureOrigin,
   ChecklistRecord,
@@ -207,8 +208,59 @@ export async function GET(req: NextRequest) {
       }))
   );
 
+  // ===== Tiempo de vida de la encuesta =====
+  const ahora = new Date();
+  const areaPorId = new Map(db.areas.map((a) => [a.id, a]));
+  const conTiempo = filtered.map((c) => ({
+    ...c,
+    estadoTiempo: c.estadoTiempo || evaluarTiempo(areaPorId.get(c.areaId), c.fechaOperacion, c.createdAt),
+    horaRegistro: c.horaRegistro || localHHMM(new Date(c.createdAt)),
+  }));
+  const enTiempoTotal = conTiempo.filter((c) => c.estadoTiempo === 'EN_TIEMPO').length;
+  const tiempoVida = {
+    ahora: ahora.toISOString(),
+    resumenFiltro: {
+      total: conTiempo.length,
+      enTiempo: enTiempoTotal,
+      fueraDeTiempo: conTiempo.length - enTiempoTotal,
+      porcentajeEnTiempo: conTiempo.length > 0 ? Number(((enTiempoTotal / conTiempo.length) * 100).toFixed(1)) : 100,
+    },
+    hoy: db.areas.map((area) => {
+      const v = getVentana(area);
+      const ev = estadoVentana(area, ahora);
+      const esperados = db.empleados.filter(
+        (e) => e.activo && e.rolCodigo !== 'ADMIN' && (e.areaId === area.id || e.areaIdSecundaria === area.id)
+      );
+      const delAreaHoy = db.checklists
+        .filter((c) => c.areaId === area.id && c.fechaOperacion === today)
+        .map((c) => ({
+          ...c,
+          estadoTiempo: c.estadoTiempo || evaluarTiempo(area, c.fechaOperacion, c.createdAt),
+        }));
+      const pendientes = esperados
+        .filter((e) => !delAreaHoy.some((c) => c.empleadoId === e.id))
+        .map((e) => ({ numeroEmpleado: e.numeroEmpleado, nombreCompleto: e.nombreCompleto, correo: e.correo || '' }));
+      return {
+        areaId: area.id,
+        areaNombre: area.nombre,
+        colorHex: area.colorHex,
+        horaInicio: v.inicio,
+        horaFin: v.fin,
+        estadoVentana: ev.estado,
+        minutosRestantes: ev.minutosRestantes,
+        minutosParaAbrir: ev.minutosParaAbrir,
+        esperados: esperados.length,
+        contestadas: delAreaHoy.length,
+        enTiempo: delAreaHoy.filter((c) => c.estadoTiempo === 'EN_TIEMPO').length,
+        fueraDeTiempo: delAreaHoy.filter((c) => c.estadoTiempo === 'FUERA_DE_TIEMPO').length,
+        pendientes,
+      };
+    }),
+  };
+
   return NextResponse.json({
-    checklists: filtered,
+    checklists: conTiempo,
+    tiempoVida,
     kpis: kpisFiltro,
     estadisticasDiarias: {
       fecha: today,
@@ -455,6 +507,8 @@ export async function POST(req: NextRequest) {
           ? `Checklist registrado con ${totalNo} incidencia(s) documentada(s).`
           : 'Checklist completado con 100% de cumplimiento.'),
       respuestas: respuestasProcesadas,
+      estadoTiempo: evaluarTiempo(targetArea, targetDate, nowIso),
+      horaRegistro: localHHMM(new Date(nowIso)),
       createdAt: nowIso,
     };
 

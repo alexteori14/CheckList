@@ -37,6 +37,7 @@ import {
   Pregunta,
 } from '@/types';
 import { cn } from '@/lib/utils';
+import { estadoVentana, formatMinutos, getVentana } from '@/lib/schedule';
 
 interface DraftAnswer {
   preguntaId: number;
@@ -1271,6 +1272,28 @@ export default function ChecklistWizard({
                       <p className="text-xs text-slate-600 tabular-nums">
                         {preguntasArea.length} tarjetas de verificación asignadas
                       </p>
+                      {areaEncontrada && (() => {
+                        const v = getVentana(areaEncontrada);
+                        const ev = estadoVentana(areaEncontrada);
+                        return (
+                          <p
+                            className={cn(
+                              'text-xs font-semibold mt-1 flex items-center gap-1 tabular-nums',
+                              ev.estado === 'ABIERTA' ? 'text-emerald-700' : 'text-amber-700'
+                            )}
+                          >
+                            <Clock className="size-3.5" />
+                            <span>
+                              Horario: {v.inicio} – {v.fin} ·{' '}
+                              {ev.estado === 'ABIERTA'
+                                ? `abierta, cierra en ${formatMinutos(ev.minutosRestantes)}`
+                                : ev.estado === 'ANTES'
+                                ? `abre en ${formatMinutos(ev.minutosParaAbrir)}`
+                                : 'fuera de horario (se registrará como fuera de tiempo)'}
+                            </span>
+                          </p>
+                        );
+                      })()}
                     </div>
                   </div>
 

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { readDb, writeDb, registerAudit } from '@/lib/db';
 import { Area, Pregunta } from '@/types';
+import { DEFAULT_HORA_FIN, DEFAULT_HORA_INICIO, hhmmToMinutes, isValidHHMM } from '@/lib/schedule';
 
 export const dynamic = 'force-dynamic';
 
@@ -57,6 +58,8 @@ export async function POST(req: NextRequest) {
       icono: 'Building2',
       responsable: '',
       activo: true,
+      horaInicio: DEFAULT_HORA_INICIO,
+      horaFin: DEFAULT_HORA_FIN,
       createdAt: new Date().toISOString(),
     };
 
@@ -119,6 +122,46 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('Error creating area:', error);
     return NextResponse.json({ error: 'Error al crear la nueva área.' }, { status: 500 });
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { id, horaInicio, horaFin } = body;
+    const db = readDb();
+    const area = db.areas.find((a) => a.id === Number(id));
+    if (!area) {
+      return NextResponse.json({ error: 'Área no encontrada.' }, { status: 404 });
+    }
+    if (!isValidHHMM(horaInicio) || !isValidHHMM(horaFin)) {
+      return NextResponse.json(
+        { error: 'Formato de hora inválido. Usa HH:MM en formato 24 horas (ej. 07:00).' },
+        { status: 400 }
+      );
+    }
+    if (hhmmToMinutes(horaFin) <= hhmmToMinutes(horaInicio)) {
+      return NextResponse.json(
+        { error: 'La hora de cierre debe ser posterior a la hora de apertura.' },
+        { status: 400 }
+      );
+    }
+    const antes = `${area.horaInicio || DEFAULT_HORA_INICIO}-${area.horaFin || DEFAULT_HORA_FIN}`;
+    area.horaInicio = horaInicio;
+    area.horaFin = horaFin;
+    registerAudit(db, {
+      actorIdentificador: '1000 - Oscar Mercado',
+      modulo: 'AREAS',
+      accion: 'MODIFICAR_TIEMPO_DE_VIDA',
+      entidad: 'Area',
+      entidadId: String(area.id),
+      detalles: `Tiempo de vida de la encuesta de ${area.nombre} cambiado de ${antes} a ${horaInicio}-${horaFin}.`,
+    });
+    writeDb(db);
+    return NextResponse.json({ area });
+  } catch (error) {
+    console.error('Error updating area schedule:', error);
+    return NextResponse.json({ error: 'Error al actualizar el tiempo de vida.' }, { status: 500 });
   }
 }
 

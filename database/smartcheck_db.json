@@ -44,7 +44,9 @@
       "icono": "Cpu",
       "responsable": "Ing. Roberto Méndez",
       "activo": true,
-      "createdAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "horaInicio": "07:00",
+      "horaFin": "08:30"
     },
     {
       "id": 2,
@@ -55,7 +57,9 @@
       "icono": "Radio",
       "responsable": "Ing. Laura Gómez",
       "activo": true,
-      "createdAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "horaInicio": "07:00",
+      "horaFin": "08:30"
     },
     {
       "id": 3,
@@ -66,7 +70,9 @@
       "icono": "Server",
       "responsable": "Ing. Carlos Villarreal",
       "activo": true,
-      "createdAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "horaInicio": "07:00",
+      "horaFin": "08:30"
     },
     {
       "id": 4,
@@ -77,7 +83,9 @@
       "icono": "Users",
       "responsable": "Lic. Fernando Castillo",
       "activo": true,
-      "createdAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "horaInicio": "07:00",
+      "horaFin": "08:30"
     },
     {
       "id": 5,
@@ -88,7 +96,9 @@
       "icono": "Smartphone",
       "responsable": "Ing. Sofía Hernández",
       "activo": true,
-      "createdAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "horaInicio": "07:00",
+      "horaFin": "08:30"
     },
     {
       "id": 6,
@@ -99,7 +109,9 @@
       "icono": "Database",
       "responsable": "Ing. Valeria Ramírez",
       "activo": true,
-      "createdAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "horaInicio": "07:00",
+      "horaFin": "08:30"
     },
     {
       "id": 7,
@@ -110,7 +122,9 @@
       "icono": "Wrench",
       "responsable": "Ing. Miguel Ángel Torres",
       "activo": true,
-      "createdAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "horaInicio": "07:00",
+      "horaFin": "08:30"
     }
   ],
   "empleados": [
@@ -127,14 +141,14 @@
       "rolCodigo": "ADMIN",
       "activo": true,
       "passwordHash": "64858abf9c8dd6e876768edb62cb519be3ec8f0d513260afa8a9d76b2935e27d",
-      "createdAt": "2026-10-20T22:37:57.948Z",
-      "updatedAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "updatedAt": "2026-10-20T23:34:43.557Z"
     },
     {
       "id": "emp-2001",
       "numeroEmpleado": "2001",
       "nombreCompleto": "Alejandro Puente",
-      "correo": "alejandro.puente@empresa.com",
+      "correo": "puentealejandro491@gmail.com",
       "puesto": "Especialista en Infraestructura y Tecnologías 4.0",
       "areaId": 3,
       "areaNombre": "Infraestructura",
@@ -143,8 +157,8 @@
       "rolCodigo": "OPERADOR",
       "activo": true,
       "passwordHash": "64858abf9c8dd6e876768edb62cb519be3ec8f0d513260afa8a9d76b2935e27d",
-      "createdAt": "2026-10-20T22:37:57.948Z",
-      "updatedAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "updatedAt": "2026-10-20T23:34:43.557Z"
     },
     {
       "id": "emp-1001",
@@ -157,8 +171,8 @@
       "rolCodigo": "SUPERVISOR",
       "activo": true,
       "passwordHash": "64858abf9c8dd6e876768edb62cb519be3ec8f0d513260afa8a9d76b2935e27d",
-      "createdAt": "2026-10-20T22:37:57.948Z",
-      "updatedAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "updatedAt": "2026-10-20T23:34:43.557Z"
     },
     {
       "id": "emp-1002",
@@ -171,8 +185,8 @@
       "rolCodigo": "SUPERVISOR",
       "activo": true,
       "passwordHash": "64858abf9c8dd6e876768edb62cb519be3ec8f0d513260afa8a9d76b2935e27d",
-      "createdAt": "2026-10-20T22:37:57.948Z",
-      "updatedAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "updatedAt": "2026-10-20T23:34:43.557Z"
     },
     {
       "id": "emp-1003",
@@ -185,8 +199,8 @@
       "rolCodigo": "SUPERVISOR",
       "activo": true,
       "passwordHash": "64858abf9c8dd6e876768edb62cb519be3ec8f0d513260afa8a9d76b2935e27d",
-      "createdAt": "2026-10-20T22:37:57.948Z",
-      "updatedAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "updatedAt": "2026-10-20T23:34:43.557Z"
     },
     {
       "id": "emp-2002",
@@ -201,8 +215,8 @@
       "rolCodigo": "OPERADOR",
       "activo": true,
       "passwordHash": "64858abf9c8dd6e876768edb62cb519be3ec8f0d513260afa8a9d76b2935e27d",
-      "createdAt": "2026-10-20T22:37:57.948Z",
-      "updatedAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "updatedAt": "2026-10-20T23:34:43.557Z"
     },
     {
       "id": "emp-2003",
@@ -215,8 +229,8 @@
       "rolCodigo": "OPERADOR",
       "activo": true,
       "passwordHash": "64858abf9c8dd6e876768edb62cb519be3ec8f0d513260afa8a9d76b2935e27d",
-      "createdAt": "2026-10-20T22:37:57.948Z",
-      "updatedAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "updatedAt": "2026-10-20T23:34:43.557Z"
     },
     {
       "id": "emp-2004",
@@ -229,8 +243,8 @@
       "rolCodigo": "OPERADOR",
       "activo": true,
       "passwordHash": "64858abf9c8dd6e876768edb62cb519be3ec8f0d513260afa8a9d76b2935e27d",
-      "createdAt": "2026-10-20T22:37:57.948Z",
-      "updatedAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "updatedAt": "2026-10-20T23:34:43.557Z"
     },
     {
       "id": "emp-2005",
@@ -243,8 +257,8 @@
       "rolCodigo": "OPERADOR",
       "activo": true,
       "passwordHash": "64858abf9c8dd6e876768edb62cb519be3ec8f0d513260afa8a9d76b2935e27d",
-      "createdAt": "2026-10-20T22:37:57.948Z",
-      "updatedAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "updatedAt": "2026-10-20T23:34:43.557Z"
     },
     {
       "id": "emp-2006",
@@ -259,8 +273,8 @@
       "rolCodigo": "OPERADOR",
       "activo": true,
       "passwordHash": "64858abf9c8dd6e876768edb62cb519be3ec8f0d513260afa8a9d76b2935e27d",
-      "createdAt": "2026-10-20T22:37:57.948Z",
-      "updatedAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z",
+      "updatedAt": "2026-10-20T23:34:43.557Z"
     }
   ],
   "preguntas": [
@@ -715,6 +729,77 @@
   ],
   "checklists": [
     {
+      "id": "chk-1792539397496",
+      "folio": "CHK-20261015-038",
+      "empleadoId": "emp-2002",
+      "numeroEmpleado": "2002",
+      "nombreEmpleado": "Sofía Hernández",
+      "areaId": 5,
+      "areaNombre": "Digitalizacion",
+      "fechaOperacion": "2026-10-15",
+      "totalPreguntas": 4,
+      "totalSi": 4,
+      "totalNo": 0,
+      "porcentajeCumplimiento": 100,
+      "porcentajeIncidencias": 0,
+      "duracionSegundos": 14,
+      "dispositivo": "Escritorio / Web App",
+      "observacionesGenerales": "Checklist completado con 100% de cumplimiento.",
+      "respuestas": [
+        {
+          "id": "resp-chk-1792539397496-501",
+          "checklistId": "chk-1792539397496",
+          "preguntaId": 501,
+          "preguntaCodigo": "DIG-01",
+          "preguntaTexto": "¿Los portales web internos y formularios digitales operan con certificados SSL vigentes y tiempos de carga menores a 2 s?",
+          "categoria": "Portales y Formularios Web",
+          "criticidad": "ALTA",
+          "respuesta": true,
+          "estadoIncidencia": "N/A",
+          "respondidoEn": "2026-10-20T23:36:37.496Z"
+        },
+        {
+          "id": "resp-chk-1792539397496-502",
+          "checklistId": "chk-1792539397496",
+          "preguntaId": 502,
+          "preguntaCodigo": "DIG-02",
+          "preguntaTexto": "¿Los motores de flujos de aprobación y firma electrónica procesan documentos sin solicitudes atascadas?",
+          "categoria": "Flujos sin Papel y Firma Digital",
+          "criticidad": "CRITICA",
+          "respuesta": true,
+          "estadoIncidencia": "N/A",
+          "respondidoEn": "2026-10-20T23:36:37.496Z"
+        },
+        {
+          "id": "resp-chk-1792539397496-503",
+          "checklistId": "chk-1792539397496",
+          "preguntaId": 503,
+          "preguntaCodigo": "DIG-03",
+          "preguntaTexto": "¿Los bots de automatización (RPA) y microservicios de sincronización de datos ejecutaron sus tareas programadas sin caídas?",
+          "categoria": "Automatización RPA y APIs",
+          "criticidad": "ALTA",
+          "respuesta": true,
+          "estadoIncidencia": "N/A",
+          "respondidoEn": "2026-10-20T23:36:37.496Z"
+        },
+        {
+          "id": "resp-chk-1792539397496-504",
+          "checklistId": "chk-1792539397496",
+          "preguntaId": 504,
+          "preguntaCodigo": "DIG-04",
+          "preguntaTexto": "¿El gestor documental en la nube mantiene sincronización activa de permisos y versiones aprobadas de procedimientos?",
+          "categoria": "Repositorio Documental",
+          "criticidad": "MEDIA",
+          "respuesta": true,
+          "estadoIncidencia": "N/A",
+          "respondidoEn": "2026-10-20T23:36:37.496Z"
+        }
+      ],
+      "estadoTiempo": "FUERA_DE_TIEMPO",
+      "horaRegistro": "17:36",
+      "createdAt": "2026-10-20T23:36:37.496Z"
+    },
+    {
       "id": "chk-1000",
       "folio": "CHK-20261020-001",
       "empleadoId": "emp-2001",
@@ -742,7 +827,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.951Z"
+          "respondidoEn": "2026-10-20T13:00:00.000Z"
         },
         {
           "id": "resp-chk-1000-302",
@@ -754,7 +839,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.951Z"
+          "respondidoEn": "2026-10-20T13:00:00.000Z"
         },
         {
           "id": "resp-chk-1000-303",
@@ -766,7 +851,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.951Z"
+          "respondidoEn": "2026-10-20T13:00:00.000Z"
         },
         {
           "id": "resp-chk-1000-304",
@@ -778,10 +863,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.951Z"
+          "respondidoEn": "2026-10-20T13:00:00.000Z"
         }
       ],
-      "createdAt": "2026-10-20T22:37:57.951Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:00",
+      "createdAt": "2026-10-20T13:00:00.000Z"
     },
     {
       "id": "chk-1001",
@@ -811,7 +898,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.951Z"
+          "respondidoEn": "2026-10-20T13:07:00.000Z"
         },
         {
           "id": "resp-chk-1001-202",
@@ -833,10 +920,10 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20IND-02%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EIluminaci%C3%B3n%20LED%20con%20fluctuaci%C3%B3n%20de%20brillo%20causando%20falsos%20rechazos%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Ind.%204.0%20%7C%202026-10-20%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "GALERIA",
-            "createdAt": "2026-10-20T22:37:57.951Z"
+            "createdAt": "2026-10-20T13:07:00.000Z"
           },
           "estadoIncidencia": "ABIERTA",
-          "respondidoEn": "2026-10-20T22:37:57.951Z"
+          "respondidoEn": "2026-10-20T13:07:00.000Z"
         },
         {
           "id": "resp-chk-1001-203",
@@ -848,7 +935,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.951Z"
+          "respondidoEn": "2026-10-20T13:07:00.000Z"
         },
         {
           "id": "resp-chk-1001-204",
@@ -860,10 +947,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.951Z"
+          "respondidoEn": "2026-10-20T13:07:00.000Z"
         }
       ],
-      "createdAt": "2026-10-20T22:37:57.951Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:07",
+      "createdAt": "2026-10-20T13:07:00.000Z"
     },
     {
       "id": "chk-1002",
@@ -893,7 +982,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.951Z"
+          "respondidoEn": "2026-10-20T13:14:00.000Z"
         },
         {
           "id": "resp-chk-1002-102",
@@ -905,7 +994,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.951Z"
+          "respondidoEn": "2026-10-20T13:14:00.000Z"
         },
         {
           "id": "resp-chk-1002-103",
@@ -917,7 +1006,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.951Z"
+          "respondidoEn": "2026-10-20T13:14:00.000Z"
         },
         {
           "id": "resp-chk-1002-104",
@@ -929,10 +1018,12 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.951Z"
+          "respondidoEn": "2026-10-20T13:14:00.000Z"
         }
       ],
-      "createdAt": "2026-10-20T22:37:57.951Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:14",
+      "createdAt": "2026-10-20T13:14:00.000Z"
     },
     {
       "id": "chk-1003",
@@ -972,10 +1063,10 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20IND-01%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EEdge%20Gateway%20de%20nave%202%20desconectado%20de%20la%20red%20OT%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Ind.%204.0%20%7C%202026-10-20%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "GALERIA",
-            "createdAt": "2026-10-20T22:37:57.951Z"
+            "createdAt": "2026-10-20T15:13:00.000Z"
           },
           "estadoIncidencia": "ABIERTA",
-          "respondidoEn": "2026-10-20T22:37:57.951Z"
+          "respondidoEn": "2026-10-20T15:13:00.000Z"
         },
         {
           "id": "resp-chk-1003-202",
@@ -987,7 +1078,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.951Z"
+          "respondidoEn": "2026-10-20T15:13:00.000Z"
         },
         {
           "id": "resp-chk-1003-203",
@@ -999,7 +1090,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.951Z"
+          "respondidoEn": "2026-10-20T15:13:00.000Z"
         },
         {
           "id": "resp-chk-1003-204",
@@ -1011,10 +1102,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.951Z"
+          "respondidoEn": "2026-10-20T15:13:00.000Z"
         }
       ],
-      "createdAt": "2026-10-20T22:37:57.951Z"
+      "estadoTiempo": "FUERA_DE_TIEMPO",
+      "horaRegistro": "09:13",
+      "createdAt": "2026-10-20T15:13:00.000Z"
     },
     {
       "id": "chk-1004",
@@ -1054,10 +1147,10 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20MAN-01%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EPantalla%20t%C3%A1ctil%20con%20calibraci%C3%B3n%20desviada%20en%20estaci%C3%B3n%20de%20ensamble%20%234%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Soporte%20Manufactura%20%7C%202026-10-20%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "CAMARA",
-            "createdAt": "2026-10-20T22:37:57.952Z"
+            "createdAt": "2026-10-20T13:28:00.000Z"
           },
           "estadoIncidencia": "ABIERTA",
-          "respondidoEn": "2026-10-20T22:37:57.952Z"
+          "respondidoEn": "2026-10-20T13:28:00.000Z"
         },
         {
           "id": "resp-chk-1004-702",
@@ -1069,7 +1162,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.952Z"
+          "respondidoEn": "2026-10-20T13:28:00.000Z"
         },
         {
           "id": "resp-chk-1004-703",
@@ -1081,7 +1174,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.952Z"
+          "respondidoEn": "2026-10-20T13:28:00.000Z"
         },
         {
           "id": "resp-chk-1004-704",
@@ -1093,10 +1186,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.952Z"
+          "respondidoEn": "2026-10-20T13:28:00.000Z"
         }
       ],
-      "createdAt": "2026-10-20T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:28",
+      "createdAt": "2026-10-20T13:28:00.000Z"
     },
     {
       "id": "chk-1005",
@@ -1126,7 +1221,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.952Z"
+          "respondidoEn": "2026-10-20T13:35:00.000Z"
         },
         {
           "id": "resp-chk-1005-602",
@@ -1138,7 +1233,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.952Z"
+          "respondidoEn": "2026-10-20T13:35:00.000Z"
         },
         {
           "id": "resp-chk-1005-603",
@@ -1150,7 +1245,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.952Z"
+          "respondidoEn": "2026-10-20T13:35:00.000Z"
         },
         {
           "id": "resp-chk-1005-604",
@@ -1162,10 +1257,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.952Z"
+          "respondidoEn": "2026-10-20T13:35:00.000Z"
         }
       ],
-      "createdAt": "2026-10-20T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:35",
+      "createdAt": "2026-10-20T13:35:00.000Z"
     },
     {
       "id": "chk-1006",
@@ -1205,10 +1302,10 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20STF-01%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EEquipo%20administrativo%20sin%20actualizaci%C3%B3n%20de%20firmas%20de%20antivirus%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Staff%20IT%20%7C%202026-10-20%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "CAMARA",
-            "createdAt": "2026-10-20T22:37:57.952Z"
+            "createdAt": "2026-10-20T13:42:00.000Z"
           },
           "estadoIncidencia": "ABIERTA",
-          "respondidoEn": "2026-10-20T22:37:57.952Z"
+          "respondidoEn": "2026-10-20T13:42:00.000Z"
         },
         {
           "id": "resp-chk-1006-402",
@@ -1220,7 +1317,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.952Z"
+          "respondidoEn": "2026-10-20T13:42:00.000Z"
         },
         {
           "id": "resp-chk-1006-403",
@@ -1232,7 +1329,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.952Z"
+          "respondidoEn": "2026-10-20T13:42:00.000Z"
         },
         {
           "id": "resp-chk-1006-404",
@@ -1244,10 +1341,12 @@
           "criticidad": "BAJA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.952Z"
+          "respondidoEn": "2026-10-20T13:42:00.000Z"
         }
       ],
-      "createdAt": "2026-10-20T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:42",
+      "createdAt": "2026-10-20T13:42:00.000Z"
     },
     {
       "id": "chk-1007",
@@ -1277,7 +1376,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.952Z"
+          "respondidoEn": "2026-10-20T15:17:00.000Z"
         },
         {
           "id": "resp-chk-1007-502",
@@ -1289,7 +1388,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.952Z"
+          "respondidoEn": "2026-10-20T15:17:00.000Z"
         },
         {
           "id": "resp-chk-1007-503",
@@ -1301,7 +1400,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.952Z"
+          "respondidoEn": "2026-10-20T15:17:00.000Z"
         },
         {
           "id": "resp-chk-1007-504",
@@ -1313,10 +1412,12 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-20T22:37:57.952Z"
+          "respondidoEn": "2026-10-20T15:17:00.000Z"
         }
       ],
-      "createdAt": "2026-10-20T22:37:57.952Z"
+      "estadoTiempo": "FUERA_DE_TIEMPO",
+      "horaRegistro": "09:17",
+      "createdAt": "2026-10-20T15:17:00.000Z"
     },
     {
       "id": "chk-1008",
@@ -1346,7 +1447,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T13:56:00.000Z"
         },
         {
           "id": "resp-chk-1008-302",
@@ -1358,7 +1459,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T13:56:00.000Z"
         },
         {
           "id": "resp-chk-1008-303",
@@ -1380,10 +1481,10 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20INF-03%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3ECables%20de%20parcheo%20sueltos%20o%20sin%20etiquetar%20en%20IDF%203%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Infraestructura%20%7C%202026-10-19%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "CAMARA",
-            "createdAt": "2026-10-19T22:37:57.952Z"
+            "createdAt": "2026-10-19T13:56:00.000Z"
           },
           "estadoIncidencia": "ABIERTA",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T13:56:00.000Z"
         },
         {
           "id": "resp-chk-1008-304",
@@ -1395,10 +1496,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T13:56:00.000Z"
         }
       ],
-      "createdAt": "2026-10-19T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:56",
+      "createdAt": "2026-10-19T13:56:00.000Z"
     },
     {
       "id": "chk-1009",
@@ -1438,10 +1541,10 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20MES-01%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3ETerminal%20de%20captura%20%233%20con%20p%C3%A9rdida%20de%20enlace%20con%20el%20servidor%20MES%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20MES%20%7C%202026-10-19%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "GALERIA",
-            "createdAt": "2026-10-19T22:37:57.952Z"
+            "createdAt": "2026-10-19T14:03:00.000Z"
           },
           "estadoIncidencia": "ABIERTA",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T14:03:00.000Z"
         },
         {
           "id": "resp-chk-1009-102",
@@ -1453,7 +1556,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T14:03:00.000Z"
         },
         {
           "id": "resp-chk-1009-103",
@@ -1465,7 +1568,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T14:03:00.000Z"
         },
         {
           "id": "resp-chk-1009-104",
@@ -1477,10 +1580,12 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T14:03:00.000Z"
         }
       ],
-      "createdAt": "2026-10-19T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "08:03",
+      "createdAt": "2026-10-19T14:03:00.000Z"
     },
     {
       "id": "chk-1010",
@@ -1520,10 +1625,10 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20SAP-01%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EIDoc%20de%20notificaci%C3%B3n%20de%20producci%C3%B3n%20en%20status%2051%20por%20material%20bloqueado%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20SAP%20%7C%202026-10-19%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "CAMARA",
-            "createdAt": "2026-10-19T22:37:57.952Z"
+            "createdAt": "2026-10-19T14:10:00.000Z"
           },
           "estadoIncidencia": "ABIERTA",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T14:10:00.000Z"
         },
         {
           "id": "resp-chk-1010-602",
@@ -1535,7 +1640,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T14:10:00.000Z"
         },
         {
           "id": "resp-chk-1010-603",
@@ -1547,7 +1652,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T14:10:00.000Z"
         },
         {
           "id": "resp-chk-1010-604",
@@ -1559,10 +1664,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T14:10:00.000Z"
         }
       ],
-      "createdAt": "2026-10-19T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "08:10",
+      "createdAt": "2026-10-19T14:10:00.000Z"
     },
     {
       "id": "chk-1011",
@@ -1592,7 +1699,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T15:21:00.000Z"
         },
         {
           "id": "resp-chk-1011-702",
@@ -1604,7 +1711,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T15:21:00.000Z"
         },
         {
           "id": "resp-chk-1011-703",
@@ -1616,7 +1723,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T15:21:00.000Z"
         },
         {
           "id": "resp-chk-1011-704",
@@ -1628,10 +1735,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T15:21:00.000Z"
         }
       ],
-      "createdAt": "2026-10-19T22:37:57.952Z"
+      "estadoTiempo": "FUERA_DE_TIEMPO",
+      "horaRegistro": "09:21",
+      "createdAt": "2026-10-19T15:21:00.000Z"
     },
     {
       "id": "chk-1012",
@@ -1661,7 +1770,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T13:04:00.000Z"
         },
         {
           "id": "resp-chk-1012-502",
@@ -1683,10 +1792,10 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20DIG-02%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EFlujo%20de%20aprobaci%C3%B3n%20de%20compras%20detenido%20por%20destinatario%20ausente%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Digitalizacion%20%7C%202026-10-19%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "CAMARA",
-            "createdAt": "2026-10-19T22:37:57.952Z"
+            "createdAt": "2026-10-19T13:04:00.000Z"
           },
           "estadoIncidencia": "ABIERTA",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T13:04:00.000Z"
         },
         {
           "id": "resp-chk-1012-503",
@@ -1698,7 +1807,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T13:04:00.000Z"
         },
         {
           "id": "resp-chk-1012-504",
@@ -1710,10 +1819,12 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-19T22:37:57.952Z"
+          "respondidoEn": "2026-10-19T13:04:00.000Z"
         }
       ],
-      "createdAt": "2026-10-19T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:04",
+      "createdAt": "2026-10-19T13:04:00.000Z"
     },
     {
       "id": "chk-1013",
@@ -1743,7 +1854,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-18T22:37:57.952Z"
+          "respondidoEn": "2026-10-18T13:11:00.000Z"
         },
         {
           "id": "resp-chk-1013-202",
@@ -1755,7 +1866,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-18T22:37:57.952Z"
+          "respondidoEn": "2026-10-18T13:11:00.000Z"
         },
         {
           "id": "resp-chk-1013-203",
@@ -1767,7 +1878,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-18T22:37:57.952Z"
+          "respondidoEn": "2026-10-18T13:11:00.000Z"
         },
         {
           "id": "resp-chk-1013-204",
@@ -1779,10 +1890,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-18T22:37:57.952Z"
+          "respondidoEn": "2026-10-18T13:11:00.000Z"
         }
       ],
-      "createdAt": "2026-10-18T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:11",
+      "createdAt": "2026-10-18T13:11:00.000Z"
     },
     {
       "id": "chk-1014",
@@ -1812,7 +1925,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-18T22:37:57.952Z"
+          "respondidoEn": "2026-10-18T13:18:00.000Z"
         },
         {
           "id": "resp-chk-1014-402",
@@ -1824,7 +1937,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-18T22:37:57.952Z"
+          "respondidoEn": "2026-10-18T13:18:00.000Z"
         },
         {
           "id": "resp-chk-1014-403",
@@ -1836,7 +1949,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-18T22:37:57.952Z"
+          "respondidoEn": "2026-10-18T13:18:00.000Z"
         },
         {
           "id": "resp-chk-1014-404",
@@ -1848,10 +1961,12 @@
           "criticidad": "BAJA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-18T22:37:57.952Z"
+          "respondidoEn": "2026-10-18T13:18:00.000Z"
         }
       ],
-      "createdAt": "2026-10-18T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:18",
+      "createdAt": "2026-10-18T13:18:00.000Z"
     },
     {
       "id": "chk-1015",
@@ -1881,7 +1996,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-18T22:37:57.952Z"
+          "respondidoEn": "2026-10-18T15:25:00.000Z"
         },
         {
           "id": "resp-chk-1015-702",
@@ -1903,10 +2018,10 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20MAN-02%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3ELector%20DPM%20l%C3%A1ser%20no%20reconoce%20c%C3%B3digo%20de%20grabado%20l%C3%A1ser%20en%20metal%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Soporte%20Manufactura%20%7C%202026-10-18%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "GALERIA",
-            "createdAt": "2026-10-18T22:37:57.952Z"
+            "createdAt": "2026-10-18T15:25:00.000Z"
           },
           "estadoIncidencia": "ABIERTA",
-          "respondidoEn": "2026-10-18T22:37:57.952Z"
+          "respondidoEn": "2026-10-18T15:25:00.000Z"
         },
         {
           "id": "resp-chk-1015-703",
@@ -1918,7 +2033,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-18T22:37:57.952Z"
+          "respondidoEn": "2026-10-18T15:25:00.000Z"
         },
         {
           "id": "resp-chk-1015-704",
@@ -1930,10 +2045,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-18T22:37:57.952Z"
+          "respondidoEn": "2026-10-18T15:25:00.000Z"
         }
       ],
-      "createdAt": "2026-10-18T22:37:57.952Z"
+      "estadoTiempo": "FUERA_DE_TIEMPO",
+      "horaRegistro": "09:25",
+      "createdAt": "2026-10-18T15:25:00.000Z"
     },
     {
       "id": "chk-1016",
@@ -1963,7 +2080,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-18T22:37:57.952Z"
+          "respondidoEn": "2026-10-18T13:32:00.000Z"
         },
         {
           "id": "resp-chk-1016-602",
@@ -1975,7 +2092,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-18T22:37:57.952Z"
+          "respondidoEn": "2026-10-18T13:32:00.000Z"
         },
         {
           "id": "resp-chk-1016-603",
@@ -1987,7 +2104,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-18T22:37:57.952Z"
+          "respondidoEn": "2026-10-18T13:32:00.000Z"
         },
         {
           "id": "resp-chk-1016-604",
@@ -1999,10 +2116,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-18T22:37:57.952Z"
+          "respondidoEn": "2026-10-18T13:32:00.000Z"
         }
       ],
-      "createdAt": "2026-10-18T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:32",
+      "createdAt": "2026-10-18T13:32:00.000Z"
     },
     {
       "id": "chk-1017",
@@ -2032,7 +2151,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-17T22:37:57.952Z"
+          "respondidoEn": "2026-10-17T13:39:00.000Z"
         },
         {
           "id": "resp-chk-1017-302",
@@ -2044,7 +2163,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-17T22:37:57.952Z"
+          "respondidoEn": "2026-10-17T13:39:00.000Z"
         },
         {
           "id": "resp-chk-1017-303",
@@ -2056,7 +2175,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-17T22:37:57.952Z"
+          "respondidoEn": "2026-10-17T13:39:00.000Z"
         },
         {
           "id": "resp-chk-1017-304",
@@ -2068,10 +2187,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-17T22:37:57.952Z"
+          "respondidoEn": "2026-10-17T13:39:00.000Z"
         }
       ],
-      "createdAt": "2026-10-17T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:39",
+      "createdAt": "2026-10-17T13:39:00.000Z"
     },
     {
       "id": "chk-1018",
@@ -2101,7 +2222,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-17T22:37:57.952Z"
+          "respondidoEn": "2026-10-17T13:46:00.000Z"
         },
         {
           "id": "resp-chk-1018-202",
@@ -2113,7 +2234,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-17T22:37:57.952Z"
+          "respondidoEn": "2026-10-17T13:46:00.000Z"
         },
         {
           "id": "resp-chk-1018-203",
@@ -2125,7 +2246,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-17T22:37:57.952Z"
+          "respondidoEn": "2026-10-17T13:46:00.000Z"
         },
         {
           "id": "resp-chk-1018-204",
@@ -2137,10 +2258,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-17T22:37:57.952Z"
+          "respondidoEn": "2026-10-17T13:46:00.000Z"
         }
       ],
-      "createdAt": "2026-10-17T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:46",
+      "createdAt": "2026-10-17T13:46:00.000Z"
     },
     {
       "id": "chk-1019",
@@ -2170,7 +2293,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-17T22:37:57.952Z"
+          "respondidoEn": "2026-10-17T15:29:00.000Z"
         },
         {
           "id": "resp-chk-1019-102",
@@ -2182,7 +2305,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-17T22:37:57.952Z"
+          "respondidoEn": "2026-10-17T15:29:00.000Z"
         },
         {
           "id": "resp-chk-1019-103",
@@ -2194,7 +2317,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-17T22:37:57.952Z"
+          "respondidoEn": "2026-10-17T15:29:00.000Z"
         },
         {
           "id": "resp-chk-1019-104",
@@ -2216,13 +2339,15 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20MES-04%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3ELa%20compuerta%20de%20desv%C3%ADo%20no%20expuls%C3%B3%20pieza%20no%20conforme%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20MES%20%7C%202026-10-17%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "GALERIA",
-            "createdAt": "2026-10-17T22:37:57.952Z"
+            "createdAt": "2026-10-17T15:29:00.000Z"
           },
           "estadoIncidencia": "ABIERTA",
-          "respondidoEn": "2026-10-17T22:37:57.952Z"
+          "respondidoEn": "2026-10-17T15:29:00.000Z"
         }
       ],
-      "createdAt": "2026-10-17T22:37:57.952Z"
+      "estadoTiempo": "FUERA_DE_TIEMPO",
+      "horaRegistro": "09:29",
+      "createdAt": "2026-10-17T15:29:00.000Z"
     },
     {
       "id": "chk-1020",
@@ -2252,7 +2377,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-17T22:37:57.952Z"
+          "respondidoEn": "2026-10-17T14:00:00.000Z"
         },
         {
           "id": "resp-chk-1020-302",
@@ -2264,7 +2389,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-17T22:37:57.952Z"
+          "respondidoEn": "2026-10-17T14:00:00.000Z"
         },
         {
           "id": "resp-chk-1020-303",
@@ -2276,7 +2401,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-17T22:37:57.952Z"
+          "respondidoEn": "2026-10-17T14:00:00.000Z"
         },
         {
           "id": "resp-chk-1020-304",
@@ -2288,10 +2413,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-17T22:37:57.952Z"
+          "respondidoEn": "2026-10-17T14:00:00.000Z"
         }
       ],
-      "createdAt": "2026-10-17T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "08:00",
+      "createdAt": "2026-10-17T14:00:00.000Z"
     },
     {
       "id": "chk-1021",
@@ -2321,7 +2448,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-16T22:37:57.952Z"
+          "respondidoEn": "2026-10-16T14:07:00.000Z"
         },
         {
           "id": "resp-chk-1021-402",
@@ -2333,7 +2460,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-16T22:37:57.952Z"
+          "respondidoEn": "2026-10-16T14:07:00.000Z"
         },
         {
           "id": "resp-chk-1021-403",
@@ -2355,10 +2482,10 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20STF-03%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EError%20de%20sincronizaci%C3%B3n%20de%20respaldo%20en%20equipo%20de%20finanzas%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Staff%20IT%20%7C%202026-10-16%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "GALERIA",
-            "createdAt": "2026-10-16T22:37:57.952Z"
+            "createdAt": "2026-10-16T14:07:00.000Z"
           },
           "estadoIncidencia": "ABIERTA",
-          "respondidoEn": "2026-10-16T22:37:57.952Z"
+          "respondidoEn": "2026-10-16T14:07:00.000Z"
         },
         {
           "id": "resp-chk-1021-404",
@@ -2370,10 +2497,12 @@
           "criticidad": "BAJA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-16T22:37:57.952Z"
+          "respondidoEn": "2026-10-16T14:07:00.000Z"
         }
       ],
-      "createdAt": "2026-10-16T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "08:07",
+      "createdAt": "2026-10-16T14:07:00.000Z"
     },
     {
       "id": "chk-1022",
@@ -2403,7 +2532,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-16T22:37:57.952Z"
+          "respondidoEn": "2026-10-16T14:14:00.000Z"
         },
         {
           "id": "resp-chk-1022-502",
@@ -2415,7 +2544,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-16T22:37:57.952Z"
+          "respondidoEn": "2026-10-16T14:14:00.000Z"
         },
         {
           "id": "resp-chk-1022-503",
@@ -2427,7 +2556,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-16T22:37:57.952Z"
+          "respondidoEn": "2026-10-16T14:14:00.000Z"
         },
         {
           "id": "resp-chk-1022-504",
@@ -2439,10 +2568,12 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-16T22:37:57.952Z"
+          "respondidoEn": "2026-10-16T14:14:00.000Z"
         }
       ],
-      "createdAt": "2026-10-16T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "08:14",
+      "createdAt": "2026-10-16T14:14:00.000Z"
     },
     {
       "id": "chk-1023",
@@ -2472,7 +2603,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-16T22:37:57.952Z"
+          "respondidoEn": "2026-10-16T15:33:00.000Z"
         },
         {
           "id": "resp-chk-1023-602",
@@ -2484,7 +2615,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-16T22:37:57.952Z"
+          "respondidoEn": "2026-10-16T15:33:00.000Z"
         },
         {
           "id": "resp-chk-1023-603",
@@ -2506,10 +2637,10 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20SAP-03%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EImpresora%20t%C3%A9rmica%20de%20etiquetas%20de%20producto%20sin%20papel%20en%20almac%C3%A9n%20central%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20SAP%20%7C%202026-10-16%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "GALERIA",
-            "createdAt": "2026-10-16T22:37:57.952Z"
+            "createdAt": "2026-10-16T15:33:00.000Z"
           },
           "estadoIncidencia": "ABIERTA",
-          "respondidoEn": "2026-10-16T22:37:57.952Z"
+          "respondidoEn": "2026-10-16T15:33:00.000Z"
         },
         {
           "id": "resp-chk-1023-604",
@@ -2521,10 +2652,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-16T22:37:57.952Z"
+          "respondidoEn": "2026-10-16T15:33:00.000Z"
         }
       ],
-      "createdAt": "2026-10-16T22:37:57.952Z"
+      "estadoTiempo": "FUERA_DE_TIEMPO",
+      "horaRegistro": "09:33",
+      "createdAt": "2026-10-16T15:33:00.000Z"
     },
     {
       "id": "chk-1024",
@@ -2554,7 +2687,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-16T22:37:57.952Z"
+          "respondidoEn": "2026-10-16T13:08:00.000Z"
         },
         {
           "id": "resp-chk-1024-702",
@@ -2566,7 +2699,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-16T22:37:57.952Z"
+          "respondidoEn": "2026-10-16T13:08:00.000Z"
         },
         {
           "id": "resp-chk-1024-703",
@@ -2578,7 +2711,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-16T22:37:57.952Z"
+          "respondidoEn": "2026-10-16T13:08:00.000Z"
         },
         {
           "id": "resp-chk-1024-704",
@@ -2590,10 +2723,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-16T22:37:57.952Z"
+          "respondidoEn": "2026-10-16T13:08:00.000Z"
         }
       ],
-      "createdAt": "2026-10-16T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:08",
+      "createdAt": "2026-10-16T13:08:00.000Z"
     },
     {
       "id": "chk-1025",
@@ -2623,7 +2758,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-15T22:37:57.952Z"
+          "respondidoEn": "2026-10-15T13:15:00.000Z"
         },
         {
           "id": "resp-chk-1025-302",
@@ -2635,7 +2770,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-15T22:37:57.952Z"
+          "respondidoEn": "2026-10-15T13:15:00.000Z"
         },
         {
           "id": "resp-chk-1025-303",
@@ -2647,7 +2782,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-15T22:37:57.952Z"
+          "respondidoEn": "2026-10-15T13:15:00.000Z"
         },
         {
           "id": "resp-chk-1025-304",
@@ -2659,10 +2794,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-15T22:37:57.952Z"
+          "respondidoEn": "2026-10-15T13:15:00.000Z"
         }
       ],
-      "createdAt": "2026-10-15T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:15",
+      "createdAt": "2026-10-15T13:15:00.000Z"
     },
     {
       "id": "chk-1026",
@@ -2692,7 +2829,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-15T22:37:57.952Z"
+          "respondidoEn": "2026-10-15T13:22:00.000Z"
         },
         {
           "id": "resp-chk-1026-202",
@@ -2704,7 +2841,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-15T22:37:57.952Z"
+          "respondidoEn": "2026-10-15T13:22:00.000Z"
         },
         {
           "id": "resp-chk-1026-203",
@@ -2716,7 +2853,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-15T22:37:57.952Z"
+          "respondidoEn": "2026-10-15T13:22:00.000Z"
         },
         {
           "id": "resp-chk-1026-204",
@@ -2738,13 +2875,15 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20IND-04%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3ESensor%20de%20vibraci%C3%B3n%20en%20motor%20principal%20supera%20umbral%20de%20advertencia%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Ind.%204.0%20%7C%202026-10-15%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "CAMARA",
-            "createdAt": "2026-10-15T22:37:57.952Z"
+            "createdAt": "2026-10-15T13:22:00.000Z"
           },
           "estadoIncidencia": "ABIERTA",
-          "respondidoEn": "2026-10-15T22:37:57.952Z"
+          "respondidoEn": "2026-10-15T13:22:00.000Z"
         }
       ],
-      "createdAt": "2026-10-15T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:22",
+      "createdAt": "2026-10-15T13:22:00.000Z"
     },
     {
       "id": "chk-1027",
@@ -2774,7 +2913,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-15T22:37:57.952Z"
+          "respondidoEn": "2026-10-15T15:37:00.000Z"
         },
         {
           "id": "resp-chk-1027-102",
@@ -2786,7 +2925,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-15T22:37:57.952Z"
+          "respondidoEn": "2026-10-15T15:37:00.000Z"
         },
         {
           "id": "resp-chk-1027-103",
@@ -2798,7 +2937,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-15T22:37:57.952Z"
+          "respondidoEn": "2026-10-15T15:37:00.000Z"
         },
         {
           "id": "resp-chk-1027-104",
@@ -2810,10 +2949,12 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-15T22:37:57.952Z"
+          "respondidoEn": "2026-10-15T15:37:00.000Z"
         }
       ],
-      "createdAt": "2026-10-15T22:37:57.952Z"
+      "estadoTiempo": "FUERA_DE_TIEMPO",
+      "horaRegistro": "09:37",
+      "createdAt": "2026-10-15T15:37:00.000Z"
     },
     {
       "id": "chk-1028",
@@ -2853,10 +2994,10 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20DIG-01%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3ECertificado%20SSL%20pr%C3%B3ximo%20a%20vencer%20en%20portal%20de%20reportes%20internos%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Digitalizacion%20%7C%202026-10-13%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "CAMARA",
-            "createdAt": "2026-10-13T22:37:57.952Z"
+            "createdAt": "2026-10-13T13:36:00.000Z"
           },
           "estadoIncidencia": "ABIERTA",
-          "respondidoEn": "2026-10-13T22:37:57.952Z"
+          "respondidoEn": "2026-10-13T13:36:00.000Z"
         },
         {
           "id": "resp-chk-1028-502",
@@ -2868,7 +3009,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-13T22:37:57.952Z"
+          "respondidoEn": "2026-10-13T13:36:00.000Z"
         },
         {
           "id": "resp-chk-1028-503",
@@ -2880,7 +3021,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-13T22:37:57.952Z"
+          "respondidoEn": "2026-10-13T13:36:00.000Z"
         },
         {
           "id": "resp-chk-1028-504",
@@ -2892,10 +3033,12 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-13T22:37:57.952Z"
+          "respondidoEn": "2026-10-13T13:36:00.000Z"
         }
       ],
-      "createdAt": "2026-10-13T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:36",
+      "createdAt": "2026-10-13T13:36:00.000Z"
     },
     {
       "id": "chk-1029",
@@ -2925,7 +3068,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-11T22:37:57.952Z"
+          "respondidoEn": "2026-10-11T13:43:00.000Z"
         },
         {
           "id": "resp-chk-1029-602",
@@ -2937,7 +3080,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-11T22:37:57.952Z"
+          "respondidoEn": "2026-10-11T13:43:00.000Z"
         },
         {
           "id": "resp-chk-1029-603",
@@ -2949,7 +3092,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-11T22:37:57.952Z"
+          "respondidoEn": "2026-10-11T13:43:00.000Z"
         },
         {
           "id": "resp-chk-1029-604",
@@ -2961,10 +3104,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-11T22:37:57.952Z"
+          "respondidoEn": "2026-10-11T13:43:00.000Z"
         }
       ],
-      "createdAt": "2026-10-11T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:43",
+      "createdAt": "2026-10-11T13:43:00.000Z"
     },
     {
       "id": "chk-1030",
@@ -3004,10 +3149,10 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20MAN-01%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EPantalla%20t%C3%A1ctil%20con%20calibraci%C3%B3n%20desviada%20en%20estaci%C3%B3n%20de%20ensamble%20%234%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Soporte%20Manufactura%20%7C%202026-10-08%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "CAMARA",
-            "createdAt": "2026-10-08T22:37:57.952Z"
+            "createdAt": "2026-10-08T13:50:00.000Z"
           },
           "estadoIncidencia": "RESUELTA",
-          "respondidoEn": "2026-10-08T22:37:57.952Z"
+          "respondidoEn": "2026-10-08T13:50:00.000Z"
         },
         {
           "id": "resp-chk-1030-702",
@@ -3019,7 +3164,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-08T22:37:57.952Z"
+          "respondidoEn": "2026-10-08T13:50:00.000Z"
         },
         {
           "id": "resp-chk-1030-703",
@@ -3031,7 +3176,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-08T22:37:57.952Z"
+          "respondidoEn": "2026-10-08T13:50:00.000Z"
         },
         {
           "id": "resp-chk-1030-704",
@@ -3043,10 +3188,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-08T22:37:57.952Z"
+          "respondidoEn": "2026-10-08T13:50:00.000Z"
         }
       ],
-      "createdAt": "2026-10-08T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:50",
+      "createdAt": "2026-10-08T13:50:00.000Z"
     },
     {
       "id": "chk-1031",
@@ -3076,7 +3223,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-05T22:37:57.952Z"
+          "respondidoEn": "2026-10-05T15:41:00.000Z"
         },
         {
           "id": "resp-chk-1031-402",
@@ -3088,7 +3235,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-05T22:37:57.952Z"
+          "respondidoEn": "2026-10-05T15:41:00.000Z"
         },
         {
           "id": "resp-chk-1031-403",
@@ -3100,7 +3247,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-05T22:37:57.952Z"
+          "respondidoEn": "2026-10-05T15:41:00.000Z"
         },
         {
           "id": "resp-chk-1031-404",
@@ -3112,10 +3259,12 @@
           "criticidad": "BAJA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-05T22:37:57.952Z"
+          "respondidoEn": "2026-10-05T15:41:00.000Z"
         }
       ],
-      "createdAt": "2026-10-05T22:37:57.952Z"
+      "estadoTiempo": "FUERA_DE_TIEMPO",
+      "horaRegistro": "09:41",
+      "createdAt": "2026-10-05T15:41:00.000Z"
     },
     {
       "id": "chk-1032",
@@ -3145,7 +3294,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-02T22:37:57.952Z"
+          "respondidoEn": "2026-10-02T14:04:00.000Z"
         },
         {
           "id": "resp-chk-1032-202",
@@ -3167,10 +3316,10 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20IND-02%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EIluminaci%C3%B3n%20LED%20con%20fluctuaci%C3%B3n%20de%20brillo%20causando%20falsos%20rechazos%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Ind.%204.0%20%7C%202026-10-02%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "CAMARA",
-            "createdAt": "2026-10-02T22:37:57.952Z"
+            "createdAt": "2026-10-02T14:04:00.000Z"
           },
           "estadoIncidencia": "RESUELTA",
-          "respondidoEn": "2026-10-02T22:37:57.952Z"
+          "respondidoEn": "2026-10-02T14:04:00.000Z"
         },
         {
           "id": "resp-chk-1032-203",
@@ -3182,7 +3331,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-02T22:37:57.952Z"
+          "respondidoEn": "2026-10-02T14:04:00.000Z"
         },
         {
           "id": "resp-chk-1032-204",
@@ -3194,10 +3343,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-10-02T22:37:57.952Z"
+          "respondidoEn": "2026-10-02T14:04:00.000Z"
         }
       ],
-      "createdAt": "2026-10-02T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "08:04",
+      "createdAt": "2026-10-02T14:04:00.000Z"
     },
     {
       "id": "chk-1033",
@@ -3227,7 +3378,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-09-28T22:37:57.952Z"
+          "respondidoEn": "2026-09-28T14:11:00.000Z"
         },
         {
           "id": "resp-chk-1033-102",
@@ -3249,10 +3400,10 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20MES-02%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EDesfase%20de%2015%20minutos%20en%20el%20reporte%20de%20piezas%20buenas%20vs%20sistema%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20MES%20%7C%202026-09-28%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "GALERIA",
-            "createdAt": "2026-09-28T22:37:57.952Z"
+            "createdAt": "2026-09-28T14:11:00.000Z"
           },
           "estadoIncidencia": "RESUELTA",
-          "respondidoEn": "2026-09-28T22:37:57.952Z"
+          "respondidoEn": "2026-09-28T14:11:00.000Z"
         },
         {
           "id": "resp-chk-1033-103",
@@ -3264,7 +3415,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-09-28T22:37:57.952Z"
+          "respondidoEn": "2026-09-28T14:11:00.000Z"
         },
         {
           "id": "resp-chk-1033-104",
@@ -3276,10 +3427,12 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-09-28T22:37:57.952Z"
+          "respondidoEn": "2026-09-28T14:11:00.000Z"
         }
       ],
-      "createdAt": "2026-09-28T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "08:11",
+      "createdAt": "2026-09-28T14:11:00.000Z"
     },
     {
       "id": "chk-1034",
@@ -3309,7 +3462,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-09-22T22:37:57.952Z"
+          "respondidoEn": "2026-09-22T14:18:00.000Z"
         },
         {
           "id": "resp-chk-1034-302",
@@ -3321,7 +3474,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-09-22T22:37:57.952Z"
+          "respondidoEn": "2026-09-22T14:18:00.000Z"
         },
         {
           "id": "resp-chk-1034-303",
@@ -3333,7 +3486,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-09-22T22:37:57.952Z"
+          "respondidoEn": "2026-09-22T14:18:00.000Z"
         },
         {
           "id": "resp-chk-1034-304",
@@ -3345,10 +3498,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-09-22T22:37:57.952Z"
+          "respondidoEn": "2026-09-22T14:18:00.000Z"
         }
       ],
-      "createdAt": "2026-09-22T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "08:18",
+      "createdAt": "2026-09-22T14:18:00.000Z"
     },
     {
       "id": "chk-1035",
@@ -3378,7 +3533,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-09-15T22:37:57.952Z"
+          "respondidoEn": "2026-09-15T15:45:00.000Z"
         },
         {
           "id": "resp-chk-1035-602",
@@ -3400,10 +3555,10 @@
             "tamanoBytes": 48200,
             "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20SAP-02%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EUso%20de%20memoria%20superior%20al%2088%25%20en%20nodo%20principal%20de%20HANA%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20SAP%20%7C%202026-09-15%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
             "origenCaptura": "GALERIA",
-            "createdAt": "2026-09-15T22:37:57.952Z"
+            "createdAt": "2026-09-15T15:45:00.000Z"
           },
           "estadoIncidencia": "RESUELTA",
-          "respondidoEn": "2026-09-15T22:37:57.952Z"
+          "respondidoEn": "2026-09-15T15:45:00.000Z"
         },
         {
           "id": "resp-chk-1035-603",
@@ -3415,7 +3570,7 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-09-15T22:37:57.952Z"
+          "respondidoEn": "2026-09-15T15:45:00.000Z"
         },
         {
           "id": "resp-chk-1035-604",
@@ -3427,10 +3582,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-09-15T22:37:57.952Z"
+          "respondidoEn": "2026-09-15T15:45:00.000Z"
         }
       ],
-      "createdAt": "2026-09-15T22:37:57.952Z"
+      "estadoTiempo": "FUERA_DE_TIEMPO",
+      "horaRegistro": "09:45",
+      "createdAt": "2026-09-15T15:45:00.000Z"
     },
     {
       "id": "chk-1036",
@@ -3460,7 +3617,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-09-05T22:37:57.952Z"
+          "respondidoEn": "2026-09-05T13:12:00.000Z"
         },
         {
           "id": "resp-chk-1036-702",
@@ -3472,7 +3629,7 @@
           "criticidad": "CRITICA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-09-05T22:37:57.952Z"
+          "respondidoEn": "2026-09-05T13:12:00.000Z"
         },
         {
           "id": "resp-chk-1036-703",
@@ -3484,7 +3641,7 @@
           "criticidad": "MEDIA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-09-05T22:37:57.952Z"
+          "respondidoEn": "2026-09-05T13:12:00.000Z"
         },
         {
           "id": "resp-chk-1036-704",
@@ -3496,10 +3653,12 @@
           "criticidad": "ALTA",
           "respuesta": true,
           "estadoIncidencia": "N/A",
-          "respondidoEn": "2026-09-05T22:37:57.952Z"
+          "respondidoEn": "2026-09-05T13:12:00.000Z"
         }
       ],
-      "createdAt": "2026-09-05T22:37:57.952Z"
+      "estadoTiempo": "EN_TIEMPO",
+      "horaRegistro": "07:12",
+      "createdAt": "2026-09-05T13:12:00.000Z"
     }
   ],
   "evidencias": [
@@ -3513,7 +3672,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20IND-02%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EIluminaci%C3%B3n%20LED%20con%20fluctuaci%C3%B3n%20de%20brillo%20causando%20falsos%20rechazos%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Ind.%204.0%20%7C%202026-10-20%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "GALERIA",
-      "createdAt": "2026-10-20T22:37:57.951Z"
+      "createdAt": "2026-10-20T13:07:00.000Z"
     },
     {
       "id": "evid-resp-chk-1003-201",
@@ -3525,7 +3684,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20IND-01%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EEdge%20Gateway%20de%20nave%202%20desconectado%20de%20la%20red%20OT%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Ind.%204.0%20%7C%202026-10-20%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "GALERIA",
-      "createdAt": "2026-10-20T22:37:57.951Z"
+      "createdAt": "2026-10-20T15:13:00.000Z"
     },
     {
       "id": "evid-resp-chk-1004-701",
@@ -3537,7 +3696,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20MAN-01%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EPantalla%20t%C3%A1ctil%20con%20calibraci%C3%B3n%20desviada%20en%20estaci%C3%B3n%20de%20ensamble%20%234%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Soporte%20Manufactura%20%7C%202026-10-20%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "CAMARA",
-      "createdAt": "2026-10-20T22:37:57.952Z"
+      "createdAt": "2026-10-20T13:28:00.000Z"
     },
     {
       "id": "evid-resp-chk-1006-401",
@@ -3549,7 +3708,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20STF-01%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EEquipo%20administrativo%20sin%20actualizaci%C3%B3n%20de%20firmas%20de%20antivirus%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Staff%20IT%20%7C%202026-10-20%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "CAMARA",
-      "createdAt": "2026-10-20T22:37:57.952Z"
+      "createdAt": "2026-10-20T13:42:00.000Z"
     },
     {
       "id": "evid-resp-chk-1008-303",
@@ -3561,7 +3720,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20INF-03%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3ECables%20de%20parcheo%20sueltos%20o%20sin%20etiquetar%20en%20IDF%203%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Infraestructura%20%7C%202026-10-19%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "CAMARA",
-      "createdAt": "2026-10-19T22:37:57.952Z"
+      "createdAt": "2026-10-19T13:56:00.000Z"
     },
     {
       "id": "evid-resp-chk-1009-101",
@@ -3573,7 +3732,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20MES-01%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3ETerminal%20de%20captura%20%233%20con%20p%C3%A9rdida%20de%20enlace%20con%20el%20servidor%20MES%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20MES%20%7C%202026-10-19%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "GALERIA",
-      "createdAt": "2026-10-19T22:37:57.952Z"
+      "createdAt": "2026-10-19T14:03:00.000Z"
     },
     {
       "id": "evid-resp-chk-1010-601",
@@ -3585,7 +3744,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20SAP-01%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EIDoc%20de%20notificaci%C3%B3n%20de%20producci%C3%B3n%20en%20status%2051%20por%20material%20bloqueado%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20SAP%20%7C%202026-10-19%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "CAMARA",
-      "createdAt": "2026-10-19T22:37:57.952Z"
+      "createdAt": "2026-10-19T14:10:00.000Z"
     },
     {
       "id": "evid-resp-chk-1012-502",
@@ -3597,7 +3756,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20DIG-02%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EFlujo%20de%20aprobaci%C3%B3n%20de%20compras%20detenido%20por%20destinatario%20ausente%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Digitalizacion%20%7C%202026-10-19%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "CAMARA",
-      "createdAt": "2026-10-19T22:37:57.952Z"
+      "createdAt": "2026-10-19T13:04:00.000Z"
     },
     {
       "id": "evid-resp-chk-1015-702",
@@ -3609,7 +3768,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20MAN-02%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3ELector%20DPM%20l%C3%A1ser%20no%20reconoce%20c%C3%B3digo%20de%20grabado%20l%C3%A1ser%20en%20metal%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Soporte%20Manufactura%20%7C%202026-10-18%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "GALERIA",
-      "createdAt": "2026-10-18T22:37:57.952Z"
+      "createdAt": "2026-10-18T15:25:00.000Z"
     },
     {
       "id": "evid-resp-chk-1019-104",
@@ -3621,7 +3780,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20MES-04%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3ELa%20compuerta%20de%20desv%C3%ADo%20no%20expuls%C3%B3%20pieza%20no%20conforme%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20MES%20%7C%202026-10-17%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "GALERIA",
-      "createdAt": "2026-10-17T22:37:57.952Z"
+      "createdAt": "2026-10-17T15:29:00.000Z"
     },
     {
       "id": "evid-resp-chk-1021-403",
@@ -3633,7 +3792,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20STF-03%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EError%20de%20sincronizaci%C3%B3n%20de%20respaldo%20en%20equipo%20de%20finanzas%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Staff%20IT%20%7C%202026-10-16%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "GALERIA",
-      "createdAt": "2026-10-16T22:37:57.952Z"
+      "createdAt": "2026-10-16T14:07:00.000Z"
     },
     {
       "id": "evid-resp-chk-1023-603",
@@ -3645,7 +3804,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20SAP-03%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EImpresora%20t%C3%A9rmica%20de%20etiquetas%20de%20producto%20sin%20papel%20en%20almac%C3%A9n%20central%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20SAP%20%7C%202026-10-16%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "GALERIA",
-      "createdAt": "2026-10-16T22:37:57.952Z"
+      "createdAt": "2026-10-16T15:33:00.000Z"
     },
     {
       "id": "evid-resp-chk-1026-204",
@@ -3657,7 +3816,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20IND-04%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3ESensor%20de%20vibraci%C3%B3n%20en%20motor%20principal%20supera%20umbral%20de%20advertencia%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Ind.%204.0%20%7C%202026-10-15%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "CAMARA",
-      "createdAt": "2026-10-15T22:37:57.952Z"
+      "createdAt": "2026-10-15T13:22:00.000Z"
     },
     {
       "id": "evid-resp-chk-1028-501",
@@ -3669,7 +3828,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20DIG-01%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3ECertificado%20SSL%20pr%C3%B3ximo%20a%20vencer%20en%20portal%20de%20reportes%20internos%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Digitalizacion%20%7C%202026-10-13%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "CAMARA",
-      "createdAt": "2026-10-13T22:37:57.952Z"
+      "createdAt": "2026-10-13T13:36:00.000Z"
     },
     {
       "id": "evid-resp-chk-1030-701",
@@ -3681,7 +3840,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20MAN-01%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EPantalla%20t%C3%A1ctil%20con%20calibraci%C3%B3n%20desviada%20en%20estaci%C3%B3n%20de%20ensamble%20%234%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Soporte%20Manufactura%20%7C%202026-10-08%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "CAMARA",
-      "createdAt": "2026-10-08T22:37:57.952Z"
+      "createdAt": "2026-10-08T13:50:00.000Z"
     },
     {
       "id": "evid-resp-chk-1032-202",
@@ -3693,7 +3852,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20IND-02%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EIluminaci%C3%B3n%20LED%20con%20fluctuaci%C3%B3n%20de%20brillo%20causando%20falsos%20rechazos%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20Ind.%204.0%20%7C%202026-10-02%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "CAMARA",
-      "createdAt": "2026-10-02T22:37:57.952Z"
+      "createdAt": "2026-10-02T14:04:00.000Z"
     },
     {
       "id": "evid-resp-chk-1033-102",
@@ -3705,7 +3864,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20MES-02%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EDesfase%20de%2015%20minutos%20en%20el%20reporte%20de%20piezas%20buenas%20vs%20sistema%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20MES%20%7C%202026-09-28%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "GALERIA",
-      "createdAt": "2026-09-28T22:37:57.952Z"
+      "createdAt": "2026-09-28T14:11:00.000Z"
     },
     {
       "id": "evid-resp-chk-1035-602",
@@ -3717,7 +3876,7 @@
       "tamanoBytes": 48200,
       "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%20viewBox%3D%220%200%20640%20420%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f172a%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e293b%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22420%22%20fill%3D%22url(%23bg)%22%20rx%3D%2216%22%2F%3E%0A%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22372%22%20fill%3D%22none%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%204%22%20rx%3D%2212%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22150%22%20r%3D%2246%22%20fill%3D%22%23ef4444%22%20fill-opacity%3D%220.18%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M320%20122%20L320%20156%20M320%20172%20L320.02%20172%22%20stroke%3D%22%23f87171%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22235%22%20text-anchor%3D%22middle%22%20fill%3D%22%23f8fafc%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22bold%22%3EEVIDENCIA%20DE%20INCIDENCIA%3A%20SAP-02%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22270%22%20text-anchor%3D%22middle%22%20fill%3D%22%23cbd5e1%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%3EUso%20de%20memoria%20superior%20al%2088%25%20en%20nodo%20principal%20de%20HANA%3C%2Ftext%3E%0A%20%20%20%20%3Crect%20x%3D%22170%22%20y%3D%22305%22%20width%3D%22300%22%20height%3D%2242%22%20rx%3D%228%22%20fill%3D%22%23334155%22%2F%3E%0A%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22331%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22%20monospace%22%20font-size%3D%2214%22%3E%C3%81rea%3A%20SAP%20%7C%202026-09-15%3C%2Ftext%3E%0A%20%20%3C%2Fsvg%3E",
       "origenCaptura": "GALERIA",
-      "createdAt": "2026-09-15T22:37:57.952Z"
+      "createdAt": "2026-09-15T15:45:00.000Z"
     }
   ],
   "estadisticas": [
@@ -3733,7 +3892,7 @@
       "totalNo": 0,
       "porcentajeCumplimiento": 100,
       "porcentajeIncidencias": 0,
-      "calculadoEn": "2026-10-20T22:37:57.952Z"
+      "calculadoEn": "2026-10-20T23:36:37.499Z"
     },
     {
       "id": "stat-diario-2-2026-10-20",
@@ -3747,7 +3906,7 @@
       "totalNo": 2,
       "porcentajeCumplimiento": 75,
       "porcentajeIncidencias": 25,
-      "calculadoEn": "2026-10-20T22:37:57.952Z"
+      "calculadoEn": "2026-10-20T23:36:37.499Z"
     },
     {
       "id": "stat-diario-3-2026-10-20",
@@ -3761,7 +3920,7 @@
       "totalNo": 0,
       "porcentajeCumplimiento": 100,
       "porcentajeIncidencias": 0,
-      "calculadoEn": "2026-10-20T22:37:57.952Z"
+      "calculadoEn": "2026-10-20T23:36:37.499Z"
     },
     {
       "id": "stat-diario-4-2026-10-20",
@@ -3775,7 +3934,7 @@
       "totalNo": 1,
       "porcentajeCumplimiento": 75,
       "porcentajeIncidencias": 25,
-      "calculadoEn": "2026-10-20T22:37:57.952Z"
+      "calculadoEn": "2026-10-20T23:36:37.499Z"
     },
     {
       "id": "stat-diario-5-2026-10-20",
@@ -3789,7 +3948,7 @@
       "totalNo": 0,
       "porcentajeCumplimiento": 100,
       "porcentajeIncidencias": 0,
-      "calculadoEn": "2026-10-20T22:37:57.952Z"
+      "calculadoEn": "2026-10-20T23:36:37.499Z"
     },
     {
       "id": "stat-diario-6-2026-10-20",
@@ -3803,7 +3962,7 @@
       "totalNo": 0,
       "porcentajeCumplimiento": 100,
       "porcentajeIncidencias": 0,
-      "calculadoEn": "2026-10-20T22:37:57.952Z"
+      "calculadoEn": "2026-10-20T23:36:37.499Z"
     },
     {
       "id": "stat-diario-7-2026-10-20",
@@ -3817,10 +3976,65 @@
       "totalNo": 1,
       "porcentajeCumplimiento": 75,
       "porcentajeIncidencias": 25,
-      "calculadoEn": "2026-10-20T22:37:57.952Z"
+      "calculadoEn": "2026-10-20T23:36:37.499Z"
     }
   ],
   "auditoria": [
+    {
+      "id": "aud-1792539397497-hzck",
+      "actorIdentificador": "2002 - Sofía Hernández",
+      "modulo": "CHECKLIST",
+      "accion": "REGISTRO_CHECKLIST",
+      "entidad": "Checklist",
+      "entidadId": "CHK-20261015-038",
+      "detalles": "Checklist CHK-20261015-038 completado en área Digitalizacion. Cumplimiento: 100% (4 Sí / 0 No).",
+      "ipAddress": "127.0.0.1",
+      "createdAt": "2026-10-20T23:36:37.498Z"
+    },
+    {
+      "id": "aud-1792539349285-6f8d",
+      "actorIdentificador": "1000 - Oscar Mercado",
+      "modulo": "SEGURIDAD_JWT",
+      "accion": "LOGIN_EXITOSO",
+      "entidad": "Empleado",
+      "entidadId": "emp-1000",
+      "detalles": "Inicio de sesión administrativo autorizado para el Administrador General Oscar Mercado",
+      "ipAddress": "127.0.0.1",
+      "createdAt": "2026-10-20T23:35:49.285Z"
+    },
+    {
+      "id": "aud-1792539332584-o0yw",
+      "actorIdentificador": "Sistema",
+      "modulo": "NOTIFICACIONES",
+      "accion": "CORREO_FALLIDO",
+      "entidad": "Empleado",
+      "entidadId": "2006",
+      "detalles": "Correo a diana.morales@empresa.com (SAP, Soporte Manufactura): SIN_CONFIGURAR - Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "ipAddress": "127.0.0.1",
+      "createdAt": "2026-10-20T23:35:32.584Z"
+    },
+    {
+      "id": "aud-1792539332584-6zm4",
+      "actorIdentificador": "Sistema",
+      "modulo": "NOTIFICACIONES",
+      "accion": "CORREO_FALLIDO",
+      "entidad": "Empleado",
+      "entidadId": "1003",
+      "detalles": "Correo a carlos.villarreal@empresa.com (Infraestructura): SIN_CONFIGURAR - Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "ipAddress": "127.0.0.1",
+      "createdAt": "2026-10-20T23:35:32.584Z"
+    },
+    {
+      "id": "aud-1792539332584-2wg8",
+      "actorIdentificador": "Sistema",
+      "modulo": "NOTIFICACIONES",
+      "accion": "CORREO_FALLIDO",
+      "entidad": "Empleado",
+      "entidadId": "2002",
+      "detalles": "Correo a sofia.hernandez@empresa.com (MES): SIN_CONFIGURAR - Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "ipAddress": "127.0.0.1",
+      "createdAt": "2026-10-20T23:35:32.584Z"
+    },
     {
       "id": "aud-1",
       "actorIdentificador": "1000 - Oscar Mercado",
@@ -3830,7 +4044,69 @@
       "entidadId": "v1.0",
       "detalles": "Inicialización de áreas base (Infraestructura, Control, Mantenimiento), catálogo de empleados y plantillas de checklist.",
       "ipAddress": "127.0.0.1",
-      "createdAt": "2026-10-20T22:37:57.948Z"
+      "createdAt": "2026-10-20T23:34:43.557Z"
+    }
+  ],
+  "notificaciones": [
+    {
+      "id": "ntf-1792539332584-rbsu",
+      "empleadoId": "emp-2006",
+      "numeroEmpleado": "2006",
+      "nombreEmpleado": "Diana Morales",
+      "areaId": 7,
+      "areaNombre": "Soporte Manufactura",
+      "fecha": "2026-10-20",
+      "tipo": "ENCUESTA_VENCIDA",
+      "destinatario": "diana.morales@empresa.com",
+      "estado": "SIN_CONFIGURAR",
+      "detalle": "Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "intentos": 1,
+      "enviadoEn": "2026-10-20T23:35:32.584Z"
+    },
+    {
+      "id": "ntf-1792539332584-ozdp",
+      "empleadoId": "emp-2006",
+      "numeroEmpleado": "2006",
+      "nombreEmpleado": "Diana Morales",
+      "areaId": 6,
+      "areaNombre": "SAP",
+      "fecha": "2026-10-20",
+      "tipo": "ENCUESTA_VENCIDA",
+      "destinatario": "diana.morales@empresa.com",
+      "estado": "SIN_CONFIGURAR",
+      "detalle": "Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "intentos": 1,
+      "enviadoEn": "2026-10-20T23:35:32.584Z"
+    },
+    {
+      "id": "ntf-1792539332584-wu6z",
+      "empleadoId": "emp-1003",
+      "numeroEmpleado": "1003",
+      "nombreEmpleado": "Ing. Carlos Villarreal",
+      "areaId": 3,
+      "areaNombre": "Infraestructura",
+      "fecha": "2026-10-20",
+      "tipo": "ENCUESTA_VENCIDA",
+      "destinatario": "carlos.villarreal@empresa.com",
+      "estado": "SIN_CONFIGURAR",
+      "detalle": "Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "intentos": 1,
+      "enviadoEn": "2026-10-20T23:35:32.584Z"
+    },
+    {
+      "id": "ntf-1792539332584-xbfo",
+      "empleadoId": "emp-2002",
+      "numeroEmpleado": "2002",
+      "nombreEmpleado": "Sofía Hernández",
+      "areaId": 1,
+      "areaNombre": "MES",
+      "fecha": "2026-10-20",
+      "tipo": "ENCUESTA_VENCIDA",
+      "destinatario": "sofia.hernandez@empresa.com",
+      "estado": "SIN_CONFIGURAR",
+      "detalle": "Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "intentos": 1,
+      "enviadoEn": "2026-10-20T23:35:32.584Z"
     }
   ]
 }

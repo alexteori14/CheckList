@@ -60,8 +60,27 @@ import {
 } from '@/types';
 import { exportToExcel, exportToPDF } from '@/lib/exportReports';
 import { cn } from '@/lib/utils';
+import TiempoVidaPanel, { TiempoVidaData } from './TiempoVidaPanel';
+
+function BadgeTiempo({ estado, hora }: { estado?: string; hora?: string }) {
+  const ok = estado === 'EN_TIEMPO';
+  return (
+    <span
+      className={cn(
+        'inline-flex flex-col items-start px-2 py-0.5 rounded-md text-[11px] font-bold border whitespace-nowrap',
+        ok
+          ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+          : 'bg-rose-50 text-rose-800 border-rose-200'
+      )}
+    >
+      <span>{ok ? 'En tiempo' : 'Fuera de tiempo'}</span>
+      {hora && <span className="font-mono font-medium opacity-80">{hora}</span>}
+    </span>
+  );
+}
 
 interface DashboardApiResponse {
+  tiempoVida: TiempoVidaData;
   checklists: ChecklistRecord[];
   kpis: {
     totalChecklists: number;
@@ -416,6 +435,13 @@ export default function AdminDashboard() {
   useEffect(() => {
     fetchAllData();
   }, [fetchAllData]);
+
+  // Actualización automática cada minuto para medir el tiempo de vida de las encuestas
+  useEffect(() => {
+    if (!authUser) return;
+    const t = setInterval(() => fetchAllData(), 60000);
+    return () => clearInterval(t);
+  }, [authUser, fetchAllData]);
 
   // Cierre accesible con tecla Escape para todos los diálogos y visores modales
   useEffect(() => {
@@ -1156,6 +1182,9 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
+              {/* Tiempo de vida de la encuesta (medición en pantalla principal) */}
+              <TiempoVidaPanel data={dashboardData.tiempoVida} onChanged={fetchAllData} />
+
               {/* Gráficas Ejecutivas */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
@@ -1627,6 +1656,7 @@ export default function AdminDashboard() {
                         <th className="py-3 px-3">Área</th>
                         <th className="py-3 px-3 text-center">Sí</th>
                         <th className="py-3 px-3 text-center">No</th>
+                        <th className="py-3 px-3">Tiempo de vida</th>
                         <th className="py-3 px-3 text-right">% Cumplim.</th>
                         <th className="py-3 px-3 text-right">Acciones</th>
                       </tr>
@@ -1663,6 +1693,9 @@ export default function AdminDashboard() {
                             {c.nombreEmpleado}
                           </td>
                           <td className="py-3 px-3">{c.areaNombre}</td>
+                          <td className="py-3 px-3">
+                            <BadgeTiempo estado={c.estadoTiempo} hora={c.horaRegistro} />
+                          </td>
                           <td className="py-3 px-3 text-center font-bold text-emerald-700">
                             {c.totalSi}
                           </td>
@@ -2191,6 +2224,8 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
+              <TiempoVidaPanel data={dashboardData.tiempoVida} compact onChanged={fetchAllData} />
+
               {dashboardData.checklists.length === 0 ? (
                 <div className="text-center py-12 px-4 rounded-xl border border-dashed border-slate-300 bg-slate-50 space-y-3">
                   <p className="text-sm font-bold text-slate-800">
@@ -2214,6 +2249,7 @@ export default function AdminDashboard() {
                         <th className="py-3 px-3"># Emp.</th>
                         <th className="py-3 px-3">Empleado / Encargado de Área</th>
                         <th className="py-3 px-3">Área</th>
+                        <th className="py-3 px-3">Tiempo de vida</th>
                         <th className="py-3 px-3 text-center">Respuestas Sí</th>
                         <th className="py-3 px-3 text-center">Respuestas No</th>
                         <th className="py-3 px-3 text-right">% Cumplimiento</th>
@@ -2252,6 +2288,9 @@ export default function AdminDashboard() {
                             {c.nombreEmpleado}
                           </td>
                           <td className="py-3 px-3">{c.areaNombre}</td>
+                          <td className="py-3 px-3">
+                            <BadgeTiempo estado={c.estadoTiempo} hora={c.horaRegistro} />
+                          </td>
                           <td className="py-3 px-3 text-center font-bold text-emerald-700">
                             {c.totalSi}
                           </td>

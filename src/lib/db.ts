@@ -13,6 +13,7 @@ import {
   Role,
 } from '@/types';
 import { hashPassword } from './auth';
+import { DEFAULT_HORA_FIN, DEFAULT_HORA_INICIO, evaluarTiempo, localHHMM } from './schedule';
 
 const DB_DIR = path.join(process.cwd(), 'database');
 const DB_FILE = path.join(DB_DIR, 'smartcheck_db.json');
@@ -178,7 +179,7 @@ function buildInitialDatabase(): DatabaseSchema {
       id: 'emp-2001',
       numeroEmpleado: '2001',
       nombreCompleto: 'Alejandro Puente',
-      correo: 'alejandro.puente@empresa.com',
+      correo: 'puentealejandro491@gmail.com',
       puesto: 'Especialista en Infraestructura y Tecnologías 4.0',
       areaId: 3,
       areaNombre: 'Infraestructura',
@@ -845,7 +846,18 @@ function buildInitialDatabase(): DatabaseSchema {
     const folio = `CHK-${fechaOperacion.replace(/-/g, '')}-${String(idx + 1).padStart(3, '0')}`;
     const createdDate = new Date();
     createdDate.setDate(createdDate.getDate() + scen.offsetDays);
+    // Hora de captura simulada: la mayoría dentro del tiempo de vida (07:00-08:30), algunas tardías
+    if (idx % 4 === 3) {
+      createdDate.setHours(9, 10 + (idx % 40), 0, 0);
+    } else {
+      createdDate.setHours(7, (idx * 7) % 80, 0, 0);
+    }
     const createdIso = createdDate.toISOString();
+    const estadoTiempoSeed = evaluarTiempo(
+      { horaInicio: DEFAULT_HORA_INICIO, horaFin: DEFAULT_HORA_FIN },
+      fechaOperacion,
+      createdIso
+    );
 
     const respuestas: RespuestaItem[] = pregArea.map((p) => {
       const isNo = scen.failedQuestionIds.includes(p.id);
@@ -919,6 +931,8 @@ function buildInitialDatabase(): DatabaseSchema {
           ? `Se detectaron ${totalNo} incidencia(s) durante el recorrido operativo.`
           : 'Recorrido completado al 100% sin hallazgos negativos.',
       respuestas,
+      estadoTiempo: estadoTiempoSeed,
+      horaRegistro: localHHMM(createdDate),
       createdAt: createdIso,
     });
   });
@@ -941,13 +955,18 @@ function buildInitialDatabase(): DatabaseSchema {
 
   return {
     roles,
-    areas,
+    areas: areas.map((a) => ({
+      ...a,
+      horaInicio: a.horaInicio || DEFAULT_HORA_INICIO,
+      horaFin: a.horaFin || DEFAULT_HORA_FIN,
+    })),
     empleados,
     preguntas,
     checklists,
     evidencias,
     estadisticas,
     auditoria,
+    notificaciones: [],
   };
 }
 
@@ -1002,9 +1021,19 @@ export function readDb(): DatabaseSchema {
     if (!hasToday && parsed.checklists.length > 0) {
       // Actualizar fechas relativas si el archivo fue creado otro día
       const fresh = buildInitialDatabase();
+      // Conservar la configuración del administrador (tiempo de vida por área) y la bitácora de correos
+      fresh.areas.forEach((a) => {
+        const prev = parsed.areas.find((p) => p.id === a.id);
+        if (prev) {
+          a.horaInicio = prev.horaInicio || a.horaInicio;
+          a.horaFin = prev.horaFin || a.horaFin;
+        }
+      });
+      fresh.notificaciones = parsed.notificaciones || [];
       fs.writeFileSync(DB_FILE, JSON.stringify(fresh, null, 2), 'utf-8');
       return fresh;
     }
+    if (!parsed.notificaciones) parsed.notificaciones = [];
     return parsed;
   } catch {
     const initial = buildInitialDatabase();

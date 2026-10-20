@@ -180,6 +180,72 @@ type AdminSection =
   | 'checklists_admin'
   | 'auditoria';
 
+/**
+ * Parsea y formatea de forma consistente y segura (sin errores de zona horaria UTC)
+ * el día de la semana, fecha legible y la hora de captura de una encuesta.
+ */
+function getFormatoDiaYFecha(fechaStr?: string, createdAt?: string) {
+  if (!fechaStr) {
+    return {
+      diaSemana: '',
+      fechaCorta: '',
+      fechaCompleta: '',
+      hora: '',
+    };
+  }
+
+  // Parsear 'YYYY-MM-DD' en hora local para evitar desfases de zona horaria UTC
+  const parts = fechaStr.split('-').map(Number);
+  let d: Date;
+  if (parts.length === 3 && !isNaN(parts[0]) && !isNaN(parts[1]) && !isNaN(parts[2])) {
+    d = new Date(parts[0], parts[1] - 1, parts[2]);
+  } else {
+    d = new Date(fechaStr);
+  }
+
+  // Nombre del día en español (ej: "Lunes", "Martes", "Miércoles")
+  const diaSemanaRaw = d.toLocaleDateString('es-MX', { weekday: 'long' });
+  const diaSemana = diaSemanaRaw.charAt(0).toUpperCase() + diaSemanaRaw.slice(1);
+
+  // Formato de fecha legible (ej: "20 oct 2026")
+  const fechaCorta = d.toLocaleDateString('es-MX', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  });
+
+  // Formato extendido completo (ej: "20 de octubre de 2026")
+  const fechaCompleta = d.toLocaleDateString('es-MX', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
+  // Hora de captura desde createdAt
+  let hora = '';
+  if (createdAt) {
+    try {
+      const createdDate = new Date(createdAt);
+      if (!isNaN(createdDate.getTime())) {
+        hora = createdDate.toLocaleTimeString('es-MX', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true,
+        });
+      }
+    } catch {
+      // ignorar error de formato
+    }
+  }
+
+  return {
+    diaSemana,
+    fechaCorta,
+    fechaCompleta,
+    hora,
+  };
+}
+
 export default function AdminDashboard() {
   const shouldReduceMotion = useReducedMotion();
 
@@ -1274,7 +1340,7 @@ export default function AdminDashboard() {
                     <thead>
                       <tr className="border-b border-slate-200 text-slate-600 bg-slate-50">
                         <th className="py-3 px-3">Folio</th>
-                        <th className="py-3 px-3">Fecha</th>
+                        <th className="py-3 px-3">Día y Fecha</th>
                         <th className="py-3 px-3"># Emp.</th>
                         <th className="py-3 px-3">Empleado / Encargado</th>
                         <th className="py-3 px-3">Área</th>
@@ -1285,12 +1351,30 @@ export default function AdminDashboard() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {dashboardData.checklists.slice(0, 10).map((c) => (
-                        <tr key={c.id} className="hover:bg-slate-50">
-                          <td className="py-3 px-3 font-mono font-bold text-slate-900">
-                            {c.folio}
-                          </td>
-                          <td className="py-3 px-3">{c.fechaOperacion}</td>
+                      {dashboardData.checklists.slice(0, 10).map((c) => {
+                        const infoFecha = getFormatoDiaYFecha(c.fechaOperacion, c.createdAt);
+                        return (
+                          <tr key={c.id} className="hover:bg-slate-50">
+                            <td className="py-3 px-3 font-mono font-bold text-slate-900">
+                              {c.folio}
+                            </td>
+                            <td className="py-3 px-3 whitespace-nowrap">
+                              <div className="flex flex-col gap-0.5">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200 capitalize">
+                                    {infoFecha.diaSemana}
+                                  </span>
+                                  <span className="font-semibold text-slate-800 text-xs">
+                                    {infoFecha.fechaCorta}
+                                  </span>
+                                </div>
+                                {infoFecha.hora && (
+                                  <span className="text-[10px] text-slate-500 font-mono pl-0.5">
+                                    {infoFecha.hora}
+                                  </span>
+                                )}
+                              </div>
+                            </td>
                           <td className="py-3 px-3 font-mono text-blue-700 font-bold">
                             #{c.numeroEmpleado}
                           </td>
@@ -1329,7 +1413,8 @@ export default function AdminDashboard() {
                             </div>
                           </td>
                         </tr>
-                      ))}
+                      );
+                    })}
                     </tbody>
                   </table>
                 </div>
@@ -1707,7 +1792,14 @@ export default function AdminDashboard() {
                             {inc.folio} • {inc.preguntaCodigo}
                           </span>
                           <span className="text-xs font-semibold text-slate-600">
-                            {inc.fechaOperacion}
+                            {(() => {
+                              const info = getFormatoDiaYFecha(inc.fechaOperacion);
+                              return (
+                                <>
+                                  <span className="font-bold text-slate-800 capitalize">{info.diaSemana}</span> • {info.fechaCorta}
+                                </>
+                              );
+                            })()}
                           </span>
                         </div>
 
@@ -1837,7 +1929,7 @@ export default function AdminDashboard() {
                     <thead>
                       <tr className="border-b border-slate-200 text-slate-600 bg-slate-50">
                         <th className="py-3 px-3">Folio</th>
-                        <th className="py-3 px-3">Fecha</th>
+                        <th className="py-3 px-3">Día y Fecha</th>
                         <th className="py-3 px-3"># Emp.</th>
                         <th className="py-3 px-3">Empleado / Encargado de Área</th>
                         <th className="py-3 px-3">Área</th>
@@ -1848,12 +1940,30 @@ export default function AdminDashboard() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {dashboardData.checklists.map((c) => (
-                        <tr key={c.id} className="hover:bg-slate-50">
-                          <td className="py-3 px-3 font-mono font-bold text-slate-900">
-                            {c.folio}
-                          </td>
-                          <td className="py-3 px-3">{c.fechaOperacion}</td>
+                      {dashboardData.checklists.map((c) => {
+                        const infoFecha = getFormatoDiaYFecha(c.fechaOperacion, c.createdAt);
+                        return (
+                          <tr key={c.id} className="hover:bg-slate-50">
+                            <td className="py-3 px-3 font-mono font-bold text-slate-900">
+                              {c.folio}
+                            </td>
+                            <td className="py-3 px-3 whitespace-nowrap">
+                              <div className="flex flex-col gap-0.5">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200 capitalize">
+                                    {infoFecha.diaSemana}
+                                  </span>
+                                  <span className="font-semibold text-slate-800 text-xs">
+                                    {infoFecha.fechaCorta}
+                                  </span>
+                                </div>
+                                {infoFecha.hora && (
+                                  <span className="text-[10px] text-slate-500 font-mono pl-0.5">
+                                    {infoFecha.hora}
+                                  </span>
+                                )}
+                              </div>
+                            </td>
                           <td className="py-3 px-3 font-mono text-blue-700 font-bold">
                             #{c.numeroEmpleado}
                           </td>
@@ -1893,7 +2003,8 @@ export default function AdminDashboard() {
                             </div>
                           </td>
                         </tr>
-                      ))}
+                      );
+                    })}
                     </tbody>
                   </table>
                 </div>
@@ -2446,7 +2557,13 @@ export default function AdminDashboard() {
                 </h3>
                 <p className="text-xs text-slate-300 tabular-nums">
                   Empleado / Encargado: <strong>#{selectedChecklistModal.numeroEmpleado} {selectedChecklistModal.nombreEmpleado}</strong> • Área:{' '}
-                  <strong>{selectedChecklistModal.areaNombre}</strong> • Fecha: <strong>{selectedChecklistModal.fechaOperacion}</strong>
+                  <strong>{selectedChecklistModal.areaNombre}</strong> • Día y Fecha:{' '}
+                  <strong className="text-white">
+                    {(() => {
+                      const info = getFormatoDiaYFecha(selectedChecklistModal.fechaOperacion, selectedChecklistModal.createdAt);
+                      return `${info.diaSemana}, ${info.fechaCompleta}${info.hora ? ` (${info.hora})` : ''}`;
+                    })()}
+                  </strong>
                 </p>
               </div>
               <button

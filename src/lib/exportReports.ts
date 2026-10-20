@@ -3,6 +3,28 @@ import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { ChecklistRecord } from '@/types';
 
+function parseFechaSegura(fechaStr: string): Date {
+  if (!fechaStr) return new Date();
+  const parts = fechaStr.split('-').map(Number);
+  if (parts.length === 3 && !isNaN(parts[0]) && !isNaN(parts[1]) && !isNaN(parts[2])) {
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+  }
+  return new Date(fechaStr);
+}
+
+function getNombreDia(fechaStr: string): string {
+  if (!fechaStr) return '';
+  const d = parseFechaSegura(fechaStr);
+  const diaRaw = d.toLocaleDateString('es-MX', { weekday: 'long' });
+  return diaRaw.charAt(0).toUpperCase() + diaRaw.slice(1);
+}
+
+function getDiaYFecha(fechaStr: string): string {
+  if (!fechaStr) return '';
+  const dia = getNombreDia(fechaStr);
+  return `${dia} ${fechaStr}`;
+}
+
 interface ExportReportPayload {
   tituloFiltro: string;
   kpis: {
@@ -145,10 +167,10 @@ export function exportToPDF(payload: ExportReportPayload): void {
 
   autoTable(doc, {
     startY: startChkY + 3,
-    head: [['Folio', 'Fecha', '# Empleado', 'Nombre del Empleado', 'Área', 'Sí', 'No', '% Cumplimiento']],
+    head: [['Folio', 'Día / Fecha', '# Empleado', 'Nombre del Empleado', 'Área', 'Sí', 'No', '% Cumplimiento']],
     body: payload.checklists.map((c) => [
       c.folio,
-      c.fechaOperacion,
+      getDiaYFecha(c.fechaOperacion),
       c.numeroEmpleado,
       c.nombreEmpleado,
       c.areaNombre,
@@ -197,6 +219,7 @@ export function exportToExcel(payload: ExportReportPayload): void {
 
   const checklistJson = payload.checklists.map((c) => ({
     Folio: c.folio,
+    Dia: getNombreDia(c.fechaOperacion),
     Fecha: c.fechaOperacion,
     Numero_Empleado: c.numeroEmpleado,
     Nombre_Empleado: c.nombreEmpleado,

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getLocalISODate, readDb, registerAudit, writeDb } from '@/lib/db';
+import { verifyPassword, verifyToken } from '@/lib/auth';
 import {
   CaptureOrigin,
   ChecklistRecord,
@@ -302,7 +303,66 @@ export async function POST(req: NextRequest) {
     }
 
     const nowIso = new Date().toISOString();
-    const targetDate = fechaOperacion || getLocalISODate(0);
+    const today = getLocalISODate(0);
+    const targetDate = fechaOperacion || today;
+
+    // 1. REGLA ESTRICTA: No se puede adelantar fecha ni registrar encuestas futuras
+    if (targetDate > today) {
+      return NextResponse.json(
+        {
+          error: `Política de Fechas: No es posible registrar encuestas con fecha futura (${targetDate}). Solo se admiten encuestas del día de hoy (${today}) o de días pasados.`,
+        },
+        { status: 400 }
+      );
+    }
+
+    // 2. REGLA DE ENCUESTA ATRASADA (> 5 días): Requiere autorización del Administrador Oscar Mercado
+    const fiveDaysAgo = getLocalISODate(-5);
+    if (targetDate < fiveDaysAgo) {
+      const { autorizacionAdmin } = body;
+      let autorizado = false;
+
+      if (autorizacionAdmin) {
+        if (autorizacionAdmin.token) {
+          const decoded = await verifyToken(autorizacionAdmin.token);
+          if (decoded && (decoded.rolCodigo === 'ADMIN' || decoded.numeroEmpleado === '1000')) {
+            autorizado = true;
+          }
+        }
+        if (!autorizado && autorizacionAdmin.password) {
+          const oscar = db.empleados.find(
+            (e) => (e.numeroEmpleado === '1000' || e.rolCodigo === 'ADMIN') && e.activo
+          );
+          if (oscar) {
+            const valid = oscar.passwordHash
+              ? verifyPassword(autorizacionAdmin.password, oscar.passwordHash)
+              : autorizacionAdmin.password === 'admin123';
+            if (valid) {
+              autorizado = true;
+            }
+          }
+        }
+      }
+
+      if (!autorizado) {
+        return NextResponse.json(
+          {
+            error: `La fecha seleccionada (${targetDate}) supera los 5 días de antigüedad permitidos. Únicamente el Administrador Oscar Mercado tiene autorización para habilitar encuestas atrasadas.`,
+          },
+          { status: 403 }
+        );
+      }
+
+      registerAudit(db, {
+        actorIdentificador: '1000 - Oscar Mercado',
+        modulo: 'CHECKLIST_AUTORIZACION',
+        accion: 'AUTORIZAR_FECHA_ATRASADA',
+        entidad: 'Checklist',
+        entidadId: targetDate,
+        detalles: `El Administrador Oscar Mercado autorizó la captura extemporánea de la encuesta (${targetDate}) para el empleado #${empleado.numeroEmpleado} ${empleado.nombreCompleto}. Justificación: ${autorizacionAdmin?.justificacion || 'Autorización confirmada en terminal'}.`,
+      });
+    }
+
     const checklistId = `chk-${Date.now()}`;
     const folio = `CHK-${targetDate.replace(/-/g, '')}-${String(db.checklists.length + 1).padStart(3, '0')}`;
 

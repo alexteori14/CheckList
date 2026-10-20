@@ -23,6 +23,10 @@ import {
   Check,
   RefreshCw,
   Edit3,
+  Lock,
+  ShieldAlert,
+  KeyRound,
+  X,
 } from 'lucide-react';
 import {
   Area,
@@ -68,6 +72,15 @@ function getTodayFormatted(): string {
   return `${y}-${m}-${d}`;
 }
 
+function getOffsetDateFormatted(offsetDays: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() + offsetDays);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 export default function ChecklistWizard({
   onChecklistCompleted,
   onNavigateToDashboard,
@@ -85,6 +98,21 @@ export default function ChecklistWizard({
   const [catalogoEmpleados, setCatalogoEmpleados] = useState<Empleado[]>([]);
   const [buscandoEmpleado, setBuscandoEmpleado] = useState<boolean>(false);
   const [errorBusqueda, setErrorBusqueda] = useState<string>('');
+
+  // Control de autorización de fechas atrasadas (> 5 días) por Oscar Mercado
+  const [adminAuthOscar, setAdminAuthOscar] = useState<{
+    autorizado: boolean;
+    password?: string;
+    token?: string;
+    justificacion?: string;
+    autorizadaEn?: string;
+  } | null>(null);
+  const [showOscarAuthModal, setShowOscarAuthModal] = useState<boolean>(false);
+  const [fechaPendienteAutorizar, setFechaPendienteAutorizar] = useState<string>('');
+  const [oscarPasswordInput, setOscarPasswordInput] = useState<string>('');
+  const [oscarJustificacionInput, setOscarJustificacionInput] = useState<string>('');
+  const [oscarAuthError, setOscarAuthError] = useState<string>('');
+  const [oscarAuthLoading, setOscarAuthLoading] = useState<boolean>(false);
 
   // Experiencia de tarjetas (Sección 1, 3 y 4)
   const [displayMode, setDisplayMode] = useState<'single' | 'grouped'>('single');
@@ -238,8 +266,117 @@ export default function ChecklistWizard({
     stopCamera();
   };
 
+  const handleFechaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    if (!val) {
+      setFechaOperacion(getTodayFormatted());
+      return;
+    }
+
+    const todayStr = getTodayFormatted();
+    const fiveDaysAgoStr = getOffsetDateFormatted(-5);
+
+    // 1. REGLA ESTRICTA: No se puede adelantar fecha ni seleccionar días futuros
+    if (val > todayStr) {
+      setValidationError(
+        `Política de Fechas: No es posible adelantar fechas ni seleccionar el día de mañana o días futuros (${val}). La encuesta solo puede registrarse para el día de hoy (${todayStr}) o días anteriores.`
+      );
+      setFechaOperacion(todayStr);
+      return;
+    }
+
+    // 2. REGLA DE FECHA ATRASADA (> 5 días): Requiere autorización del Administrador Oscar Mercado
+    if (val < fiveDaysAgoStr) {
+      if (adminAuthOscar) {
+        setFechaOperacion(val);
+        setValidationError('');
+      } else {
+        setFechaPendienteAutorizar(val);
+        setOscarAuthError('');
+        setOscarPasswordInput('');
+        setOscarJustificacionInput('');
+        setShowOscarAuthModal(true);
+      }
+      return;
+    }
+
+    // 3. Rango permitido estándar [fiveDaysAgoStr, todayStr]
+    setFechaOperacion(val);
+    setValidationError('');
+  };
+
+  const handleConfirmOscarAuth = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!oscarPasswordInput.trim()) {
+      setOscarAuthError('Por favor ingresa la contraseña del Administrador Oscar Mercado.');
+      return;
+    }
+
+    setOscarAuthLoading(true);
+    setOscarAuthError('');
+
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          numeroEmpleado: '1000',
+          password: oscarPasswordInput.trim(),
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setOscarAuthError(
+          data.error || 'Credenciales inválidas. Solo el Administrador Oscar Mercado tiene autorización para habilitar encuestas atrasadas.'
+        );
+        return;
+      }
+
+      setAdminAuthOscar({
+        autorizado: true,
+        password: oscarPasswordInput.trim(),
+        token: data.token,
+        justificacion: oscarJustificacionInput.trim() || 'Autorizado por Administrador General Oscar Mercado',
+        autorizadaEn: new Date().toISOString(),
+      });
+
+      const todayStr = getTodayFormatted();
+      if (fechaPendienteAutorizar && fechaPendienteAutorizar <= todayStr) {
+        setFechaOperacion(fechaPendienteAutorizar);
+      }
+      setShowOscarAuthModal(false);
+      setValidationError('');
+    } catch {
+      setOscarAuthError('Error de conexión al validar credenciales con el servidor.');
+    } finally {
+      setOscarAuthLoading(false);
+    }
+  };
+
   const handleIniciarChecklist = () => {
     if (!empleadoEncontrado || preguntasArea.length === 0) return;
+
+    const todayStr = getTodayFormatted();
+    const fiveDaysAgoStr = getOffsetDateFormatted(-5);
+
+    // Validación estricta de fechas al iniciar
+    if (fechaOperacion > todayStr) {
+      setValidationError(
+        `Política de Fechas: No es posible iniciar el checklist con una fecha futura (${fechaOperacion}). Selecciona hoy (${todayStr}) o una fecha anterior.`
+      );
+      setFechaOperacion(todayStr);
+      return;
+    }
+
+    if (fechaOperacion < fiveDaysAgoStr && !adminAuthOscar) {
+      setFechaPendienteAutorizar(fechaOperacion);
+      setOscarAuthError('');
+      setOscarPasswordInput('');
+      setOscarJustificacionInput('');
+      setShowOscarAuthModal(true);
+      return;
+    }
 
     clearAutoAdvanceTimer();
     stopCamera();
@@ -515,6 +652,14 @@ export default function ChecklistWizard({
           typeof window !== 'undefined' && window.innerWidth < 768
             ? 'Dispositivo Móvil / Touch'
             : 'Escritorio / Web App',
+        autorizacionAdmin: adminAuthOscar
+          ? {
+              adminNumeroEmpleado: '1000',
+              password: adminAuthOscar.password,
+              token: adminAuthOscar.token,
+              justificacion: adminAuthOscar.justificacion,
+            }
+          : undefined,
         respuestas: preguntasArea.map((q) => {
           const a = answers[q.id];
           return {
@@ -1004,22 +1149,60 @@ export default function ChecklistWizard({
               </div>
 
               <div>
-                <label
-                  htmlFor="input-fecha-operacion"
-                  className="block text-sm font-bold text-slate-900 mb-2"
-                >
-                  Fecha de Operación{' '}
-                  <span className="text-xs font-normal text-slate-600">(Automática / Editable)</span>
-                </label>
+                <div className="flex items-center justify-between mb-2 gap-2">
+                  <label
+                    htmlFor="input-fecha-operacion"
+                    className="block text-sm font-bold text-slate-900"
+                  >
+                    Fecha de Operación{' '}
+                    <span className="text-xs font-normal text-slate-600">
+                      {adminAuthOscar ? '(Atrasada Autorizada)' : '(Hoy o últimos 5 días)'}
+                    </span>
+                  </label>
+                  {adminAuthOscar ? (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                      <ShieldCheck className="size-3 text-emerald-600" />
+                      <span>Autorizado por Oscar Mercado</span>
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const fiveDaysAgoStr = getOffsetDateFormatted(-5);
+                        setFechaPendienteAutorizar(fechaOperacion < fiveDaysAgoStr ? fechaOperacion : fiveDaysAgoStr);
+                        setOscarAuthError('');
+                        setOscarPasswordInput('');
+                        setOscarJustificacionInput('');
+                        setShowOscarAuthModal(true);
+                      }}
+                      className="inline-flex items-center gap-1 text-[11px] font-bold text-blue-700 hover:text-blue-900 hover:underline"
+                    >
+                      <Lock className="size-3" />
+                      <span>Habilitar fecha atrasada (&gt; 5 días)</span>
+                    </button>
+                  )}
+                </div>
                 <div className="relative">
                   <Calendar className="size-5 text-blue-600 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
                     id="input-fecha-operacion"
                     type="date"
                     value={fechaOperacion}
-                    onChange={(e) => setFechaOperacion(e.target.value)}
+                    max={getTodayFormatted()}
+                    min={adminAuthOscar ? undefined : getOffsetDateFormatted(-5)}
+                    onChange={handleFechaChange}
                     className="w-full rounded-xl border-2 border-slate-300 focus:border-blue-600 pl-12 pr-4 py-3 text-base font-semibold text-slate-900 tabular-nums transition-colors"
                   />
+                </div>
+                <div className="mt-1.5 flex flex-wrap items-center justify-between gap-1 text-[11px] text-slate-500">
+                  <span>
+                    Rango estándar: <strong>{getOffsetDateFormatted(-5)}</strong> a <strong>{getTodayFormatted()}</strong> (No se permiten fechas futuras).
+                  </span>
+                  {adminAuthOscar && (
+                    <span className="text-emerald-700 font-semibold">
+                      Permiso concedido para fechas anteriores a 5 días.
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -1103,6 +1286,147 @@ export default function ChecklistWizard({
             </div>
           </div>
         </div>
+
+        {/* Modal de Autorización de Oscar Mercado para Fechas Atrasadas (> 5 días) */}
+        {showOscarAuthModal && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="oscar-auth-title"
+            onClick={() => {
+              setShowOscarAuthModal(false);
+              const fiveDaysAgoStr = getOffsetDateFormatted(-5);
+              if (fechaOperacion < fiveDaysAgoStr && !adminAuthOscar) {
+                setFechaOperacion(getTodayFormatted());
+              }
+            }}
+            className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95 duration-150"
+            >
+              {/* Encabezado del Modal */}
+              <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="size-9 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                    <ShieldAlert className="size-5" />
+                  </div>
+                  <div>
+                    <h3 id="oscar-auth-title" className="font-bold text-sm">
+                      Autorización de Administrador
+                    </h3>
+                    <p className="text-[11px] text-slate-400">
+                      Habilitación de Encuesta Atrasada (&gt; 5 días)
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  aria-label="Cerrar modal de autorización"
+                  onClick={() => {
+                    setShowOscarAuthModal(false);
+                    const fiveDaysAgoStr = getOffsetDateFormatted(-5);
+                    if (fechaOperacion < fiveDaysAgoStr && !adminAuthOscar) {
+                      setFechaOperacion(getTodayFormatted());
+                    }
+                  }}
+                  className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                >
+                  <X className="size-4" />
+                </button>
+              </div>
+
+              {/* Formulario */}
+              <form onSubmit={handleConfirmOscarAuth} className="p-6 space-y-4">
+                <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-950 text-xs space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-amber-900">
+                      Fecha solicitada:
+                    </span>
+                    <span className="font-mono font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded border border-amber-300">
+                      {fechaPendienteAutorizar || fechaOperacion}
+                    </span>
+                  </div>
+                  <p className="text-amber-800 text-pretty">
+                    Esta fecha supera los <strong>5 días</strong> de antigüedad permitidos. Únicamente el Administrador General <strong>Oscar Mercado</strong> puede autorizar encuestas atrasadas.
+                  </p>
+                  <p className="text-[11px] text-amber-900 font-semibold pt-1 border-t border-amber-200">
+                    ⚠️ Regla estricta: Bajo ninguna circunstancia se permite adelantar fecha o habilitar días futuros.
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Administrador Autorizador
+                  </label>
+                  <div className="px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800">
+                    Oscar Mercado (#1000 - Administrador General de Sistemas)
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Contraseña de Administrador (Oscar Mercado) <span className="text-rose-600">*</span>
+                  </label>
+                  <div className="relative">
+                    <KeyRound className="size-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      type="password"
+                      autoFocus
+                      value={oscarPasswordInput}
+                      onChange={(e) => setOscarPasswordInput(e.target.value)}
+                      placeholder="Ingresa contraseña de Administrador..."
+                      className="w-full rounded-xl border border-slate-300 focus:border-blue-600 pl-10 pr-4 py-2.5 text-xs font-medium text-slate-900"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Motivo o Justificación de Encuesta Atrasada
+                  </label>
+                  <input
+                    type="text"
+                    value={oscarJustificacionInput}
+                    onChange={(e) => setOscarJustificacionInput(e.target.value)}
+                    placeholder="Ej: Levantamiento extemporáneo por auditoría o falla técnica"
+                    className="w-full rounded-xl border border-slate-300 focus:border-blue-600 px-3.5 py-2.5 text-xs font-medium text-slate-900"
+                  />
+                </div>
+
+                {oscarAuthError && (
+                  <p className="text-xs text-rose-700 font-semibold bg-rose-50 p-3 rounded-xl border border-rose-200">
+                    {oscarAuthError}
+                  </p>
+                )}
+
+                <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowOscarAuthModal(false);
+                      const fiveDaysAgoStr = getOffsetDateFormatted(-5);
+                      if (fechaOperacion < fiveDaysAgoStr && !adminAuthOscar) {
+                        setFechaOperacion(getTodayFormatted());
+                      }
+                    }}
+                    className="px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-50 text-xs font-bold text-slate-700 transition-colors"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={oscarAuthLoading || !oscarPasswordInput.trim()}
+                    className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-bold shadow-sm transition-colors"
+                  >
+                    {oscarAuthLoading ? 'Verificando...' : 'Autorizar Encuesta Atrasada'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -1146,6 +1470,12 @@ export default function ChecklistWizard({
                 <p className="text-xs text-slate-600 mt-0.5 tabular-nums">
                   Área: <strong className="text-slate-900">{empleadoEncontrado.areaNombre}</strong> • Fecha:{' '}
                   <strong>{fechaOperacion}</strong>
+                  {adminAuthOscar && (
+                    <span className="ml-2 inline-flex items-center gap-1 text-[11px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                      <ShieldCheck className="size-3 text-amber-600" />
+                      <span>Atrasada (Autorizado por Oscar Mercado)</span>
+                    </span>
+                  )}
                 </p>
               </div>
             </div>
@@ -1426,6 +1756,11 @@ export default function ChecklistWizard({
                   <strong className="text-slate-900 font-bold block">
                     {fechaOperacion}
                   </strong>
+                  {adminAuthOscar && (
+                    <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-1 py-0.5 rounded border border-amber-200 block truncate mt-0.5">
+                      Autorizada Oscar M.
+                    </span>
+                  )}
                 </div>
               </div>
 

@@ -94,6 +94,7 @@ export default function ChecklistWizard({
   const [fechaOperacion, setFechaOperacion] = useState<string>(getTodayFormatted());
   const [empleadoEncontrado, setEmpleadoEncontrado] = useState<Empleado | null>(null);
   const [areaEncontrada, setAreaEncontrada] = useState<Area | null>(null);
+  const [areasAsignadas, setAreasAsignadas] = useState<Area[]>([]);
   const [preguntasArea, setPreguntasArea] = useState<Pregunta[]>([]);
   const [catalogoEmpleados, setCatalogoEmpleados] = useState<Empleado[]>([]);
   const [buscandoEmpleado, setBuscandoEmpleado] = useState<boolean>(false);
@@ -171,6 +172,7 @@ export default function ChecklistWizard({
     if (!clean) {
       setEmpleadoEncontrado(null);
       setAreaEncontrada(null);
+      setAreasAsignadas([]);
       setPreguntasArea([]);
       setErrorBusqueda('');
       return;
@@ -186,12 +188,14 @@ export default function ChecklistWizard({
         if (!res.ok) {
           setEmpleadoEncontrado(null);
           setAreaEncontrada(null);
+          setAreasAsignadas([]);
           setPreguntasArea([]);
           setErrorBusqueda('No se encontró un empleado activo con ese número. Verifica el código e intenta de nuevo.');
         } else {
           const data = await res.json();
           setEmpleadoEncontrado(data.empleado);
           setAreaEncontrada(data.area);
+          setAreasAsignadas(data.areasAsignadas || (data.area ? [data.area] : []));
           setPreguntasArea(data.preguntas || []);
           setErrorBusqueda('');
         }
@@ -204,6 +208,20 @@ export default function ChecklistWizard({
 
     return () => clearTimeout(timer);
   }, [numeroEmpleadoInput, step]);
+
+  const handleCambiarArea = async (selectedArea: Area) => {
+    if (selectedArea.id === areaEncontrada?.id) return;
+    setAreaEncontrada(selectedArea);
+    try {
+      const res = await fetch(`/api/questions?areaId=${selectedArea.id}`, { cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        setPreguntasArea(data.preguntas || []);
+      }
+    } catch (err) {
+      console.error('Error al cambiar área asignada:', err);
+    }
+  };
 
   useEffect(() => {
     return () => {
@@ -646,6 +664,7 @@ export default function ChecklistWizard({
       const elapsedSeconds = Math.max(5, Math.round((Date.now() - startTimeMs) / 1000));
       const payload = {
         numeroEmpleado: empleadoEncontrado.numeroEmpleado,
+        areaId: areaEncontrada?.id,
         fechaOperacion,
         duracionSegundos: elapsedSeconds,
         dispositivo:
@@ -1073,7 +1092,7 @@ export default function ChecklistWizard({
               Iniciar Nuevo Checklist Operativo
             </h1>
             <p className="text-slate-300 text-sm sm:text-base mt-2 max-w-2xl text-pretty">
-              Ingresa tu número de empleado de jefe de departamento u operador para cargar las tarjetas de tu área (<strong>Infraestructura</strong>, <strong>Control</strong> o <strong>Mantenimiento</strong>).
+              Ingresa tu número de empleado para cargar las tarjetas de tu área asignada (MES, Ind. 4.0, Infraestructura, Staff IT, Digitalizacion, SAP o Soporte Manufactura).
             </p>
           </div>
 
@@ -1081,12 +1100,12 @@ export default function ChecklistWizard({
             {/* Selector rápido de jefes de departamento y personal operativo */}
             <div>
               <p className="text-xs font-bold text-slate-700 mb-2">
-                Selección rápida de jefes de departamento y personal (1 clic):
+                Selección rápida de personal y jefes de área (1 clic):
               </p>
               <div className="flex flex-wrap gap-2">
                 {catalogoEmpleados
                   .filter((emp) => emp.rolCodigo !== 'ADMIN')
-                  .slice(0, 6)
+                  .slice(0, 8)
                   .map((emp) => {
                   const selected = numeroEmpleadoInput === emp.numeroEmpleado;
                   return (
@@ -1111,7 +1130,7 @@ export default function ChecklistWizard({
                             : 'bg-slate-200 text-slate-700'
                         )}
                       >
-                        {emp.areaNombre}
+                        {emp.areaNombre}{emp.areaNombreSecundaria ? ` / ${emp.areaNombreSecundaria}` : ''}
                       </span>
                     </button>
                   );
@@ -1247,13 +1266,56 @@ export default function ChecklistWizard({
                         Área Correspondiente
                       </span>
                       <p className="text-lg font-bold text-slate-900">
-                        {empleadoEncontrado.areaNombre}
+                        {areaEncontrada?.nombre || empleadoEncontrado.areaNombre}
                       </p>
                       <p className="text-xs text-slate-600 tabular-nums">
                         {preguntasArea.length} tarjetas de verificación asignadas
                       </p>
                     </div>
                   </div>
+
+                  {areasAsignadas.length > 1 && (
+                    <div className="col-span-1 sm:col-span-2 pt-3 border-t border-slate-200">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                          <Building2 className="size-4 text-blue-600" />
+                          <span>Empleado asignado a múltiples áreas ({areasAsignadas.length} de máx. 2) — Selecciona área a evaluar:</span>
+                        </span>
+                        <span className="text-[11px] font-semibold text-slate-500">Límite: 2 áreas</span>
+                      </div>
+                      <div className="flex flex-wrap gap-2.5">
+                        {areasAsignadas.map((a) => {
+                          const isSelected = areaEncontrada?.id === a.id;
+                          return (
+                            <button
+                              key={a.id}
+                              type="button"
+                              onClick={() => handleCambiarArea(a)}
+                              className={cn(
+                                'px-4 py-2.5 rounded-xl text-xs font-bold border-2 transition-all flex items-center gap-2',
+                                isSelected
+                                  ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                                  : 'bg-white text-slate-700 border-slate-200 hover:border-blue-400 hover:bg-blue-50/50'
+                              )}
+                            >
+                              <span
+                                className="size-2.5 rounded-full shrink-0"
+                                style={{ backgroundColor: isSelected ? '#ffffff' : a.colorHex }}
+                              />
+                              <span>{a.nombre}</span>
+                              {isSelected ? (
+                                <span className="ml-1 bg-blue-700 text-white text-[10px] px-1.5 py-0.5 rounded font-extrabold flex items-center gap-1">
+                                  <Check className="size-3" /> Seleccionada
+                                </span>
+                              ) : (
+                                <span className="text-[10px] text-slate-500 font-normal">Cambiar</span>
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
                 </motion.div>
               ) : (
                 <div className="py-2 text-slate-600 text-sm text-pretty">

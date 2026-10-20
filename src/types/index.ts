@@ -35,6 +35,8 @@ export interface Empleado {
   puesto?: string;
   areaId: number;
   areaNombre: string;
+  areaIdSecundaria?: number | null;
+  areaNombreSecundaria?: string | null;
   rolCodigo: RoleCode;
   activo: boolean;
   passwordHash?: string;

@@ -126,7 +126,7 @@ export default function ArchitectureView() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 tabular-nums">
                   {[
                     { name: 'roles', desc: 'PK: id | Código (ADMIN, SUPERVISOR, OPERADOR) y permisos JSONB.' },
-                    { name: 'areas', desc: 'PK: id | Infraestructura, Control, Mantenimiento + áreas dinámicas.' },
+                    { name: 'areas', desc: 'PK: id | MES, Ind. 4.0, Infraestructura, Staff IT, Digitalizacion, SAP, Soporte Manufactura + áreas dinámicas.' },
                     { name: 'usuarios', desc: 'PK: uuid | Credenciales cifradas PBKDF2/Bcrypt, rol_id (FK) y bloqueos.' },
                     { name: 'empleados', desc: 'PK: uuid | Índice único en numero_empleado, area_id (FK) y rol_id (FK).' },
                     { name: 'preguntas', desc: 'PK: id | Banco dinámico por area_id (FK), criticidad y orden.' },
@@ -170,7 +170,7 @@ export default function ArchitectureView() {
                   <ul className="text-xs space-y-1.5 text-slate-600 text-pretty">
                     <li>• <strong>Acceso Exclusivo de Administrador:</strong> Dashboard y configuración bajo custodia única de Oscar Mercado.</li>
                     <li>• <strong>Logout Seguro:</strong> Invocación DELETE /api/auth con destrucción de cookies HttpOnly.</li>
-                    <li>• <strong>Segregación Operativa:</strong> Jefes de departamento (Infraestructura, Control, Mantenimiento) solo contestan checklists.</li>
+                    <li>• <strong>Segregación Operativa:</strong> Jefes de departamento y operadores (MES, Ind. 4.0, Infraestructura, Staff IT, Digitalizacion, SAP, Soporte Manufactura) solo contestan checklists.</li>
                     <li>• <strong>Confirmación Defensiva:</strong> Modal previo al envío con opción interactiva de cambiar respuestas antes del guardado.</li>
                     <li>• <strong>Contraseñas Cifradas:</strong> Hash criptográfico PBKDF2-SHA256 con sal dedicada en tiempo constante.</li>
                     <li>• <strong>Validación Estricta:</strong> Motivo obligatorio en No y evidencias limitadas a JPG, PNG y WEBP.</li>

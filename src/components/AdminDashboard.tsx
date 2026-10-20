@@ -43,6 +43,10 @@ import {
   Check,
   KeyRound,
   Trash2,
+  ChevronDown,
+  ChevronUp,
+  Camera,
+  AlertTriangle,
 } from 'lucide-react';
 import {
   Area,
@@ -290,23 +294,29 @@ export default function AdminDashboard() {
   // Visor de Encuesta Completa Realizada por Empleado / Encargado de Área
   const [selectedChecklistModal, setSelectedChecklistModal] = useState<ChecklistRecord | null>(null);
 
+  // Panel Interactivo de Incidencias y Cumplimiento por Área (Dashboard Principal)
+  const [dashPanelTab, setDashPanelTab] = useState<'incidencias' | 'cumplimiento'>('incidencias');
+  const [dashExpandedAreas, setDashExpandedAreas] = useState<Record<number, boolean>>({});
+
   // Confirmaciones accesibles para acciones destructivas (AlertDialogs)
   const [confirmDeactivateUser, setConfirmDeactivateUser] = useState<Empleado | null>(null);
   const [confirmDeleteChecklist, setConfirmDeleteChecklist] = useState<ChecklistRecord | null>(null);
   const [confirmDeleteQuestion, setConfirmDeleteQuestion] = useState<Pregunta | null>(null);
   const [confirmDeleteArea, setConfirmDeleteArea] = useState<Area | null>(null);
 
-  // Alta / Edición de Empleados (sin campo correo)
+  // Alta / Edición de Empleados (sin campo correo, hasta 2 áreas máx. por empleado)
   const [editingUser, setEditingUser] = useState<Empleado | null>(null);
   const [userForm, setUserForm] = useState<{
     numeroEmpleado: string;
     nombreCompleto: string;
     areaId: number;
+    areaIdSecundaria: number;
     rolCodigo: RoleCode;
   }>({
     numeroEmpleado: '',
     nombreCompleto: '',
     areaId: 1,
+    areaIdSecundaria: 0,
     rolCodigo: 'OPERADOR',
   });
   const [userMessage, setUserMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
@@ -490,11 +500,24 @@ export default function AdminDashboard() {
       return;
     }
 
+    if (userForm.areaIdSecundaria > 0 && userForm.areaIdSecundaria === userForm.areaId) {
+      setUserMessage({
+        type: 'err',
+        text: 'El área secundaria no puede ser igual al área principal. Selecciona otra área o ninguna.',
+      });
+      return;
+    }
+
     try {
       const method = editingUser ? 'PUT' : 'POST';
-      const body = editingUser
-        ? { id: editingUser.id, ...userForm }
-        : userForm;
+      const body = {
+        ...(editingUser ? { id: editingUser.id } : {}),
+        numeroEmpleado: userForm.numeroEmpleado.trim(),
+        nombreCompleto: userForm.nombreCompleto.trim(),
+        areaId: userForm.areaId,
+        areaIdSecundaria: userForm.areaIdSecundaria > 0 ? userForm.areaIdSecundaria : null,
+        rolCodigo: userForm.rolCodigo,
+      };
 
       const res = await fetch('/api/employees', {
         method,
@@ -518,6 +541,7 @@ export default function AdminDashboard() {
         numeroEmpleado: '',
         nombreCompleto: '',
         areaId: areas[0]?.id || 1,
+        areaIdSecundaria: 0,
         rolCodigo: 'OPERADOR',
       });
       fetchAllData();
@@ -727,7 +751,7 @@ export default function AdminDashboard() {
         </div>
 
         <div className="p-4 bg-blue-50/60 border-b border-blue-100 text-xs text-blue-900 leading-relaxed text-pretty">
-          <strong>Aviso Operativo:</strong> Los jefes de departamento de Sistemas (Infraestructura, Control y Mantenimiento) responden sus cuestionarios directamente en el módulo <strong>"Realizar Checklist"</strong> sin requerir este acceso.
+          <strong>Aviso Operativo:</strong> Los jefes de departamento y operadores de las áreas operativas (MES, Ind. 4.0, Infraestructura, Staff IT, Digitalizacion, SAP y Soporte Manufactura) responden sus cuestionarios directamente en el módulo <strong>"Realizar Checklist"</strong> sin requerir este acceso.
         </div>
 
         <form onSubmit={handleLoginSubmit} className="p-6 space-y-4">
@@ -1207,110 +1231,367 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Cumplimiento por Área y Cumplimiento por Empleado */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-1 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-                  <h3 className="text-base font-bold text-slate-900 mb-4 text-balance">
-                    KPI de Cumplimiento por Área
-                  </h3>
-                  <div className="divide-y divide-slate-200">
-                    {dashboardData.cumplimientoPorArea.map((area) => (
-                      <div key={area.areaId} className="py-3.5 first:pt-0 last:pb-0 space-y-2 tabular-nums">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span
-                              className="size-3 rounded-full"
-                              style={{ backgroundColor: area.colorHex }}
-                            />
-                            <span className="font-bold text-sm text-slate-900">
-                              {area.areaNombre}
+              {/* Cumplimiento e Incidencias por Área (Lado a Lado) */}
+              <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+                {/* Lado Izquierdo: KPIs de Cumplimiento (Áreas y Empleados) */}
+                <div className="xl:col-span-6 space-y-6">
+                  {/* KPI de Cumplimiento por Área */}
+                  <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                    <h3 className="text-base font-bold text-slate-900 mb-4 text-balance">
+                      KPI de Cumplimiento por Área
+                    </h3>
+                    <div className="divide-y divide-slate-200">
+                      {dashboardData.cumplimientoPorArea.map((area) => (
+                        <div key={area.areaId} className="py-3.5 first:pt-0 last:pb-0 space-y-2 tabular-nums">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span
+                                className="size-3 rounded-full"
+                                style={{ backgroundColor: area.colorHex }}
+                              />
+                              <span className="font-bold text-sm text-slate-900">
+                                {area.areaNombre}
+                              </span>
+                            </div>
+                            <span className="text-sm font-bold text-blue-700">
+                              {area.cumplimientoGeneral}%
                             </span>
                           </div>
-                          <span className="text-sm font-bold text-blue-700">
-                            {area.cumplimientoGeneral}%
-                          </span>
+                          <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                            <motion.div
+                              className="h-full w-full origin-left"
+                              initial={false}
+                              animate={{ scaleX: area.cumplimientoGeneral / 100 }}
+                              transition={{ duration: 0.25, ease: 'easeOut' }}
+                              style={{ backgroundColor: area.colorHex }}
+                            />
+                          </div>
+                          <div className="flex items-center justify-between text-xs text-slate-600">
+                            <span>{area.totalChecklists} encuestas</span>
+                            <span>
+                              <strong className="text-emerald-700">{area.totalSi} Sí</strong> •{' '}
+                              <strong className="text-rose-700">{area.totalNo} No</strong>
+                            </span>
+                          </div>
                         </div>
-                        <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
-                          <motion.div
-                            className="h-full w-full origin-left"
-                            initial={false}
-                            animate={{ scaleX: area.cumplimientoGeneral / 100 }}
-                            transition={{ duration: 0.25, ease: 'easeOut' }}
-                            style={{ backgroundColor: area.colorHex }}
-                          />
-                        </div>
-                        <div className="flex items-center justify-between text-xs text-slate-600">
-                          <span>{area.totalChecklists} encuestas</span>
-                          <span>
-                            <strong className="text-emerald-700">{area.totalSi} Sí</strong> •{' '}
-                            <strong className="text-rose-700">{area.totalNo} No</strong>
-                          </span>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* KPI de Cumplimiento por Empleado / Encargado de Área */}
+                  <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                    <div className="mb-4">
+                      <h3 className="text-base font-bold text-slate-900 text-balance">
+                        KPI de Cumplimiento por Empleado / Encargado de Área
+                      </h3>
+                      <p className="text-xs text-slate-600 text-pretty">
+                        Desglose individual de encuestas realizadas, respuestas positivas e incidencias
+                      </p>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left border-collapse text-xs tabular-nums">
+                        <thead>
+                          <tr className="border-b border-slate-200 text-slate-600">
+                            <th className="py-3 px-3"># Emp.</th>
+                            <th className="py-3 px-3">Empleado / Encargado</th>
+                            <th className="py-3 px-3">Área</th>
+                            <th className="py-3 px-3 text-center">Encuestas</th>
+                            <th className="py-3 px-3 text-center">Sí</th>
+                            <th className="py-3 px-3 text-center">No</th>
+                            <th className="py-3 px-3 text-right">% Cumplimiento</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100">
+                          {dashboardData.cumplimientoPorUsuario.map((u) => (
+                            <tr key={u.empleadoId} className="hover:bg-slate-50">
+                              <td className="py-3 px-3 font-mono font-bold text-blue-700">
+                                #{u.numeroEmpleado}
+                              </td>
+                              <td className="py-3 px-3 font-bold text-slate-900">
+                                {u.nombreCompleto}
+                              </td>
+                              <td className="py-3 px-3 text-slate-700">{u.areaNombre}</td>
+                              <td className="py-3 px-3 text-center font-bold">
+                                {u.totalChecklists}
+                              </td>
+                              <td className="py-3 px-3 text-center font-bold text-emerald-700">
+                                {u.totalSi}
+                              </td>
+                              <td className="py-3 px-3 text-center font-bold text-rose-700">
+                                {u.totalNo}
+                              </td>
+                              <td className="py-3 px-3 text-right">
+                                <span
+                                  className={cn(
+                                    'inline-block px-2.5 py-1 rounded-md font-bold',
+                                    u.cumplimientoGeneral >= 90
+                                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                                      : u.cumplimientoGeneral >= 80
+                                      ? 'bg-amber-50 text-amber-800 border border-amber-200'
+                                      : 'bg-rose-50 text-rose-800 border border-rose-200'
+                                  )}
+                                >
+                                  {u.cumplimientoGeneral}%
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
 
-                <div className="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-                  <div className="mb-4">
-                    <h3 className="text-base font-bold text-slate-900 text-balance">
-                      KPI de Cumplimiento por Empleado / Encargado de Área
-                    </h3>
-                    <p className="text-xs text-slate-600 text-pretty">
-                      Desglose individual de encuestas realizadas, respuestas positivas e incidencias
-                    </p>
+                {/* Lado Derecho: Pantalla de Incidencias y Cumplimiento por Área */}
+                <div className="xl:col-span-6 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-2 border-b border-slate-100">
+                    <div>
+                      <h3 className="text-base font-bold text-slate-900 text-balance flex items-center gap-2">
+                        <AlertOctagon className="size-5 text-rose-600 shrink-0" />
+                        <span>Control de Incidencias y Cumplimiento por Área</span>
+                      </h3>
+                      <p className="text-xs text-slate-600 text-pretty mt-0.5">
+                        Filtros activos aplicados • Haz clic en un área para desplegar sus registros
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse text-xs tabular-nums">
-                      <thead>
-                        <tr className="border-b border-slate-200 text-slate-600">
-                          <th className="py-3 px-3"># Emp.</th>
-                          <th className="py-3 px-3">Empleado / Encargado</th>
-                          <th className="py-3 px-3">Área</th>
-                          <th className="py-3 px-3 text-center">Encuestas</th>
-                          <th className="py-3 px-3 text-center">Sí</th>
-                          <th className="py-3 px-3 text-center">No</th>
-                          <th className="py-3 px-3 text-right">% Cumplimiento</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {dashboardData.cumplimientoPorUsuario.map((u) => (
-                          <tr key={u.empleadoId} className="hover:bg-slate-50">
-                            <td className="py-3 px-3 font-mono font-bold text-blue-700">
-                              #{u.numeroEmpleado}
-                            </td>
-                            <td className="py-3 px-3 font-bold text-slate-900">
-                              {u.nombreCompleto}
-                            </td>
-                            <td className="py-3 px-3 text-slate-700">{u.areaNombre}</td>
-                            <td className="py-3 px-3 text-center font-bold">
-                              {u.totalChecklists}
-                            </td>
-                            <td className="py-3 px-3 text-center font-bold text-emerald-700">
-                              {u.totalSi}
-                            </td>
-                            <td className="py-3 px-3 text-center font-bold text-rose-700">
-                              {u.totalNo}
-                            </td>
-                            <td className="py-3 px-3 text-right">
+                  {/* Dos opciones hasta arriba: Incidencias (primero por defecto) y Cumplimiento */}
+                  <div className="grid grid-cols-2 gap-2 p-1.5 bg-slate-100 rounded-xl">
+                    <button
+                      type="button"
+                      onClick={() => setDashPanelTab('incidencias')}
+                      className={cn(
+                        'py-2.5 px-3 rounded-lg font-bold text-xs flex items-center justify-center gap-2 transition-all',
+                        dashPanelTab === 'incidencias'
+                          ? 'bg-rose-600 text-white shadow-sm'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                      )}
+                    >
+                      <XCircle className="size-4 shrink-0" />
+                      <span>Incidencias ({dashboardData.kpis.totalNo})</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setDashPanelTab('cumplimiento')}
+                      className={cn(
+                        'py-2.5 px-3 rounded-lg font-bold text-xs flex items-center justify-center gap-2 transition-all',
+                        dashPanelTab === 'cumplimiento'
+                          ? 'bg-emerald-600 text-white shadow-sm'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                      )}
+                    >
+                      <CheckCircle2 className="size-4 shrink-0" />
+                      <span>Cumplimiento ({dashboardData.kpis.totalSi})</span>
+                    </button>
+                  </div>
+
+                  {/* Lista agrupada PRIMERO POR ÁREA */}
+                  <div className="space-y-3 pt-1">
+                    {areas.map((area) => {
+                      // Obtener encuestas del área filtrada
+                      const areaChecklists = dashboardData.checklists.filter((c) => c.areaId === area.id);
+
+                      // Extraer respuestas de incidencias o de cumplimiento según la pestaña activa
+                      const items = areaChecklists.flatMap((c) =>
+                        c.respuestas
+                          .filter((r) => (dashPanelTab === 'incidencias' ? !r.respuesta : r.respuesta))
+                          .map((r) => ({
+                            ...r,
+                            folio: c.folio,
+                            fechaOperacion: c.fechaOperacion,
+                            createdAt: c.createdAt,
+                            nombreEmpleado: c.nombreEmpleado,
+                            numeroEmpleado: c.numeroEmpleado,
+                            areaNombre: c.areaNombre,
+                          }))
+                      );
+
+                      const isExpanded = Boolean(dashExpandedAreas[area.id]);
+
+                      return (
+                        <div
+                          key={area.id}
+                          className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-xs transition-all"
+                        >
+                          {/* Cabecera del Área cliqueable para abrir/cerrar */}
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setDashExpandedAreas((prev) => ({
+                                ...prev,
+                                [area.id]: !prev[area.id],
+                              }))
+                            }
+                            className={cn(
+                              'w-full flex items-center justify-between p-3.5 sm:p-4 text-left transition-colors',
+                              isExpanded ? 'bg-slate-50 border-b border-slate-200' : 'hover:bg-slate-50/80'
+                            )}
+                          >
+                            <div className="flex items-center gap-3 min-w-0">
+                              <span
+                                className="size-3.5 rounded-full shrink-0"
+                                style={{ backgroundColor: area.colorHex || '#2563EB' }}
+                              />
+                              <div className="min-w-0">
+                                <span className="font-bold text-sm text-slate-900 block truncate">
+                                  {area.nombre}
+                                </span>
+                                <span className="text-[11px] text-slate-500 font-medium">
+                                  {areaChecklists.length} encuesta(s) evaluada(s)
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-2.5 shrink-0 ml-2">
                               <span
                                 className={cn(
-                                  'inline-block px-2.5 py-1 rounded-md font-bold',
-                                  u.cumplimientoGeneral >= 90
-                                    ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                                    : u.cumplimientoGeneral >= 80
-                                    ? 'bg-amber-50 text-amber-800 border border-amber-200'
-                                    : 'bg-rose-50 text-rose-800 border border-rose-200'
+                                  'px-2.5 py-1 rounded-full text-xs font-bold tabular-nums',
+                                  dashPanelTab === 'incidencias'
+                                    ? items.length > 0
+                                      ? 'bg-rose-100 text-rose-800 border border-rose-200'
+                                      : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                                    : items.length > 0
+                                    ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                                    : 'bg-slate-100 text-slate-600 border border-slate-200'
                                 )}
                               >
-                                {u.cumplimientoGeneral}%
+                                {items.length} {dashPanelTab === 'incidencias' ? 'incidencia(s)' : 'cumplida(s)'}
                               </span>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                              {isExpanded ? (
+                                <ChevronUp className="size-4 text-slate-500" />
+                              ) : (
+                                <ChevronDown className="size-4 text-slate-500" />
+                              )}
+                            </div>
+                          </button>
+
+                          {/* Contenido desplegado al hacer clic */}
+                          {isExpanded && (
+                            <div className="p-3.5 sm:p-4 bg-slate-50/70 space-y-3">
+                              {items.length === 0 ? (
+                                <div className="p-4 rounded-xl bg-white border border-slate-200 text-center text-xs text-slate-600">
+                                  {dashPanelTab === 'incidencias'
+                                    ? '🎉 ¡Excelente! Cero incidencias reportadas en esta área para los filtros seleccionados.'
+                                    : 'ℹ️ Sin registros de cumplimiento para esta área con los filtros seleccionados.'}
+                                </div>
+                              ) : (
+                                items.map((item, idx) => {
+                                  const infoFecha = getFormatoDiaYFecha(item.fechaOperacion, item.createdAt);
+                                  if (dashPanelTab === 'incidencias') {
+                                    return (
+                                      <div
+                                        key={item.id || idx}
+                                        className="bg-white p-3.5 rounded-xl border border-rose-200 shadow-2xs space-y-2"
+                                      >
+                                        <div className="flex flex-wrap items-center justify-between gap-1.5 text-[11px]">
+                                          <div className="flex items-center gap-2 text-slate-700">
+                                            <span className="font-bold text-slate-900">
+                                              {infoFecha.diaSemana}, {infoFecha.fechaCorta}
+                                            </span>
+                                            <span>•</span>
+                                            <span className="font-mono text-blue-700 font-bold">{item.folio}</span>
+                                          </div>
+                                          <span
+                                            className={cn(
+                                              'px-2 py-0.5 rounded font-bold text-[10px]',
+                                              item.criticidad === 'ALTA'
+                                                ? 'bg-rose-100 text-rose-800 border border-rose-200'
+                                                : item.criticidad === 'MEDIA'
+                                                ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                                                : 'bg-slate-100 text-slate-800 border border-slate-200'
+                                            )}
+                                          >
+                                            Criticidad: {item.criticidad}
+                                          </span>
+                                        </div>
+
+                                        <div>
+                                          <p className="text-xs font-bold text-slate-900">
+                                            <span className="text-rose-600 font-mono mr-1.5">
+                                              [{item.preguntaCodigo}]
+                                            </span>
+                                            {item.preguntaTexto}
+                                          </p>
+                                          <div className="mt-1.5 p-2 rounded-lg bg-rose-50 border border-rose-200 text-xs text-rose-950 font-medium">
+                                            <span className="font-bold text-rose-800">Motivo: </span>
+                                            {item.motivoNo || 'Sin motivo especificado'}
+                                          </div>
+                                        </div>
+
+                                        <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-[11px] text-slate-600">
+                                          <span>
+                                            Reportado por:{' '}
+                                            <strong className="text-slate-800">
+                                              #{item.numeroEmpleado} {item.nombreEmpleado}
+                                            </strong>
+                                          </span>
+                                          {item.evidencia && item.evidencia.dataUrl && (
+                                            <button
+                                              type="button"
+                                              onClick={() =>
+                                                setSelectedEvidenceModal({
+                                                  evidencia: item.evidencia!,
+                                                  folio: item.folio,
+                                                  preguntaCodigo: item.preguntaCodigo,
+                                                  motivoNo: item.motivoNo || '',
+                                                  nombreEmpleado: item.nombreEmpleado,
+                                                  areaNombre: area.nombre,
+                                                })
+                                              }
+                                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-[11px] border border-blue-200 transition-colors"
+                                            >
+                                              <Camera className="size-3.5" />
+                                              <span>Ver Evidencia Fotográfica</span>
+                                            </button>
+                                          )}
+                                        </div>
+                                      </div>
+                                    );
+                                  } else {
+                                    return (
+                                      <div
+                                        key={item.id || idx}
+                                        className="bg-white p-3.5 rounded-xl border border-emerald-200 shadow-2xs space-y-1.5"
+                                      >
+                                        <div className="flex flex-wrap items-center justify-between gap-1.5 text-[11px]">
+                                          <div className="flex items-center gap-2 text-slate-700">
+                                            <span className="font-bold text-slate-900">
+                                              {infoFecha.diaSemana}, {infoFecha.fechaCorta}
+                                            </span>
+                                            <span>•</span>
+                                            <span className="font-mono text-blue-700 font-bold">{item.folio}</span>
+                                          </div>
+                                          <span className="px-2 py-0.5 rounded font-bold text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                            Cumple
+                                          </span>
+                                        </div>
+
+                                        <p className="text-xs font-semibold text-slate-900">
+                                          <span className="text-emerald-700 font-mono font-bold mr-1.5">
+                                            [{item.preguntaCodigo}]
+                                          </span>
+                                          {item.preguntaTexto}
+                                        </p>
+
+                                        <p className="text-[11px] text-slate-600">
+                                          Inspeccionado por:{' '}
+                                          <strong className="text-slate-800">
+                                            #{item.numeroEmpleado} {item.nombreEmpleado}
+                                          </strong>
+                                        </p>
+                                      </div>
+                                    );
+                                  }
+                                })
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -2079,7 +2360,7 @@ export default function AdminDashboard() {
 
                   <div>
                     <label htmlFor="u-area" className="block text-xs font-bold text-slate-800 mb-1">
-                      Área Asignada
+                      Área Principal <span className="text-rose-600">* (Obligatoria)</span>
                     </label>
                     <select
                       id="u-area"
@@ -2095,6 +2376,35 @@ export default function AdminDashboard() {
                         </option>
                       ))}
                     </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="u-area-sec" className="block text-xs font-bold text-slate-800 mb-1">
+                      Segunda Área <span className="text-slate-500 font-normal">(Opcional - Límite máx. 2 áreas)</span>
+                    </label>
+                    <select
+                      id="u-area-sec"
+                      value={userForm.areaIdSecundaria}
+                      onChange={(e) =>
+                        setUserForm((prev) => ({
+                          ...prev,
+                          areaIdSecundaria: Number(e.target.value),
+                        }))
+                      }
+                      className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-xs font-semibold bg-white"
+                    >
+                      <option value={0}>-- Ninguna (Asignar solo 1 área) --</option>
+                      {areas
+                        .filter((a) => a.id !== userForm.areaId)
+                        .map((a) => (
+                          <option key={a.id} value={a.id}>
+                            {a.nombre}
+                          </option>
+                        ))}
+                    </select>
+                    <p className="text-[11px] text-slate-500 mt-1">
+                      El Administrador Oscar Mercado puede asignar a un empleado hasta 2 áreas como máximo (Ej. Alejandro Puente en Infraestructura e Ind. 4.0).
+                    </p>
                   </div>
 
                   <div>
@@ -2134,6 +2444,7 @@ export default function AdminDashboard() {
                             numeroEmpleado: '',
                             nombreCompleto: '',
                             areaId: areas[0]?.id || 1,
+                            areaIdSecundaria: 0,
                             rolCodigo: 'OPERADOR',
                           });
                         }}
@@ -2157,7 +2468,7 @@ export default function AdminDashboard() {
                       <tr className="border-b border-slate-200 text-slate-600">
                         <th className="py-3 px-3"># Emp.</th>
                         <th className="py-3 px-3">Nombre Completo</th>
-                        <th className="py-3 px-3">Área</th>
+                        <th className="py-3 px-3">Áreas Asignadas (Máx. 2)</th>
                         <th className="py-3 px-3">Rol</th>
                         <th className="py-3 px-3">Estado</th>
                         <th className="py-3 px-3 text-right">Acciones</th>
@@ -2173,7 +2484,17 @@ export default function AdminDashboard() {
                             {emp.nombreCompleto}
                           </td>
                           <td className="py-3 px-3 font-semibold text-slate-800">
-                            {emp.areaNombre}
+                            <div className="flex flex-wrap gap-1 items-center">
+                              <span className="bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-xs font-semibold">
+                                {emp.areaNombre}
+                              </span>
+                              {emp.areaNombreSecundaria && (
+                                <span className="bg-blue-50 text-blue-800 border border-blue-200 px-2 py-0.5 rounded text-xs flex items-center gap-1 font-bold">
+                                  <span className="size-1.5 rounded-full bg-blue-600" />
+                                  {emp.areaNombreSecundaria}
+                                </span>
+                              )}
+                            </div>
                           </td>
                           <td className="py-3 px-3">
                             <span className="px-2 py-0.5 rounded bg-slate-100 font-bold text-slate-800">
@@ -2201,6 +2522,7 @@ export default function AdminDashboard() {
                                   numeroEmpleado: emp.numeroEmpleado,
                                   nombreCompleto: emp.nombreCompleto,
                                   areaId: emp.areaId,
+                                  areaIdSecundaria: emp.areaIdSecundaria || 0,
                                   rolCodigo: emp.rolCodigo,
                                 });
                               }}

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { readDb, writeDb, registerAudit } from '@/lib/db';
 import { hashPassword } from '@/lib/auth';
-import { Empleado, RoleCode } from '@/types';
+import { Area, Empleado, RoleCode } from '@/types';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,6 +28,14 @@ export async function GET(req: NextRequest) {
     }
 
     const area = db.areas.find((a) => a.id === empleado.areaId);
+    const areaSec = empleado.areaIdSecundaria
+      ? db.areas.find((a) => a.id === empleado.areaIdSecundaria)
+      : null;
+    const areasAsignadas: Area[] = [
+      ...(area ? [area] : []),
+      ...(areaSec ? [areaSec] : []),
+    ];
+
     const preguntas = db.preguntas
       .filter((p) => p.areaId === empleado.areaId && p.activo)
       .sort((a, b) => a.orden - b.orden);
@@ -37,6 +45,7 @@ export async function GET(req: NextRequest) {
       found: true,
       empleado: safeEmpleado,
       area,
+      areasAsignadas,
       preguntas,
     });
   }
@@ -55,6 +64,7 @@ export async function POST(req: NextRequest) {
       numeroEmpleado,
       nombreCompleto,
       areaId,
+      areaIdSecundaria,
       correo,
       puesto,
       rolCodigo,
@@ -90,6 +100,10 @@ export async function POST(req: NextRequest) {
 
     const selectedArea =
       db.areas.find((a) => a.id === Number(areaId)) || db.areas[0];
+    const secArea =
+      areaIdSecundaria && Number(areaIdSecundaria) !== selectedArea.id
+        ? db.areas.find((a) => a.id === Number(areaIdSecundaria))
+        : null;
     const selectedRole: RoleCode =
       rolCodigo && ['ADMIN', 'SUPERVISOR', 'OPERADOR'].includes(rolCodigo)
         ? rolCodigo
@@ -104,6 +118,8 @@ export async function POST(req: NextRequest) {
       puesto: puesto ? String(puesto).trim() : 'Especialista de Área',
       areaId: selectedArea.id,
       areaNombre: selectedArea.nombre,
+      areaIdSecundaria: secArea ? secArea.id : null,
+      areaNombreSecundaria: secArea ? secArea.nombre : null,
       rolCodigo: selectedRole,
       activo: true,
       passwordHash: hashPassword(password ? String(password) : 'admin123'),
@@ -143,6 +159,7 @@ export async function PUT(req: NextRequest) {
       numeroEmpleado,
       nombreCompleto,
       areaId,
+      areaIdSecundaria,
       correo,
       puesto,
       rolCodigo,
@@ -196,6 +213,21 @@ export async function PUT(req: NextRequest) {
       if (area) {
         current.areaId = area.id;
         current.areaNombre = area.nombre;
+      }
+    }
+    if (areaIdSecundaria !== undefined) {
+      if (areaIdSecundaria === null || areaIdSecundaria === 0 || areaIdSecundaria === '') {
+        current.areaIdSecundaria = null;
+        current.areaNombreSecundaria = null;
+      } else {
+        const areaSec = db.areas.find((a) => a.id === Number(areaIdSecundaria));
+        if (areaSec && areaSec.id !== current.areaId) {
+          current.areaIdSecundaria = areaSec.id;
+          current.areaNombreSecundaria = areaSec.nombre;
+        } else if (areaSec && areaSec.id === current.areaId) {
+          current.areaIdSecundaria = null;
+          current.areaNombreSecundaria = null;
+        }
       }
     }
     if (rolCodigo !== undefined) {

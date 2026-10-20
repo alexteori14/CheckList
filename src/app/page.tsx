@@ -79,7 +79,7 @@ export default function HomePage() {
                 </span>
               </div>
               <p className="text-xs text-slate-600 hidden sm:block text-pretty">
-                Sistema Inteligente de Checklist • Infraestructura, Control y Mantenimiento
+                Sistema Inteligente de Checklist • MES, Ind. 4.0, Infraestructura, Staff IT, Digitalizacion, SAP y Soporte Manufactura
               </p>
             </div>
           </button>

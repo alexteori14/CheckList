@@ -240,6 +240,7 @@ export async function POST(req: NextRequest) {
     const {
       numeroEmpleado,
       fechaOperacion,
+      areaId,
       respuestas,
       duracionSegundos,
       dispositivo,
@@ -426,14 +427,20 @@ export async function POST(req: NextRequest) {
     const porcentajeCumplimiento = Number(((totalSi / totalPreguntas) * 100).toFixed(2));
     const porcentajeIncidencias = Number(((totalNo / totalPreguntas) * 100).toFixed(2));
 
+    const targetAreaId = areaId ? Number(areaId) : empleado.areaId;
+    const targetArea =
+      db.areas.find((a) => a.id === targetAreaId) ||
+      db.areas.find((a) => a.id === empleado.areaId) ||
+      db.areas[0];
+
     const nuevoChecklist: ChecklistRecord = {
       id: checklistId,
       folio,
       empleadoId: empleado.id,
       numeroEmpleado: empleado.numeroEmpleado,
       nombreEmpleado: empleado.nombreCompleto,
-      areaId: empleado.areaId,
-      areaNombre: empleado.areaNombre,
+      areaId: targetArea.id,
+      areaNombre: targetArea.nombre,
       fechaOperacion: targetDate,
       totalPreguntas,
       totalSi,

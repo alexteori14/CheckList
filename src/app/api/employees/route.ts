@@ -100,10 +100,15 @@ export async function POST(req: NextRequest) {
 
     const selectedArea =
       db.areas.find((a) => a.id === Number(areaId)) || db.areas[0];
-    const secArea =
-      areaIdSecundaria && Number(areaIdSecundaria) !== selectedArea.id
-        ? db.areas.find((a) => a.id === Number(areaIdSecundaria))
-        : null;
+    if (areaIdSecundaria && Number(areaIdSecundaria) === selectedArea.id) {
+      return NextResponse.json(
+        { error: 'El área secundaria no puede ser igual al área principal (máximo 2 áreas distintas).' },
+        { status: 400 }
+      );
+    }
+    const secArea = areaIdSecundaria
+      ? db.areas.find((a) => a.id === Number(areaIdSecundaria)) || null
+      : null;
     const selectedRole: RoleCode =
       rolCodigo && ['ADMIN', 'SUPERVISOR', 'OPERADOR'].includes(rolCodigo)
         ? rolCodigo
@@ -225,10 +230,17 @@ export async function PUT(req: NextRequest) {
           current.areaIdSecundaria = areaSec.id;
           current.areaNombreSecundaria = areaSec.nombre;
         } else if (areaSec && areaSec.id === current.areaId) {
-          current.areaIdSecundaria = null;
-          current.areaNombreSecundaria = null;
+          return NextResponse.json(
+            { error: 'El área secundaria no puede ser igual al área principal (máximo 2 áreas distintas).' },
+            { status: 400 }
+          );
         }
       }
+    }
+    // Si al cambiar el área principal coincide con la secundaria existente, se limpia la secundaria
+    if (current.areaIdSecundaria && current.areaIdSecundaria === current.areaId) {
+      current.areaIdSecundaria = null;
+      current.areaNombreSecundaria = null;
     }
     if (rolCodigo !== undefined) {
       current.rolCodigo = rolCodigo as RoleCode;

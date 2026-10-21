@@ -39,6 +39,8 @@ erDiagram
         string color_hex "VARCHAR(20)"
         string icono "VARCHAR(50)"
         string responsable "VARCHAR(150)"
+        string hora_inicio "VARCHAR(10) DEFAULT '07:00'"
+        string hora_fin "VARCHAR(10) DEFAULT '08:30'"
         boolean activo "BOOLEAN DEFAULT true"
         timestamp created_at "TIMESTAMPTZ"
         timestamp updated_at "TIMESTAMPTZ"
@@ -67,6 +69,7 @@ erDiagram
         string correo "VARCHAR(150)"
         string puesto "VARCHAR(120)"
         int area_id FK "REFERENCES areas(id)"
+        int area_id_secundaria FK "REFERENCES areas(id) NULL"
         int rol_id FK "REFERENCES roles(id)"
         uuid usuario_id FK "REFERENCES usuarios(id)"
         boolean activo "BOOLEAN DEFAULT true"
@@ -96,6 +99,8 @@ erDiagram
         string nombre_empleado "VARCHAR(180)"
         int area_id FK "REFERENCES areas(id)"
         date fecha_operacion "DATE DEFAULT CURRENT_DATE"
+        string hora_registro "VARCHAR(10)"
+        string estado_tiempo "CHECK (EN_TIEMPO, FUERA_DE_TIEMPO)"
         smallint total_preguntas "SMALLINT"
         smallint total_si "SMALLINT"
         smallint total_no "SMALLINT"
@@ -147,6 +152,20 @@ erDiagram
         timestamp calculado_en "TIMESTAMPTZ"
     }
 
+    NOTIFICACIONES {
+        uuid id PK "UUID DEFAULT uuid_generate_v4()"
+        uuid empleado_id FK "REFERENCES empleados(id)"
+        int area_id FK "REFERENCES areas(id)"
+        date fecha "DATE"
+        string tipo "VARCHAR(50)"
+        string destinatario "VARCHAR(150)"
+        string estado "CHECK (PENDIENTE, ENVIADO, ERROR)"
+        text detalle "TEXT"
+        int intentos "SMALLINT DEFAULT 0"
+        timestamp enviado_en "TIMESTAMPTZ"
+        timestamp created_at "TIMESTAMPTZ"
+    }
+
     AUDITORIA {
         bigint id PK "BIGSERIAL"
         uuid usuario_id FK "REFERENCES usuarios(id)"
@@ -166,17 +185,20 @@ erDiagram
     ROLES ||--o{ USUARIOS : "1. asigna permisos a"
     ROLES ||--o{ EMPLEADOS : "2. define perfil de"
     AREAS ||--o{ USUARIOS : "3. restringe ambito de"
-    AREAS ||--o{ EMPLEADOS : "4. adscribe laboralmente a"
+    AREAS ||--o{ EMPLEADOS : "4a. adscribe como area principal a"
+    AREAS ||--o{ EMPLEADOS : "4b. adscribe como area secundaria a (max 2)"
     AREAS ||--o{ PREGUNTAS : "5. contiene banco de preguntas para"
     AREAS ||--o{ CHECKLISTS : "6. agrupa inspecciones de"
     AREAS ||--o{ ESTADISTICAS : "7. consolida KPIs de"
-    USUARIOS ||--o| EMPLEADOS : "8. vincula credenciales con ficha de"
-    USUARIOS ||--o{ AUDITORIA : "9. genera traza en"
-    EMPLEADOS ||--o{ CHECKLISTS : "10. ejecuta y firma"
-    CHECKLISTS ||--|{ RESPUESTAS : "11. desglosa detalle de"
-    PREGUNTAS ||--o{ RESPUESTAS : "12. es evaluada en cada reactivo de"
-    RESPUESTAS ||--o| EVIDENCIAS : "13. respalda fotográficamente con"
-    CHECKLISTS ||--o{ EVIDENCIAS : "14. consolida galeria de"
+    AREAS ||--o{ NOTIFICACIONES : "8. genera alertas de ventana horaria para"
+    USUARIOS ||--o| EMPLEADOS : "9. vincula credenciales con ficha de"
+    USUARIOS ||--o{ AUDITORIA : "10. genera traza en"
+    EMPLEADOS ||--o{ CHECKLISTS : "11. ejecuta y firma"
+    EMPLEADOS ||--o{ NOTIFICACIONES : "12. recibe avisos de correo en"
+    CHECKLISTS ||--|{ RESPUESTAS : "13. desglosa detalle de"
+    PREGUNTAS ||--o{ RESPUESTAS : "14. es evaluada en cada reactivo de"
+    RESPUESTAS ||--o| EVIDENCIAS : "15. respalda fotográficamente con"
+    CHECKLISTS ||--o{ EVIDENCIAS : "16. consolida galeria de"
 ```
 
 ---
@@ -189,7 +211,8 @@ La siguiente tabla describe **de dónde extrae datos cada tabla**, los campos fo
 | :--- | :--- | :--- | :--- | :---: | :---: | :---: | :--- |
 | **`usuarios`** | `rol_id` | **`roles`** | `id` | $1:N$ | `CASCADE` | `RESTRICT` | Extrae el catálogo de permisos (`JSONB`) y el código de rol (`ADMIN`, `SUPERVISOR`, `OPERADOR`). Impide borrar un rol si hay cuentas asignadas. |
 | **`usuarios`** | `area_id` | **`areas`** | `id` | $1:N$ | `CASCADE` | `SET NULL` | Extrae el área a la que pertenece el usuario administrativo. Si se elimina el área, el usuario se conserva sin área específica. |
-| **`empleados`** | `area_id` | **`areas`** | `id` | $1:N$ | `CASCADE` | `RESTRICT` | Extrae la pertenencia departamental del empleado (**Infraestructura**, **Control** o **Mantenimiento**). Impide eliminar un área si aún cuenta con personal activo. |
+| **`empleados`** | `area_id` | **`areas`** | `id` | $1:N$ | `CASCADE` | `RESTRICT` | Extrae la pertenencia departamental primaria del empleado (entre las 7 áreas oficiales: **MES**, **Ind. 4.0**, **Infraestructura**, **Staff IT**, **Digitalizacion**, **SAP**, **Soporte Manufactura**). |
+| **`empleados`** | `area_id_secundaria` | **`areas`** | `id` | $1:N$ (opcional) | `CASCADE` | `SET NULL` | Extrae la adscripción técnica secundaria del colaborador (máximo estricto de 2 áreas por empleado, configurado para perfiles como **Alejandro Puente** en Infraestructura e Ind. 4.0). |
 | **`empleados`** | `rol_id` | **`roles`** | `id` | $1:N$ | `CASCADE` | `RESTRICT` | Extrae la categorización funcional y permisos en el sistema. |
 | **`empleados`** | `usuario_id` | **`usuarios`** | `id` | $1:1$ (opcional) | `CASCADE` | `SET NULL` | Extrae las credenciales del usuario en caso de contar con login al sistema administrativo (ej. Administrador General Oscar Mercado con número `1000`). |
 | **`preguntas`** | `area_id` | **`areas`** | `id` | $1:N$ | `CASCADE` | `CASCADE` | Extrae la adscripción técnica. Cada pregunta pertenece a una única área. Si se elimina un área, sus preguntas asociadas se depuran automáticamente. |
@@ -200,6 +223,8 @@ La siguiente tabla describe **de dónde extrae datos cada tabla**, los campos fo
 | **`evidencias`** | `respuesta_id` | **`respuestas`** | `id` | $1:1$ (opcional) | `CASCADE` | `CASCADE` | Extrae la incidencia específica (`respuesta = FALSE`) a la que sirve de soporte fotográfico. |
 | **`evidencias`** | `checklist_id` | **`checklists`** | `id` | $1:N$ | `CASCADE` | `CASCADE` | Extrae la inspección general para permitir consultas directas y galerías consolidadas por checklist sin joins profundos. |
 | **`estadisticas`** | `area_id` | **`areas`** | `id` | $1:N$ | `CASCADE` | `CASCADE` | Extrae la segmentación por área para reportes diarios, semanales y mensuales (o `NULL` si representa el consolidado global de toda la empresa). |
+| **`notificaciones`** | `empleado_id` | **`empleados`** | `id` | $1:N$ | `CASCADE` | `CASCADE` | Extrae la ficha del colaborador que no completó su checklist dentro de la ventana de tiempo de vida para enviarle la alerta por correo. |
+| **`notificaciones`** | `area_id` | **`areas`** | `id` | $1:N$ | `CASCADE` | `CASCADE` | Extrae el departamento y su horario de vigencia (`hora_inicio` - `hora_fin`) que originó la alerta automática de cierre de ventana. |
 | **`auditoria`** | `usuario_id` | **`usuarios`** | `id` | $1:N$ | `CASCADE` | `SET NULL` | Extrae la cuenta del usuario autenticado que ejecutó la operación en el sistema. Si la cuenta es dada de baja, el registro de auditoría permanece inmutable. |
 
 ---
@@ -225,19 +250,21 @@ La siguiente tabla describe **de dónde extrae datos cada tabla**, los campos fo
 ---
 
 ### 4.2 Tabla: `areas` (Departamentos Operativos)
-- **Propósito:** Define los departamentos evaluables (**Infraestructura**, **Control**, **Mantenimiento** y futuras áreas configurables sin modificar código).
+- **Propósito:** Define los 7 departamentos evaluables oficiales (**MES**, **Ind. 4.0**, **Infraestructura**, **Staff IT**, **Digitalizacion**, **SAP**, **Soporte Manufactura** y futuras áreas configurables sin modificar código), así como la ventana horaria oficial del tiempo de vida de la encuesta.
 - **Tablas de donde extrae datos:** Ninguna (tabla catálogo raíz).
-- **Tablas hacia donde provee datos:** `usuarios`, `empleados`, `preguntas`, `checklists`, `estadisticas`.
+- **Tablas hacia donde provee datos:** `usuarios`, `empleados` (área primaria y secundaria), `preguntas`, `checklists`, `estadisticas`, `notificaciones`.
 
 | Columna | Tipo de Dato | Restricciones | Descripción |
 | :--- | :--- | :--- | :--- |
 | `id` | `SERIAL` | `PRIMARY KEY` | Identificador autoincremental del área. |
-| `codigo` | `VARCHAR(50)` | `NOT NULL, UNIQUE` | Clave corta única (`INFRA`, `CTRL`, `MANT`). |
+| `codigo` | `VARCHAR(50)` | `NOT NULL, UNIQUE` | Clave corta única (`MES`, `IND4`, `INFRA`, `STAF`, `DIGI`, `SAP`, `SMAN`). |
 | `nombre` | `VARCHAR(120)` | `NOT NULL, UNIQUE` | Nombre completo oficial del departamento. |
 | `descripcion` | `TEXT` | `NULL` | Alcance técnico y responsabilidades del área. |
 | `color_hex` | `VARCHAR(20)` | `NOT NULL, DEFAULT '#2563EB'` | Código de color para identificación en UI y gráficas ejecutivas. |
-| `icono` | `VARCHAR(50)` | `NOT NULL, DEFAULT 'Building2'` | Identificador del icono para frontend (ej. `Server`, `Sliders`, `Wrench`). |
+| `icono` | `VARCHAR(50)` | `NOT NULL, DEFAULT 'Building2'` | Identificador del icono para frontend (ej. `Server`, `Cpu`, `Layers`, `Bot`). |
 | `responsable` | `VARCHAR(150)` | `NULL` | Nombre del líder o jefe de departamento a cargo. |
+| `hora_inicio` | `VARCHAR(10)` | `NOT NULL, DEFAULT '07:00'` | Hora de apertura de la ventana del tiempo de vida de la encuesta (`HH:MM`). |
+| `hora_fin` | `VARCHAR(10)` | `NOT NULL, DEFAULT '08:30'` | Hora límite de cierre de la ventana de vigencia de la encuesta (`HH:MM`). |
 | `activo` | `BOOLEAN` | `NOT NULL, DEFAULT TRUE` | Indicador de estado para permitir o pausar evaluaciones. |
 | `created_at` | `TIMESTAMPTZ` | `NOT NULL, DEFAULT NOW()` | Fecha de registro. |
 | `updated_at` | `TIMESTAMPTZ` | `NOT NULL, DEFAULT NOW()` | Fecha de actualización vía trigger. |
@@ -270,21 +297,23 @@ La siguiente tabla describe **de dónde extrae datos cada tabla**, los campos fo
 ---
 
 ### 4.4 Tabla: `empleados` (Padrón Operativo del Personal)
-- **Propósito:** Registro maestro de operadores y jefes de departamento. Permite la búsqueda y **autocompletado instantáneo (<10ms)** ingresando únicamente el `numero_empleado`.
+- **Propósito:** Registro maestro de operadores y jefes de departamento. Permite la búsqueda y **autocompletado instantáneo (<10ms)** ingresando únicamente el `numero_empleado`, y soporta la regla de adscripción multi-área con un límite máximo estricto de 2 áreas operativas.
 - **Tablas de donde extrae datos:**
-  - Extrae `area_id` desde **`areas(id)`**: Asigna la adscripción física/técnica del empleado. Al autocompletar, la interfaz extrae este campo para saber qué cuestionario presentar.
+  - Extrae `area_id` desde **`areas(id)`**: Asigna el área principal técnica del empleado.
+  - Extrae `area_id_secundaria` desde **`areas(id)`**: Permite asignar una segunda área complementaria (ej. Alejandro Puente adscrito a Infraestructura e Ind. 4.0).
   - Extrae `rol_id` desde **`roles(id)`**: Define el nivel jerárquico dentro de la organización.
   - Extrae `usuario_id` desde **`usuarios(id)`**: Si el empleado tiene acceso al centro de control administrativo (ej. Oscar Mercado con `numero_empleado = '1000'`).
-- **Tablas hacia donde provee datos:** `checklists` (vía `empleado_id`).
+- **Tablas hacia donde provee datos:** `checklists` (vía `empleado_id`), `notificaciones` (vía `empleado_id`).
 
 | Columna | Tipo de Dato | Restricciones | Descripción |
 | :--- | :--- | :--- | :--- |
 | `id` | `UUID` | `PRIMARY KEY, DEFAULT uuid_generate_v4()` | Identificador universal único. |
 | `numero_empleado` | `VARCHAR(40)` | `NOT NULL, UNIQUE` | Número de nómina o gafete (ej. `1000`, `2001`, `3001`). Indexado. |
 | `nombre_completo` | `VARCHAR(180)` | `NOT NULL` | Nombre y apellidos del trabajador. |
-| `correo` | `VARCHAR(150)` | `NULL` | Correo electrónico de contacto o notificaciones. |
-| `puesto` | `VARCHAR(120)` | `NULL` | Título del puesto (ej. "Jefe de Infraestructura"). |
-| `area_id` | `INTEGER` | `NOT NULL, FK -> areas(id)` | **Extrae:** Identificador del área a la que pertenece laboralmente. |
+| `correo` | `VARCHAR(150)` | `NULL` | Correo electrónico de contacto o notificaciones (ej. `puentealejandro491@gmail.com`). |
+| `puesto` | `VARCHAR(120)` | `NULL` | Título del puesto (ej. "Jefe de Infraestructura", "Especialista Ind 4.0"). |
+| `area_id` | `INTEGER` | `NOT NULL, FK -> areas(id)` | **Extrae:** Identificador del área operativa principal. |
+| `area_id_secundaria` | `INTEGER` | `NULL, FK -> areas(id)` | **Extrae:** Segunda área opcional asignada por Oscar Mercado (máx. 2 áreas). |
 | `rol_id` | `INTEGER` | `NOT NULL, FK -> roles(id)` | **Extrae:** Rol jerárquico asignado. |
 | `usuario_id` | `UUID` | `NULL, FK -> usuarios(id)` | **Extrae:** Vínculo opcional con su cuenta de acceso al Dashboard. |
 | `activo` | `BOOLEAN` | `NOT NULL, DEFAULT TRUE` | Estatus operativo en plantilla. |
@@ -294,17 +323,17 @@ La siguiente tabla describe **de dónde extrae datos cada tabla**, los campos fo
 ---
 
 ### 4.5 Tabla: `preguntas` (Banco Dinámico de Inspección por Área)
-- **Propósito:** Almacena los ítems o preguntas que componen el checklist de cada área, incluyendo nivel de criticidad y orden de presentación en las tarjetas interactivas.
+- **Propósito:** Almacena los ítems o preguntas que componen el checklist de cada una de las 7 áreas industriales oficiales, incluyendo nivel de criticidad y orden de presentación en las tarjetas interactivas.
 - **Tablas de donde extrae datos:**
-  - Extrae `area_id` desde **`areas(id)`**: Asocia cada reactivo al departamento correspondiente. Cuando un empleado inicia su checklist, el sistema extrae todas las preguntas activas donde `preguntas.area_id = empleado.area_id`.
+  - Extrae `area_id` desde **`areas(id)`**: Asocia cada reactivo al departamento correspondiente. Cuando un empleado inicia su checklist, el sistema extrae todas las preguntas activas donde `preguntas.area_id = empleado.area_id` (o del área seleccionada en caso multi-área).
 - **Tablas hacia donde provee datos:** `respuestas` (vía `pregunta_id`).
 
 | Columna | Tipo de Dato | Restricciones | Descripción |
 | :--- | :--- | :--- | :--- |
 | `id` | `SERIAL` | `PRIMARY KEY` | Identificador único del reactivo. |
 | `area_id` | `INTEGER` | `NOT NULL, FK -> areas(id)` | **Extrae:** ID del área técnica a la que pertenece esta pregunta. |
-| `codigo` | `VARCHAR(50)` | `NOT NULL, UNIQUE` | Clave técnica única (ej. `INF-01`, `CTR-02`, `MAN-03`). |
-| `categoria` | `VARCHAR(100)` | `NOT NULL` | Módulo o subsistema (ej. Climatización, Redes, Tableros PLC). |
+| `codigo` | `VARCHAR(50)` | `NOT NULL, UNIQUE` | Clave técnica única (ej. `INF-01`, `IND-02`, `MES-03`). |
+| `categoria` | `VARCHAR(100)` | `NOT NULL` | Módulo o subsistema (ej. Climatización, Redes, Sensores IoT, Servidores ERP). |
 | `texto` | `TEXT` | `NOT NULL` | Texto de la pregunta que responde el operador. |
 | `descripcion_ayuda` | `TEXT` | `NULL` | Guía técnica explicativa desplegada en la tarjeta. |
 | `orden` | `SMALLINT` | `NOT NULL, DEFAULT 1` | Posición secuencial de la tarjeta en el flujo. |
@@ -316,7 +345,7 @@ La siguiente tabla describe **de dónde extrae datos cada tabla**, los campos fo
 ---
 
 ### 4.6 Tabla: `checklists` (Cabecera de Inspecciones Realizadas)
-- **Propósito:** Registra cada ejecución de inspección realizada en campo, con su folio oficial, fecha de operación, métricas precalculadas y resumen de cumplimiento.
+- **Propósito:** Registra cada ejecución de inspección realizada en campo, con su folio oficial, fecha de operación, hora de registro, estado del tiempo de vida, métricas precalculadas y resumen de cumplimiento.
 - **Tablas de donde extrae datos:**
   - Extrae `empleado_id` desde **`empleados(id)`**: Persona responsable que contestó y confirmó el checklist.
   - Extrae `area_id` desde **`areas(id)`**: Departamento físico evaluado durante la inspección.
@@ -331,7 +360,9 @@ La siguiente tabla describe **de dónde extrae datos cada tabla**, los campos fo
 | `numero_empleado` | `VARCHAR(40)` | `NOT NULL` | **Extrae de:** `empleados.numero_empleado` (copia inmutable). |
 | `nombre_empleado` | `VARCHAR(180)` | `NOT NULL` | **Extrae de:** `empleados.nombre_completo` (copia inmutable). |
 | `area_id` | `INTEGER` | `NOT NULL, FK -> areas(id)` | **Extrae:** ID del área inspeccionada. |
-| `fecha_operacion` | `DATE` | `NOT NULL, DEFAULT CURRENT_DATE` | Fecha formal de la inspección (permite ajuste manual justificado). |
+| `fecha_operacion` | `DATE` | `NOT NULL, DEFAULT CURRENT_DATE` | Fecha formal de la inspección (estrictamente <= HOY; si es >5 días atrás, requiere autorización Oscar Mercado). |
+| `hora_registro` | `VARCHAR(10)` | `NOT NULL` | Hora local exacta en la que se asentó la encuesta (`HH:MM:SS`). |
+| `estado_tiempo` | `VARCHAR(30)` | `NOT NULL, CHECK (estado_tiempo IN ('EN_TIEMPO', 'FUERA_DE_TIEMPO'))` | Estado de vigencia horaria respecto a la ventana del área (`07:00 - 08:30`). |
 | `total_preguntas` | `SMALLINT` | `NOT NULL, DEFAULT 0` | Total de tarjetas evaluadas en la sesión. |
 | `total_si` | `SMALLINT` | `NOT NULL, DEFAULT 0` | Total de preguntas contestadas afirmativamente ("Sí, Cumple"). |
 | `total_no` | `SMALLINT` | `NOT NULL, DEFAULT 0` | Total de preguntas contestadas negativamente ("No Cumple"). |
@@ -442,6 +473,29 @@ La siguiente tabla describe **de dónde extrae datos cada tabla**, los campos fo
 
 ---
 
+### 4.11 Tabla: `notificaciones` (Control y Bitácora de Alertas de Tiempo de Vida)
+- **Propósito:** Registro y monitoreo de los correos electrónicos despachados automáticamente por el sistema cuando concluye la ventana horaria de un área (`hora_fin`) sin que los encargados hayan respondido su checklist diario.
+- **Tablas de donde extrae datos:**
+  - Extrae `empleado_id` desde **`empleados(id)`**: Destinatario de la alerta que tiene asignada dicha área (primaria o secundaria).
+  - Extrae `area_id` desde **`areas(id)`**: Departamento cuya ventana operativa cerró sin checklist registrado.
+- **Tablas hacia donde provee datos:** Módulo `TiempoVidaPanel.tsx` del Administrador General y reportes de auditoría.
+
+| Columna | Tipo de Dato | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | `UUID` | `PRIMARY KEY, DEFAULT uuid_generate_v4()` | Identificador universal único de la notificación. |
+| `empleado_id` | `UUID` | `NOT NULL, FK -> empleados(id)` | **Extrae:** ID del colaborador notificado. |
+| `area_id` | `INTEGER` | `NOT NULL, FK -> areas(id)` | **Extrae:** ID del área técnica que cerró su ventana sin encuesta. |
+| `fecha` | `DATE` | `NOT NULL` | Fecha de la jornada evaluada (`YYYY-MM-DD`). |
+| `tipo` | `VARCHAR(50)` | `NOT NULL, DEFAULT 'TIEMPO_VIDA_EXPIRADO'` | Código de plantilla o tipo de notificación enviada. |
+| `destinatario` | `VARCHAR(150)` | `NOT NULL` | Correo electrónico de destino (ej. `puentealejandro491@gmail.com`). |
+| `estado` | `VARCHAR(30)` | `NOT NULL, CHECK (estado IN ('PENDIENTE', 'ENVIADO', 'ERROR'))` | Estado del envío a través del servidor SMTP (Nodemailer). |
+| `detalle` | `TEXT` | `NULL` | Mensaje descriptivo o respuesta del servidor de correo. |
+| `intentos` | `SMALLINT` | `NOT NULL, DEFAULT 0` | Contador de reintentos en caso de falla de conexión. |
+| `enviado_en` | `TIMESTAMPTZ` | `NULL` | Marca de tiempo exacta del envío exitoso. |
+| `created_at` | `TIMESTAMPTZ` | `NOT NULL, DEFAULT NOW()` | Fecha y hora de creación del registro. |
+
+---
+
 ## 5. Flujo Operativo y Extracción de Datos Paso a Paso
 
 A continuación se describe la secuencia técnica de cómo la base de datos interactúa, extrae y persiste la información durante el ciclo de vida del software:
@@ -449,24 +503,39 @@ A continuación se describe la secuencia técnica de cómo la base de datos inte
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Operador as Operador / Jefe Depto
+    actor Operador as Operador / Colaborador
     participant UI as Interfaz (Next.js)
     participant API as Backend REST
-    participant DB as PostgreSQL (smartcheck_db)
+    participant DB as Base de Datos (PostgreSQL / JSON)
     actor Admin as Admin (Oscar Mercado)
+    participant Scheduler as Background Scheduler (Node.js)
+    participant SMTP as Servidor SMTP (Nodemailer)
 
-    Note over Operador, DB: FASE 1: Identificación y Extracción de Catálogos
-    Operador->>UI: Ingresa No. Empleado (ej. "2001")
+    Note over Operador, DB: FASE 1: Identificación y Selección Multi-Área (Máx. 2)
+    Operador->>UI: Ingresa No. Empleado (ej. "2001" Alejandro Puente)
     UI->>API: GET /api/employees?numero=2001
     API->>DB: SELECT * FROM empleados WHERE numero_empleado = '2001'
-    DB-->>API: Retorna { id, nombre_completo, area_id: 1 }
-    API->>DB: SELECT * FROM areas WHERE id = 1
-    DB-->>API: Retorna { nombre: 'Infraestructura', color_hex, icono }
-    API->>DB: SELECT * FROM preguntas WHERE area_id = 1 AND activo = TRUE ORDER BY orden ASC
-    DB-->>API: Retorna lista de 5 preguntas técnicas de Infraestructura
-    API-->>UI: Autocompleta Nombre, Área, Fecha y carga tarjetas de inspección
+    DB-->>API: Retorna { id, nombre: 'Alejandro Puente', area_id: 3 (Infraestructura), area_id_secundaria: 2 (Ind. 4.0) }
+    API-->>UI: Retorna datos del empleado con 2 áreas
+    opt Si el colaborador está asignado a 2 áreas
+        UI->>UI: Presenta selector táctil para que elija el área a evaluar hoy
+        Operador->>UI: Selecciona "Ind. 4.0" (o "Infraestructura")
+    end
+    UI->>API: Consulta preguntas activas del área seleccionada
+    API->>DB: SELECT * FROM preguntas WHERE area_id = :areaId AND activo = TRUE ORDER BY orden ASC
+    DB-->>API: Retorna banco de reactivos técnicos
+    API-->>UI: Carga tarjetas de inspección y horario de vigencia (07:00 - 08:30)
 
-    Note over Operador, DB: FASE 2: Captura en Tarjetas e Incidencias
+    Note over Operador, DB: FASE 2: Política de Fechas y Autorización Extemporánea
+    alt Si el Operador intenta ingresar una fecha futura (ej. mañana)
+        UI->>UI: Bloquea input mediante max={hoy}
+    else Si selecciona fecha con >5 días de atraso
+        UI->>UI: Abre modal de Autorización de Oscar Mercado
+        Admin->>UI: Ingresa contraseña administrativa y justificación
+        UI->>API: Valida credenciales de Oscar Mercado
+    end
+
+    Note over Operador, DB: FASE 3: Captura de Reactivos e Incidencias
     loop Por cada tarjeta de inspección
         Operador->>UI: Responde "Sí, Cumple" (Avanza automáticamente)
         alt Responde "No Cumple"
@@ -475,40 +544,47 @@ sequenceDiagram
         end
     end
 
-    Note over Operador, DB: FASE 3: Confirmación y Envío Definitivo
+    Note over Operador, DB: FASE 4: Confirmación, Envío y Sellado de Tiempo de Vida
     Operador->>UI: Presiona "Finalizar y Guardar Checklist"
     UI->>UI: Abre modal "¿Estás seguro de que deseas enviar el checklist?"
     Operador->>UI: Confirma "Sí, Seguro: Enviar Definitivamente"
-    UI->>API: POST /api/checklists (Payload con cabecera, respuestas y fotos)
-    
+    UI->>API: POST /api/checklists (Payload con respuestas, fotos y fecha)
+    API->>API: Evalúa hora actual vs [hora_inicio, hora_fin] -> estado_tiempo ('EN_TIEMPO' | 'FUERA_DE_TIEMPO')
     API->>DB: BEGIN TRANSACTION
-    API->>DB: INSERT INTO checklists (folio, empleado_id, area_id, kpis...) RETURNING id
-    loop Por cada respuesta evaluada
-        API->>DB: INSERT INTO respuestas (checklist_id, pregunta_id, respuesta, motivo_no) RETURNING id
-        opt Si incluye fotografía
-            API->>DB: INSERT INTO evidencias (respuesta_id, checklist_id, blob_url, formato...)
+    API->>DB: INSERT INTO checklists (folio, empleado_id, area_id, estado_tiempo, hora_registro...) RETURNING id
+    loop Por cada respuesta
+        API->>DB: INSERT INTO respuestas (checklist_id, pregunta_id, respuesta, motivo_no)
+        opt Si incluye foto
+            API->>DB: INSERT INTO evidencias (respuesta_id, checklist_id, blob_url...)
         end
     end
     API->>DB: INSERT INTO auditoria (modulo: 'CHECKLISTS', accion: 'CREATE', ...)
     API->>DB: COMMIT TRANSACTION
-    DB-->>API: Transacción exitosa con Folio Oficial
-    API-->>UI: Retorna folio y confirmación visual
+    DB-->>API: Confirmación con Folio Oficial
+    API-->>UI: Renderiza Folio, % Cumplimiento y Sello de Tiempo
 
-    Note over Admin, DB: FASE 4: Supervisión, KPIs y Eliminación en Cascada
-    Admin->>UI: Accede con credenciales (1000 / admin123)
-    UI->>API: GET /api/checklists?periodo=semana
-    API->>DB: Agrega métricas consolidadas de checklists y áreas
-    DB-->>API: Retorna { checklists, kpis, statsDiarias, statsSemanales, statsMensuales }
-    API-->>UI: Renderiza Dashboard Ejecutivo y gráficas Recharts
-    
-    opt Si Administrador decide eliminar un checklist
-        Admin->>UI: Presiona "Eliminar Encuesta"
-        UI->>API: DELETE /api/checklists?id={uuid}
-        API->>DB: DELETE FROM checklists WHERE id = {uuid}
-        Note over DB: ON DELETE CASCADE elimina automáticamente<br/>sus respuestas en 'respuestas'<br/>y sus fotos en 'evidencias'
-        API->>DB: INSERT INTO auditoria (accion: 'DELETE_CASCADE', ...)
-        DB-->>API: Eliminación limpia confirmada
-        API-->>UI: Actualiza Dashboard instantáneamente
+    Note over Scheduler, SMTP: FASE 5: Background Scheduler y Alertas por Correo
+    loop Cada 60 segundos en segundo plano
+        Scheduler->>DB: Consulta áreas activas con hora_fin superada en la fecha actual
+        DB-->>Scheduler: Retorna áreas cerradas y empleados asignados (primarios y secundarios)
+        opt Si empleado no ha completado checklist del área hoy
+            Scheduler->>SMTP: Envía correo de alerta (ej. puentealejandro491@gmail.com)
+            SMTP-->>Scheduler: Confirmación de entrega SMTP
+            Scheduler->>DB: INSERT INTO notificaciones (empleado_id, area_id, fecha, estado: 'ENVIADO')
+            Scheduler->>DB: INSERT INTO auditoria (modulo: 'NOTIFICACIONES', accion: 'ENVIAR_CORREO')
+        end
+    end
+
+    Note over Admin, DB: FASE 6: Supervisión de Incidencias, Horarios y Reportes
+    Admin->>UI: Accede con credenciales exclusivas (1000 / admin123)
+    UI->>API: GET /api/checklists (con filtros por área, fecha y periodo)
+    DB-->>API: Retorna KPIs, explorador de incidencias en acordeón y encuestas
+    API-->>UI: Muestra panel interactivo de Incidencias/Cumplimiento y tabla con Día y Fecha
+    opt Si Oscar Mercado ajusta el tiempo de vida de un área
+        Admin->>UI: Cambia hora_inicio y hora_fin en TiempoVidaPanel
+        UI->>API: PUT /api/areas { id, horaInicio, horaFin }
+        API->>DB: UPDATE areas SET hora_inicio = ..., hora_fin = ...
+        API->>DB: INSERT INTO auditoria (modulo: 'AREAS', accion: 'UPDATE_HORARIO')
     end
 ```
 
@@ -543,6 +619,11 @@ CREATE INDEX idx_evidencias_checklist ON evidencias(checklist_id);
 -- 6. Agregaciones de Business Intelligence y bitácora de auditoría
 CREATE INDEX idx_estadisticas_periodo ON estadisticas(periodo_tipo, fecha_inicio DESC);
 CREATE INDEX idx_auditoria_fecha_modulo ON auditoria(created_at DESC, modulo);
+
+-- 7. Consultas de personal multi-área y vigencia de tiempo de vida
+CREATE INDEX idx_empleados_area_secundaria ON empleados(area_id_secundaria) WHERE area_id_secundaria IS NOT NULL;
+CREATE INDEX idx_checklists_estado_tiempo ON checklists(estado_tiempo, fecha_operacion DESC);
+CREATE INDEX idx_notificaciones_fecha_area ON notificaciones(fecha, area_id, estado);
 ```
 
 ---
@@ -574,3 +655,5 @@ CREATE TRIGGER trg_checklists_updated BEFORE UPDATE ON checklists FOR EACH ROW E
 1. **Autonomía Operativa de Áreas:** La tabla `areas` actúa como pivote dinámico. Si el negocio requiere incorporar nuevas áreas técnicas (ej. *Seguridad Industrial* o *Telecomunicaciones Avanzadas*), se añade un registro en `areas` y sus respectivas `preguntas` sin necesidad de alterar el código fuente ni la estructura del motor de base de datos.
 2. **Defensa en Profundidad en Incidencias:** La exigencia del motivo ante un "No Cumple" está blindada tanto en el frontend React, como en la capa API REST y en la restricción `chk_motivo_obligatorio_en_no` de la base de datos.
 3. **Persistencia Híbrida y Portabilidad:** El modelo está implementado nativamente en SQL de producción para **PostgreSQL** ([`database/schema_postgresql.sql`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/database/schema_postgresql.sql)) y cuenta con un adaptador local JSON transaccional en [`src/lib/db.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/lib/db.ts) con soporte para imágenes optimizadas y Azure Blob Storage.
+4. **Arquitectura Multi-Área con Límite Estricto (Máx. 2):** El modelo soporta formalmente la asignación de hasta dos áreas por colaborador (`area_id` y `area_id_secundaria`), validando la no repetición de departamentos y permitiendo que trabajadores como Alejandro Puente elijan interactivamente el área a auditar en cada sesión.
+5. **Vigencia Temporal y Alertas Proactivas por Correo:** La incorporación de `hora_inicio` y `hora_fin` en `areas`, el sellado `estado_tiempo` en `checklists` y la tabla `notificaciones` permiten medir la puntualidad en reportes y automatizar el despacho de correos SMTP (Nodemailer) cuando una jornada concluye sin encuesta.

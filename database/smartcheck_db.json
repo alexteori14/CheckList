@@ -3892,7 +3892,7 @@
       "totalNo": 0,
       "porcentajeCumplimiento": 100,
       "porcentajeIncidencias": 0,
-      "calculadoEn": "2026-10-20T23:36:37.499Z"
+      "calculadoEn": "2026-10-21T00:08:10.438Z"
     },
     {
       "id": "stat-diario-2-2026-10-20",
@@ -3906,7 +3906,7 @@
       "totalNo": 2,
       "porcentajeCumplimiento": 75,
       "porcentajeIncidencias": 25,
-      "calculadoEn": "2026-10-20T23:36:37.499Z"
+      "calculadoEn": "2026-10-21T00:08:10.438Z"
     },
     {
       "id": "stat-diario-3-2026-10-20",
@@ -3920,7 +3920,7 @@
       "totalNo": 0,
       "porcentajeCumplimiento": 100,
       "porcentajeIncidencias": 0,
-      "calculadoEn": "2026-10-20T23:36:37.499Z"
+      "calculadoEn": "2026-10-21T00:08:10.438Z"
     },
     {
       "id": "stat-diario-4-2026-10-20",
@@ -3934,7 +3934,7 @@
       "totalNo": 1,
       "porcentajeCumplimiento": 75,
       "porcentajeIncidencias": 25,
-      "calculadoEn": "2026-10-20T23:36:37.499Z"
+      "calculadoEn": "2026-10-21T00:08:10.438Z"
     },
     {
       "id": "stat-diario-5-2026-10-20",
@@ -3948,7 +3948,7 @@
       "totalNo": 0,
       "porcentajeCumplimiento": 100,
       "porcentajeIncidencias": 0,
-      "calculadoEn": "2026-10-20T23:36:37.499Z"
+      "calculadoEn": "2026-10-21T00:08:10.438Z"
     },
     {
       "id": "stat-diario-6-2026-10-20",
@@ -3962,7 +3962,7 @@
       "totalNo": 0,
       "porcentajeCumplimiento": 100,
       "porcentajeIncidencias": 0,
-      "calculadoEn": "2026-10-20T23:36:37.499Z"
+      "calculadoEn": "2026-10-21T00:08:10.438Z"
     },
     {
       "id": "stat-diario-7-2026-10-20",
@@ -3976,10 +3976,120 @@
       "totalNo": 1,
       "porcentajeCumplimiento": 75,
       "porcentajeIncidencias": 25,
-      "calculadoEn": "2026-10-20T23:36:37.499Z"
+      "calculadoEn": "2026-10-21T00:08:10.438Z"
     }
   ],
   "auditoria": [
+    {
+      "id": "aud-1792541199503-c344",
+      "actorIdentificador": "Sistema",
+      "modulo": "NOTIFICACIONES",
+      "accion": "CORREO_FALLIDO",
+      "entidad": "Empleado",
+      "entidadId": "2006",
+      "detalles": "Correo a diana.morales@empresa.com (SAP, Soporte Manufactura): SIN_CONFIGURAR - Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "ipAddress": "127.0.0.1",
+      "createdAt": "2026-10-21T00:06:39.503Z"
+    },
+    {
+      "id": "aud-1792541199503-ed0z",
+      "actorIdentificador": "Sistema",
+      "modulo": "NOTIFICACIONES",
+      "accion": "CORREO_FALLIDO",
+      "entidad": "Empleado",
+      "entidadId": "1003",
+      "detalles": "Correo a carlos.villarreal@empresa.com (Infraestructura): SIN_CONFIGURAR - Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "ipAddress": "127.0.0.1",
+      "createdAt": "2026-10-21T00:06:39.503Z"
+    },
+    {
+      "id": "aud-1792541199503-rogu",
+      "actorIdentificador": "Sistema",
+      "modulo": "NOTIFICACIONES",
+      "accion": "CORREO_FALLIDO",
+      "entidad": "Empleado",
+      "entidadId": "2002",
+      "detalles": "Correo a sofia.hernandez@empresa.com (MES): SIN_CONFIGURAR - Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "ipAddress": "127.0.0.1",
+      "createdAt": "2026-10-21T00:06:39.503Z"
+    },
+    {
+      "id": "aud-1792540561499-fjkb",
+      "actorIdentificador": "Sistema",
+      "modulo": "NOTIFICACIONES",
+      "accion": "CORREO_FALLIDO",
+      "entidad": "Empleado",
+      "entidadId": "2006",
+      "detalles": "Correo a diana.morales@empresa.com (SAP, Soporte Manufactura): SIN_CONFIGURAR - Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "ipAddress": "127.0.0.1",
+      "createdAt": "2026-10-20T23:56:01.499Z"
+    },
+    {
+      "id": "aud-1792540561499-bhn7",
+      "actorIdentificador": "Sistema",
+      "modulo": "NOTIFICACIONES",
+      "accion": "CORREO_FALLIDO",
+      "entidad": "Empleado",
+      "entidadId": "1003",
+      "detalles": "Correo a carlos.villarreal@empresa.com (Infraestructura): SIN_CONFIGURAR - Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "ipAddress": "127.0.0.1",
+      "createdAt": "2026-10-20T23:56:01.499Z"
+    },
+    {
+      "id": "aud-1792540561499-tnla",
+      "actorIdentificador": "Sistema",
+      "modulo": "NOTIFICACIONES",
+      "accion": "CORREO_FALLIDO",
+      "entidad": "Empleado",
+      "entidadId": "2002",
+      "detalles": "Correo a sofia.hernandez@empresa.com (MES): SIN_CONFIGURAR - Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "ipAddress": "127.0.0.1",
+      "createdAt": "2026-10-20T23:56:01.499Z"
+    },
+    {
+      "id": "aud-1792539961429-jx7r",
+      "actorIdentificador": "Sistema",
+      "modulo": "NOTIFICACIONES",
+      "accion": "CORREO_FALLIDO",
+      "entidad": "Empleado",
+      "entidadId": "2006",
+      "detalles": "Correo a diana.morales@empresa.com (SAP, Soporte Manufactura): SIN_CONFIGURAR - Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "ipAddress": "127.0.0.1",
+      "createdAt": "2026-10-20T23:46:01.429Z"
+    },
+    {
+      "id": "aud-1792539961428-sokj",
+      "actorIdentificador": "Sistema",
+      "modulo": "NOTIFICACIONES",
+      "accion": "CORREO_FALLIDO",
+      "entidad": "Empleado",
+      "entidadId": "1003",
+      "detalles": "Correo a carlos.villarreal@empresa.com (Infraestructura): SIN_CONFIGURAR - Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "ipAddress": "127.0.0.1",
+      "createdAt": "2026-10-20T23:46:01.428Z"
+    },
+    {
+      "id": "aud-1792539961428-fm6k",
+      "actorIdentificador": "Sistema",
+      "modulo": "NOTIFICACIONES",
+      "accion": "CORREO_FALLIDO",
+      "entidad": "Empleado",
+      "entidadId": "2002",
+      "detalles": "Correo a sofia.hernandez@empresa.com (MES): SIN_CONFIGURAR - Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "ipAddress": "127.0.0.1",
+      "createdAt": "2026-10-20T23:46:01.428Z"
+    },
+    {
+      "id": "aud-1792539787145-rtui",
+      "actorIdentificador": "1000 - Oscar Mercado",
+      "modulo": "SEGURIDAD_JWT",
+      "accion": "LOGIN_EXITOSO",
+      "entidad": "Empleado",
+      "entidadId": "emp-1000",
+      "detalles": "Inicio de sesión administrativo autorizado para el Administrador General Oscar Mercado",
+      "ipAddress": "127.0.0.1",
+      "createdAt": "2026-10-20T23:43:07.145Z"
+    },
     {
       "id": "aud-1792539397497-hzck",
       "actorIdentificador": "2002 - Sofía Hernández",
@@ -4049,6 +4159,21 @@
   ],
   "notificaciones": [
     {
+      "id": "ntf-1792541290437",
+      "empleadoId": "emp-2001",
+      "numeroEmpleado": "2001",
+      "nombreEmpleado": "Alejandro Puente",
+      "areaId": 3,
+      "areaNombre": "Infraestructura / Ind. 4.0",
+      "fecha": "2026-10-20",
+      "tipo": "PRUEBA",
+      "destinatario": "puentealejandro491@gmail.com",
+      "estado": "SIN_CONFIGURAR",
+      "detalle": "Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
+      "intentos": 1,
+      "enviadoEn": "2026-10-21T00:08:10.437Z"
+    },
+    {
       "id": "ntf-1792539332584-rbsu",
       "empleadoId": "emp-2006",
       "numeroEmpleado": "2006",
@@ -4060,8 +4185,8 @@
       "destinatario": "diana.morales@empresa.com",
       "estado": "SIN_CONFIGURAR",
       "detalle": "Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
-      "intentos": 1,
-      "enviadoEn": "2026-10-20T23:35:32.584Z"
+      "intentos": 4,
+      "enviadoEn": "2026-10-21T00:06:39.503Z"
     },
     {
       "id": "ntf-1792539332584-ozdp",
@@ -4075,8 +4200,8 @@
       "destinatario": "diana.morales@empresa.com",
       "estado": "SIN_CONFIGURAR",
       "detalle": "Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
-      "intentos": 1,
-      "enviadoEn": "2026-10-20T23:35:32.584Z"
+      "intentos": 4,
+      "enviadoEn": "2026-10-21T00:06:39.503Z"
     },
     {
       "id": "ntf-1792539332584-wu6z",
@@ -4090,8 +4215,8 @@
       "destinatario": "carlos.villarreal@empresa.com",
       "estado": "SIN_CONFIGURAR",
       "detalle": "Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
-      "intentos": 1,
-      "enviadoEn": "2026-10-20T23:35:32.584Z"
+      "intentos": 4,
+      "enviadoEn": "2026-10-21T00:06:39.503Z"
     },
     {
       "id": "ntf-1792539332584-xbfo",
@@ -4105,8 +4230,8 @@
       "destinatario": "sofia.hernandez@empresa.com",
       "estado": "SIN_CONFIGURAR",
       "detalle": "Faltan SMTP_USER / SMTP_PASS en .env.local. Configura la cuenta remitente para enviar correos reales.",
-      "intentos": 1,
-      "enviadoEn": "2026-10-20T23:35:32.584Z"
+      "intentos": 4,
+      "enviadoEn": "2026-10-21T00:06:39.503Z"
     }
   ]
 }

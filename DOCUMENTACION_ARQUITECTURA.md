@@ -6,16 +6,18 @@ Este documento entrega los **19 puntos arquitectónicos, funcionales, de datos y
 
 ## 1. Arquitectura General del Sistema
 
-El sistema **SmartCheck Enterprise** sigue una **Arquitectura Limpia Multicapa (Clean Layered Architecture)** orientada a servicios REST y preparada para despliegue en la nube:
+El sistema **SmartCheck Enterprise** sigue una **Arquitectura Limpia Multicapa (Clean Layered Architecture)** orientada a microservicios modulares, desacoplada y lista para entornos industriales de alta exigencia:
 
 - **Capa de Presentación (Frontend Web / PWA Responsive):**
-  - Desarrollada con **Next.js + React 18 + TypeScript + Tailwind CSS**.
-  - Enfocada en **Tarjetas Interactivas (Card-based UX)** con avance en 1 clic, barra de progreso animada, captura directa desde cámara móvil/WebRTC, galería o Drag & Drop, y gráficas ejecutivas con **Recharts**.
-- **Capa de Aplicación y Servicios de Negocio (API REST / NestJS & Next.js Route Handlers):**
-  - Módulos desacoplados para Autenticación JWT (`AuthModule`), Empleados y Usuarios (`EmployeesModule`), Áreas Dinámicas (`AreasModule`), Plantillas de Preguntas (`QuestionsModule`), Motor de Checklists y KPIs (`ChecklistsModule`), y Auditoría (`AuditModule`).
+  - Desarrollada con **Next.js 14 + React 18 + TypeScript + Tailwind CSS**.
+  - Enfocada en **Tarjetas Interactivas (Card-based UX)** con navegación táctil fluida, avance automático de 1 clic, selector dinámico para empleados con adscripción multi-área (hasta 2 áreas), panel interactivo de Incidencias/Cumplimiento con acordeón por área, barra de progreso animada, captura WebRTC/galería y gráficas ejecutivas con **Recharts**.
+- **Capa de Aplicación y Servicios de Negocio (API REST / Next.js Route Handlers):**
+  - Módulos desacoplados para Autenticación JWT (`AuthModule`), Padrón de Empleados y Multi-área (`EmployeesModule`), Catálogo de 7 Áreas Oficiales y Tiempo de Vida (`AreasModule`), Plantillas de Preguntas (`QuestionsModule`), Motor de Checklists, Políticas de Fechas y KPIs (`ChecklistsModule`), Notificaciones y Alertas SMTP (`NotificationsModule`) y Auditoría Inmutable (`AuditModule`).
+- **Capa de Tareas en Segundo Plano (Scheduler & Automation):**
+  - Hook nativo `instrumentation.ts` en Node.js que ejecuta un evaluador periódico cada 60 segundos (`schedule.ts`) para verificar el cierre de ventanas horarias y despachar correos de alerta mediante **Nodemailer** a colaboradores con encuestas pendientes.
 - **Capa de Persistencia y Almacenamiento:**
-  - **Base de Datos Relacional:** **PostgreSQL** normalizada en 3FN (esquema DDL completo en [`database/schema_postgresql.sql`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/database/schema_postgresql.sql)) + motor transaccional local autoinicializado en [`src/lib/db.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/lib/db.ts) para ejecución inmediata.
-  - **Almacenamiento de Evidencias Fotográficas:** **Azure Blob Storage** (mediante SAS Tokens firmados y validación estricta de formatos `JPG`, `PNG` y `WEBP`).
+  - **Base de Datos Relacional:** **PostgreSQL** normalizada en 3FN con 11 tablas (esquema DDL completo en [`database/schema_postgresql.sql`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/database/schema_postgresql.sql)) + motor transaccional local autoinicializado en [`src/lib/db.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/lib/db.ts) para ejecución inmediata.
+  - **Almacenamiento de Evidencias Multimedia:** **Azure Blob Storage** / Data URLs optimizados con validación de formatos `JPG`, `PNG` y `WEBP`.
 
 ---
 
@@ -23,77 +25,82 @@ El sistema **SmartCheck Enterprise** sigue una **Arquitectura Limpia Multicapa (
 
 | ID | Caso de Uso | Actor Principal | Descripción |
 | :--- | :--- | :--- | :--- |
-| **CU-01** | Identificación automática por Número de Empleado | Jefe de Depto. / Operador | El usuario ingresa su número de empleado; el sistema autocompleta instantáneamente su Nombre Completo, su Área asignada (Infraestructura, Control o Mantenimiento) y la Fecha actual (permitiendo edición manual de fecha). |
-| **CU-02** | Ejecución de Checklist mediante Tarjetas | Jefe de Depto. / Operador | El usuario responde cada tarjeta mediante botones grandes **Sí, Cumple** o **No Cumple**, visualizando en todo momento la barra de progreso animada. |
-| **CU-03** | Captura de Incidencia y Evidencia Fotográfica | Jefe de Depto. / Operador | Al responder **No**, el sistema despliega automáticamente el campo de **Motivo obligatorio** y el cargador de **Evidencia fotográfica opcional** (Cámara WebRTC/Móvil, Galería o Drag & Drop en formatos JPG, PNG, WEBP). |
-| **CU-04** | Confirmación de Envío y Modificación de Respuestas | Jefe de Depto. / Operador | Al finalizar las tarjetas, se presenta el modal "¿Estás seguro de que deseas enviar el checklist?" con resumen cuantitativo y la opción interactiva **"Cambiar"** en cada pregunta para modificar respuestas antes del envío definitivo. |
-| **CU-05** | Autenticación y Login Exclusivo de Administrador | Administrador General (Oscar Mercado) | Acceso protegido al centro de control mediante número de empleado (`1000`) y contraseña cifrada. Bloquea el acceso a otros usuarios e incluye botón de **Cerrar Sesión (Logout)** con borrado de cookie y auditoría. |
-| **CU-06** | Administración de Usuarios, Áreas y Preguntas | Administrador General (Oscar Mercado) | Alta simplificada de empleados, creación dinámica de áreas operativas sin tocar código y configuración/eliminación de preguntas del banco de checklist. |
-| **CU-07** | Consulta de Dashboard Ejecutivo y Estadísticas | Administrador General (Oscar Mercado) | Visualización en tiempo real de KPIs, estadísticas diarias, semanales y mensuales, ranking de áreas, visor completo de encuestas realizadas y eliminación en cascada. |
-| **CU-08** | Exportación Ejecutiva de Reportes PDF y Excel | Administrador General (Oscar Mercado) | Generación y descarga de reportes ejecutivos filtrados por Día, Semana, Mes, Rango de fechas, Área y Usuario en formatos `.pdf` y `.xlsx`. |
+| **CU-01** | Identificación y Selección Multi-Área | Jefe de Depto. / Operador | El usuario ingresa su número de empleado. El sistema autocompleta su nombre y, si está asignado a 2 áreas (ej. Alejandro Puente en Infraestructura e Ind. 4.0), le permite seleccionar interactivamente cuál de sus dos áreas inspeccionará en esa sesión. |
+| **CU-02** | Validación Estricta de Fechas de Inspección | Jefe de Depto. / Operador / Admin | Prohíbe seleccionar fechas futuras (`max={today}`). Permite libremente fechas de los últimos 5 días. Si se elige una fecha de más de 5 días de antigüedad, exige la autorización exclusiva de Oscar Mercado mediante contraseña y justificación. |
+| **CU-03** | Ejecución de Checklist mediante Tarjetas | Jefe de Depto. / Operador | El usuario responde cada reactivo técnico de su área mediante botones grandes **Sí, Cumple** o **No Cumple**, visualizando el tiempo de vida del área (`07:00 - 08:30`) y la barra de progreso en tiempo real. |
+| **CU-04** | Captura de Incidencia y Evidencia Fotográfica | Jefe de Depto. / Operador | Al responder **No**, se despliega obligatoriamente el campo de motivo y el cargador de fotografía opcional (Cámara WebRTC/Móvil, Galería o Drag & Drop en JPG, PNG, WEBP). |
+| **CU-05** | Confirmación de Envío y Modificación de Respuestas | Jefe de Depto. / Operador | Modal de confirmación previa con resumen cuantitativo y botón interactivo **"Cambiar"** por ítem para corregir respuestas antes de persistir la encuesta en base de datos. |
+| **CU-06** | Autenticación y Login Exclusivo de Administrador | Administrador General (Oscar Mercado) | Acceso protegido al centro de control mediante número de empleado (`1000`) y contraseña cifrada. Bloquea a usuarios no administradores (`HTTP 403`) e incluye botón de **Cerrar Sesión (Logout)** con auditoría. |
+| **CU-07** | Parametrización de Horarios y Tiempo de Vida | Administrador General (Oscar Mercado) | Modificación en vivo de `horaInicio` y `horaFin` de las 7 áreas industriales oficiales para delimitar la ventana operativa de captura. |
+| **CU-08** | Monitoreo y Disparo de Alertas por Correo | Administrador General / Scheduler | Envío automatizado de correos vía SMTP (Nodemailer) a empleados que no contestaron su encuesta al expirar el tiempo de vida del área (ej. `puentealejandro491@gmail.com`), con bitácora en la tabla `notificaciones`. |
+| **CU-09** | Supervisión Ejecutiva de Incidencias y Cumplimiento | Administrador General (Oscar Mercado) | Visualización de KPIs y del nuevo panel interactivo agrupado por área con acordeón para explorar el detalle de fallas con fotos, además de la tabla de encuestas con columna visible de **Día y Fecha** y estado de tiempo de vida. |
+| **CU-10** | Exportación Ejecutiva a PDF y Excel | Administrador General (Oscar Mercado) | Descarga de reportes corporativos en horizontal con métricas consolidadas, detalle de incidencias y estado de puntualidad horaria. |
 
 ---
 
 ## 3. Historias de Usuario
 
-- **HU-01 (Autocompletado Rápido):** *Como* jefe de departamento de Sistemas (Infraestructura, Control o Mantenimiento), *quiero* ingresar únicamente mi número de empleado al iniciar un checklist *para que* el sistema rellene mi nombre, área y fecha actual automáticamente y pueda comenzar en menos de 5 segundos.
-- **HU-02 (Experiencia en Tarjetas de 1 Clic):** *Como* encargado en campo desde celular o tablet, *quiero* responder preguntas en tarjetas grandes con botones táctiles "Sí" y "No" *para* completar mi recorrido sin lidiar con formularios largos y aburridos.
-- **HU-03 (Validación de Incidencias):** *Como* supervisor de calidad, *quiero* que cada respuesta negativa ("No") exija obligatoriamente un motivo y permita adjuntar foto desde la cámara o galería *para* tener trazabilidad real de cada falla.
-- **HU-04 (Confirmación y Cambio de Respuestas):** *Como* jefe de departamento, *quiero* que antes de enviar el checklist se me pregunte si estoy seguro y se me muestre un resumen con la opción de cambiar cualquier respuesta *para* no enviar datos con errores o descuido.
-- **HU-05 (Custodia Exclusiva del Administrador):** *Como* Administrador General (**Oscar Mercado**), *quiero* un login exclusivo con contraseña para el Dashboard y módulos de gestión *para que* los jefes de departamento solo respondan encuestas y no puedan alterar métricas ni configuraciones.
-- **HU-06 (Analítica y Exportación):** *Como* Administrador General, *quiero* consultar estadísticas diarias, semanales y mensuales y exportarlas a PDF y Excel con filtros combinables *para* auditorías ejecutivas.
+- **HU-01 (Autocompletado y Flexibilidad Multi-Área):** *Como* colaborador con responsabilidades en más de una línea (ej. Alejandro Puente en Infraestructura e Ind. 4.0), *quiero* que al teclear mi nómina el sistema me permita elegir entre mis 2 áreas autorizadas *para que* pueda responder el cuestionario que corresponda a mi recorrido del día.
+- **HU-02 (Política Estricta de Fechas):** *Como* Administrador General (**Oscar Mercado**), *quiero* que el sistema impida seleccionar fechas de mañana o futuras, y que si alguien necesita capturar una inspección de hace más de 5 días requiera mi contraseña y justificación *para* garantizar la validez legal y normativa de las auditorías.
+- **HU-03 (Experiencia en Tarjetas de 1 Clic):** *Como* encargado en planta desde tableta o celular, *quiero* responder reactivos en tarjetas de alto contraste con botones táctiles *para* concluir mi recorrido en menos de 3 minutos.
+- **HU-04 (Control de Incidencias y Evidencias):** *Como* auditor de calidad, *quiero* que cualquier incumplimiento obligue al operador a detallar el motivo y permita adjuntar fotografías *para* documentar la falla con rigor técnico.
+- **HU-05 (Confirmación Previa de Envío):** *Como* jefe de departamento, *quiero* verificar el resumen de mis respuestas antes del envío final y tener un botón para cambiar cualquier respuesta errónea con 1 clic.
+- **HU-06 (Tiempo de Vida y Alertas Automáticas):** *Como* Administrador General, *quiero* definir un horario de vigencia (ej. 07:00 a 08:30) y que el sistema despache un correo electrónico automático a los encargados que no hayan enviado su checklist al cerrar la ventana *para* mantener la disciplina operativa.
+- **HU-07 (Explorador Visual de Incidencias):** *Como* Administrador General, *quiero* ver a un lado de los KPIs un panel organizado por áreas donde pueda desplegar en acordeón las fallas ocurridas con sus fotografías *para* tomar decisiones preventivas inmediatas.
+- **HU-08 (Día y Fecha en Bitácora):** *Como* supervisor, *quiero* ver el día de la semana y la fecha directamente en la tabla de encuestas realizadas sin tener que abrir el visor modal *para* agilizar la revisión rápida.
 
 ---
 
 ## 4. Wireframes de Interfaz
 
-### 4.1 Wireframe: Tarjeta Interactiva de Checklist (Móvil / Escritorio)
+### 4.1 Wireframe: Tarjeta Interactiva de Checklist con Selector Multi-Área y Tiempo de Vida
 ```text
 +-----------------------------------------------------------------------+
-| [<-] #2001 Alejandro Puentes | Área: Infraestructura | [1 a la vez]   |
-| Progreso: [====================>          ] 60% (3 de 5 completadas)  |
+| [<-] #2001 Alejandro Puente | [Área 1: Infraestructura] [Área 2: Ind 4.0] (Activa)
+| Horario: [07:00 - 08:30] • Estado: [ EN TIEMPO ]      | [Modo: 1 a la vez]
+| Fecha: [2026-10-20 (Máx Hoy)] • Progreso: [========>   ] 60% (3 de 5) |
 | (#1 OK) (#2 OK) [#3 ACTUAL] (#4) (#5)                                 |
 +-----------------------------------------------------------------------+
-|  [3] INF-03 • Comunicaciones y Racks             [Criticidad: MEDIA]  |
+|  [3] INF-03 • Cableado y Cuarto de Servidores      [Criticidad: MEDIA]|
 |                                                                       |
 |  ¿Los gabinetes de telecomunicaciones tienen el cableado organizado,  |
 |  puertas cerradas y switches sin puertos en falla?                    |
-|                                                                       |
-|  (i) Inspeccionar visualmente patch panels y LEDs de estado.          |
 |                                                                       |
 |  +-------------------------------+  +-------------------------------+ |
 |  |         Sí, Cumple         |  |         No Cumple                | |
 |  +-------------------------------+  +-------------------------------+ |
 |                                                                       |
 |  ----- [SE DESPLIEGA AUTOMÁTICAMENTE SI SELECCIONA "No"] ----------   |
-|  ! REGISTRO DE INCIDENCIA                                             |
-|  Motivo o explicación del "No" (OBLIGATORIO *):                       |
-|  [+ Cables sueltos] [+ Puerta sin seguro] [+ Puerto en falla]         |
+|  ! REGISTRO DE INCIDENCIA (OBLIGATORIO *)                             |
+|  [+ Patch cord suelto] [+ Puerta abierta] [+ Temperatura alta]        |
 |  +-----------------------------------------------------------------+  |
-|  | Se detecta patch cord suelto en rack principal B2...            |  |
+|  | Se detecta patch cord de switch principal colgando sin peinar... |  |
 |  +-----------------------------------------------------------------+  |
 |  Fotografía de evidencia (OPCIONAL - JPG, PNG, WEBP):                 |
-|  +-----------------------------------------------------------------+  |
-|  |       Arrastra y suelta una fotografía aquí o selecciona:       |  |
-|  |     [ Tomar Foto con Cámara ]   [ Cargar de Galería ]           |  |
-|  +-----------------------------------------------------------------+  |
+|  [ Tomar Foto con Cámara WebRTC ]  [ Cargar de Galería ]  [Dropzone]  |
 +-----------------------------------------------------------------------+
 ```
 
-### 4.2 Wireframe: Dashboard Ejecutivo Administrativo
+### 4.2 Wireframe: Dashboard Ejecutivo con Panel de Incidencias/Cumplimiento en Acordeón
 ```text
 +-----------------------------------------------------------------------+
 | SmartCheck Enterprise | Centro de Control      [PDF] [Excel] [Logout] |
-| [Dashboard & KPIs] [Estadísticas] [Incidencias] [Reportes] [Usuarios] |
+| [Dashboard & KPIs] [Tiempo de Vida] [Incidencias] [Reportes] [Usuarios]
 +-----------------------------------------------------------------------+
-| Filtros: [Periodo: Todos v] [Área: Todas v] [Usuario: Todos v]        |
-+-------------+-------------+-------------+--------------+--------------+
-| Checklists  | Resp. Sí    | Resp. No    | % Cumplim.   | % Incidencia |
-|     35      |     156     |     19      |    89.1%     |    10.9%     |
-+-------------+-------------+-------------+--------------+--------------+
-| [Gráfica de Área: Tendencia 7 Días] | [Gráfica Barras: Comparativo]   |
-+-------------------------------------+---------------------------------+
-| [KPIs por Área: Infra / Control / Mant] | [Tabla Cumplimiento Usuario]|
+| Filtros: [Periodo: Hoy v] [Área: Todas v] [Empleado: Todos v]         |
++------------------------------------+----------------------------------+
+| RESUMEN DE KPIS                    | PANEL: [Incidencias*] [Cumplim.] |
+| Total Checklists: 35               | > Ind. 4.0        (1 Incidencia) |
+| Total Sí: 156   | Total No: 19     | v Infraestructura (2 Incidencias)|
+| % Cumplimiento General: 89.1%      |   - CHK-2001-A1 | INF-03 | Foto [Ver]|
+| % Incidencias: 10.9%               |   - CHK-2001-A2 | INF-05 | Foto [Ver]|
+| Área con más incidencias: Infra    | > MES             (0 Incidencias)|
+|                                    | > SAP             (0 Incidencias)|
++------------------------------------+----------------------------------+
+| BITÁCORA DE ENCUESTAS REALIZADAS                                      |
+| Folio        | Día y Fecha    | Hora Reg. | Área   | % Cumplim | Tiempo
+| CHK-2026...  | Mar, 20/10/2026| 07:42:15  | Infra  | 80.0%     | EN TIEMPO
+| CHK-2026...  | Mar, 20/10/2026| 09:15:02  | MES    | 100.0%    | FUERA TIEMPO
 +-----------------------------------------------------------------------+
 ```
 
@@ -116,35 +123,45 @@ El sistema **SmartCheck Enterprise** sigue una **Arquitectura Limpia Multicapa (
 ```mermaid
 flowchart TB
     subgraph Clientes["Dispositivos de Usuario (Responsive Web / PWA)"]
-        M["Móvil / Cámara Nativa"]
+        M["Móvil / Cámara Nativa (WebRTC)"]
         T["Tablet en Planta"]
-        D["Escritorio Ejecutivo"]
+        D["Escritorio Ejecutivo / Admin"]
     end
 
-    subgraph Frontend["Frontend (Next.js + React + TypeScript + Tailwind CSS)"]
-        CW["ChecklistWizard (Cards UX)"]
-        AD["AdminDashboard (Recharts BI)"]
+    subgraph Frontend["Frontend (Next.js 14 + React 18 + TypeScript + Tailwind CSS)"]
+        CW["ChecklistWizard (Cards UX + Multi-área + Fechas)"]
+        AD["AdminDashboard (Recharts BI + Acordeón Incidencias)"]
+        TVP["TiempoVidaPanel (Gestor Horarios & Alertas)"]
         EX["Exportador PDF (jsPDF) & Excel (SheetJS)"]
     end
 
-    subgraph Backend["Capa API REST & Seguridad (Next.js API / NestJS Architecture)"]
+    subgraph Background["Servicio en Segundo Plano (Node.js Runtime)"]
+        SCHED["Instrumentation Hook & Scheduler (schedule.ts)"]
+        SMTP["Servicio Notificador SMTP (Nodemailer)"]
+    end
+
+    subgraph Backend["Capa API REST & Seguridad (Next.js App Router)"]
         JWT["Middleware & Auth JWT (HS256 + PBKDF2)"]
-        EMP["Servicio Empleados & Autocompletado"]
-        CHK["Motor de Checklists, Validaciones y KPIs"]
+        EMP["Servicio Empleados & Multi-área (Máx 2)"]
+        AREAS["Servicio 7 Áreas Oficiales & Tiempo de Vida"]
+        CHK["Motor Checklists, Regla Fechas y Sello Tiempo"]
+        NOTIF["Servicio Notificaciones & Despacho Alertas"]
         AUD["Servicio de Auditoría Inmutable"]
     end
 
     subgraph Datos["Persistencia Empresarial"]
-        PG[("PostgreSQL 3FN\n(10 Tablas + Índices)")]
+        PG[("PostgreSQL 3FN\n(11 Tablas + Índices)")]
         BLOB[("Azure Blob Storage\n(Evidencias JPG/PNG/WEBP)")]
     end
 
-    M & T & D --> CW & AD
-    AD --> EX
-    CW & AD --> JWT
-    JWT --> EMP & CHK & AUD
-    EMP & CHK & AUD --> PG
+    M & T & D --> CW & AD & TVP
+    AD & TVP --> EX
+    CW & AD & TVP --> JWT
+    JWT --> EMP & AREAS & CHK & NOTIF & AUD
+    EMP & AREAS & CHK & NOTIF & AUD --> PG
     CHK --> BLOB
+    SCHED --> NOTIF
+    NOTIF --> SMTP
 ```
 
 ---
@@ -155,13 +172,15 @@ flowchart TB
 erDiagram
     ROLES ||--o{ USUARIOS : "asigna"
     ROLES ||--o{ EMPLEADOS : "define_permisos"
-    AREAS ||--o{ EMPLEADOS : "pertenece_a"
+    AREAS ||--o{ EMPLEADOS : "adscribe_primaria_y_secundaria_max_2"
     AREAS ||--o{ PREGUNTAS : "contiene"
-    AREAS ||--o{ CHECKLISTS : "evalua"
+    AREAS ||--o{ CHECKLISTS : "evalua_con_horario"
     AREAS ||--o{ ESTADISTICAS : "consolida"
+    AREAS ||--o{ NOTIFICACIONES : "origina_alerta_ventana"
     USUARIOS ||--o| EMPLEADOS : "vincula"
     USUARIOS ||--o{ AUDITORIA : "ejecuta"
     EMPLEADOS ||--o{ CHECKLISTS : "realiza"
+    EMPLEADOS ||--o{ NOTIFICACIONES : "recibe_correo_aviso"
     CHECKLISTS ||--|{ RESPUESTAS : "incluye"
     PREGUNTAS ||--o{ RESPUESTAS : "responde"
     RESPUESTAS ||--o| EVIDENCIAS : "adjunta_foto"
@@ -171,18 +190,19 @@ erDiagram
 
 ## 8. Diseño Completo de Base de Datos
 
-El script DDL completo para producción en **PostgreSQL** se encuentra en [`database/schema_postgresql.sql`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/database/schema_postgresql.sql). Incluye las **10 tablas mínimas obligatorias**:
+El script DDL completo para producción en **PostgreSQL** se encuentra en [`database/schema_postgresql.sql`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/database/schema_postgresql.sql). Incluye las **11 tablas del sistema**:
 
 1. **`roles`**: Catálogo RBAC (`ADMIN`, `SUPERVISOR`, `OPERADOR`) con permisos en `JSONB`.
-2. **`areas`**: Áreas operativas (`Infraestructura`, `Control`, `Mantenimiento` y áreas futuras).
-3. **`usuarios`**: Cuentas con `password_hash` cifrado, control de bloqueos y último acceso.
-4. **`empleados`**: Índice único en `numero_empleado` para autocompletado en `< 10ms`.
-5. **`preguntas`**: Preguntas dinámicas asociadas a `area_id`, con orden y criticidad.
-6. **`checklists`**: Cabecera de cada inspección con folio único, fecha y KPIs precalculados.
-7. **`respuestas`**: Detalle por pregunta con `CONSTRAINT chk_motivo_obligatorio_en_no` a nivel de motor de base de datos que impide insertar `respuesta = FALSE` sin `motivo_no`.
-8. **`evidencias`**: Metadatos y URL de imagen con validación `CHECK (formato IN ('JPG', 'JPEG', 'PNG', 'WEBP'))`.
-9. **`estadisticas`**: Tabla de agregaciones diarias, semanales y mensuales para analítica ejecutiva.
-10. **`auditoria`**: Bitácora histórica con `datos_anteriores` y `datos_nuevos` en `JSONB`.
+2. **`areas`**: Las 7 áreas industriales oficiales (**MES**, **Ind. 4.0**, **Infraestructura**, **Staff IT**, **Digitalizacion**, **SAP**, **Soporte Manufactura**) con sus columnas de tiempo de vida `hora_inicio` (default `'07:00'`) y `hora_fin` (default `'08:30'`).
+3. **`usuarios`**: Cuentas con `password_hash` cifrado (PBKDF2), control de bloqueos y último acceso.
+4. **`empleados`**: Padrón con índice único en `numero_empleado` y soporte para asignación multi-área (`area_id` principal y `area_id_secundaria`, máximo 2 áreas).
+5. **`preguntas`**: Reactivos técnicos dinámicos asociados a `area_id`, con orden secuencial y criticidad.
+6. **`checklists`**: Cabecera con folio único, fecha de operación (estrictamente `<= hoy`), `hora_registro`, estado de vigencia horaria (`estado_tiempo`: `EN_TIEMPO` o `FUERA_DE_TIEMPO`) y KPIs precalculados.
+7. **`respuestas`**: Detalle por pregunta con `CONSTRAINT chk_motivo_obligatorio_en_no` que impide a nivel de motor registrar `respuesta = FALSE` sin `motivo_no`.
+8. **`evidencias`**: Metadatos y URL de imágenes fotográficas con validación `CHECK (formato IN ('JPG', 'JPEG', 'PNG', 'WEBP'))`.
+9. **`estadisticas`**: Agregaciones analíticas diarias, semanales y mensuales para optimizar consultas del Dashboard.
+10. **`notificaciones`**: Registro y trazabilidad de alertas automáticas enviadas vía correo electrónico (Nodemailer) a colaboradores con encuestas pendientes tras el cierre de su ventana horaria.
+11. **`auditoria`**: Bitácora inmutable de eventos con `datos_anteriores` y `datos_nuevos` en `JSONB`.
 
 ---
 
@@ -190,22 +210,25 @@ El script DDL completo para producción en **PostgreSQL** se encuentra en [`data
 
 | Método | Endpoint | Descripción |
 | :--- | :--- | :--- |
-| `POST` | `/api/auth` | Autentica exclusivamente al Administrador General (**Oscar Mercado**) por número de empleado (`1000` / `admin` / `oscar.mercado`) y contraseña; retorna token **JWT** firmado y cookie HttpOnly. Rechaza con `HTTP 403` a usuarios no administradores. |
-| `GET` | `/api/auth` | Verifica la validez y rol del token JWT activo (`ADMIN`). |
-| `DELETE` | `/api/auth` | Cierra la sesión administrativa, elimina la cookie `smartcheck_token` y registra el evento de salida en la bitácora de auditoría. |
-| `GET` | `/api/employees?numero={n}` | Busca el número de empleado de jefe de departamento u operador y autocompleta `nombreCompleto`, `area` y las `preguntas` activas de su área. |
-| `POST` | `/api/employees` | Da de alta un nuevo empleado/usuario (valida campos obligatorios y opcionales). |
-| `PUT` | `/api/employees` | Edita datos de un usuario o activa/desactiva su cuenta. |
-| `GET` | `/api/areas` | Lista todas las áreas activas con su conteo de preguntas y empleados. |
-| `POST` | `/api/areas` | Crea una nueva área dinámicamente recibiendo solo su nombre y genera su plantilla inicial de 3 preguntas. |
-| `DELETE` | `/api/areas?id={id}` | Elimina el área en cascada junto con sus preguntas y reasigna empleados a un área remanente activa. |
-| `GET / POST / PUT` | `/api/questions` | Consulta, agrega o edita preguntas del checklist por área. |
+| `POST` | `/api/auth` | Autentica exclusivamente al Administrador General (**Oscar Mercado**) por nómina (`1000` / `admin` / `oscar.mercado`) y contraseña; emite token **JWT** firmado y cookie HttpOnly. Peticiones de otros perfiles son rechazadas con `HTTP 403`. |
+| `GET` | `/api/auth` | Valida la sesión activa y verifica el rol `ADMIN`. |
+| `DELETE` | `/api/auth` | Cierra la sesión administrativa, destruye la cookie `smartcheck_token` y registra el evento `LOGOUT` en auditoría. |
+| `GET` | `/api/employees?numero={n}` | Busca al colaborador por nómina y devuelve su perfil, permitiendo detectar adscripción multi-área (`areaId` y `areaIdSecundaria`) y retornando las preguntas correspondientes. |
+| `POST` | `/api/employees` | Alta de colaboradores admitiendo asignación de hasta 2 áreas con validación contra duplicidad. |
+| `PUT` | `/api/employees` | Edita asignaciones de áreas (máx. 2), rol o estado activo/inactivo. |
+| `GET` | `/api/areas` | Lista las 7 áreas oficiales con conteo de preguntas, empleados y sus rangos horarios (`horaInicio`, `horaFin`). |
+| `POST` | `/api/areas` | Crea una nueva área dinámica con 3 preguntas operativas base y horario default `07:00` - `08:30`. |
+| `PUT` | `/api/areas` | Permite a **Oscar Mercado** modificar la ventana del tiempo de vida (`horaInicio`, `horaFin`) de cualquier área, validando formato `HH:MM`. |
+| `DELETE` | `/api/areas?id={id}` | Elimina el área en cascada con sus preguntas y reasigna con seguridad a los colaboradores adscritos. |
+| `GET / POST / PUT` | `/api/questions` | Consulta, crea o edita reactivos del checklist por área y criticidad. |
 | `DELETE` | `/api/questions?id={id}` | Elimina permanentemente una pregunta del banco de inspección. |
-| `GET` | `/api/checklists` | Devuelve checklists filtrados, KPIs globales, Estadísticas Diarias, Semanales y Mensuales, comparativo entre áreas, cumplimiento por usuario e incidencias. |
-| `POST` | `/api/checklists` | Registra un nuevo checklist tras la confirmación del usuario, validando motivo obligatorio en respuestas `No` y formatos de evidencia (`JPG`, `PNG`, `WEBP`). |
-| `PATCH` | `/api/checklists` | Actualiza el estado de seguimiento de una incidencia (`ABIERTA`, `EN_ATENCION`, `RESUELTA`). |
-| `DELETE` | `/api/checklists?id={id}` | Elimina una encuesta realizada en cascada borrando todas sus respuestas y fotografías adjuntas en `db.evidencias`. |
-| `GET` | `/api/audit` | Devuelve el historial de auditoría de operaciones. |
+| `GET` | `/api/checklists` | Motor analítico: devuelve encuestas filtradas, KPIs, estadísticas en 3 horizontes, arreglos para el panel interactivo de Incidencias/Cumplimiento agrupado por área, y los sellos de tiempo de vida. |
+| `POST` | `/api/checklists` | Valida y asienta la encuesta: bloquea fechas futuras (`max={today}`), exige autorización de Oscar Mercado para fechas de más de 5 días atrás, evalúa el sello `estadoTiempo` según la hora local y ventana del área, y exige motivo obligatorio en respuestas `No`. |
+| `PATCH` | `/api/checklists` | Actualiza el estado de resolución de una incidencia (`ABIERTA`, `EN_ATENCION`, `RESUELTA`). |
+| `DELETE` | `/api/checklists?id={id}` | Elimina una encuesta en cascada junto con sus respuestas y evidencias multimedia en `db.evidencias`. |
+| `GET` | `/api/notificaciones` | Devuelve la bitácora de correos y alertas emitidas por expiración de tiempo de vida. |
+| `POST` | `/api/notificaciones` | Disparador manual para evaluar inmediatamente el cierre de ventanas y enviar correos de notificación pendientes. |
+| `GET` | `/api/audit` | Devuelve los últimos 100 registros de la bitácora inmutable de operaciones. |
 
 ---
 
@@ -214,32 +237,42 @@ El script DDL completo para producción en **PostgreSQL** se encuentra en [`data
 ```text
 CheckList/
 ├── database/
-│   ├── schema_postgresql.sql      # DDL completo PostgreSQL (10 tablas, índices y triggers)
-│   └── smartcheck_db.json         # Base de datos relacional autogenerada con datos semilla
+│   ├── schema_postgresql.sql      # DDL completo PostgreSQL (11 tablas, índices y triggers)
+│   └── smartcheck_db.json         # Base de datos relacional local autogenerada con 7 áreas oficiales
 ├── src/
 │   ├── app/
 │   │   ├── api/
-│   │   │   ├── areas/route.ts     # API REST de Áreas dinámicas (GET, POST, DELETE)
-│   │   │   ├── audit/route.ts     # API REST de Auditoría
-│   │   │   ├── auth/route.ts      # API REST de Autenticación JWT y Logout (POST, GET, DELETE)
-│   │   │   ├── checklists/route.ts# API REST de Checklists, KPIs y Cascada (GET, POST, PATCH, DELETE)
-│   │   │   ├── employees/route.ts # API REST de Usuarios y Autocompletado (GET, POST, PUT)
-│   │   │   └── questions/route.ts # API REST de Preguntas (GET, POST, PUT, DELETE)
+│   │   │   ├── areas/route.ts     # API Áreas dinámicas y modificación de tiempo de vida (PUT)
+│   │   │   ├── audit/route.ts     # API Auditoría inmutable
+│   │   │   ├── auth/route.ts      # API Autenticación JWT exclusiva de Oscar Mercado y Logout
+│   │   │   ├── checklists/route.ts# API Checklists, validación de fechas, tiempo de vida y KPIs
+│   │   │   ├── employees/route.ts # API Empleados y soporte multi-área (máximo 2 áreas)
+│   │   │   ├── notificaciones/route.ts # API Historial y disparo de alertas SMTP
+│   │   │   └── questions/route.ts # API Preguntas dinámicas por área
 │   │   ├── globals.css            # Estilos globales y utilidades Tailwind
-│   │   ├── layout.tsx             # Layout raíz de la aplicación
-│   │   └── page.tsx               # Contenedor principal con píldoras de navegación
+│   │   ├── layout.tsx             # Layout raíz
+│   │   └── page.tsx               # Contenedor principal con navegación por resorte
 │   ├── components/
-│   │   ├── AdminDashboard.tsx     # Dashboard Ejecutivo, Estadísticas, Login Admin y Logout
+│   │   ├── AdminDashboard.tsx     # Dashboard, KPIs, explorador Incidencias/Cumplimiento en acordeón y tabla
 │   │   ├── ArchitectureView.tsx   # Visor interactivo de arquitectura
-│   │   └── ChecklistWizard.tsx    # Tarjetas + Cámara WebRTC + Modal Confirmación / Cambiar Respuestas
+│   │   ├── ChecklistWizard.tsx    # Tarjetas, selector multi-área, fechas restrictivas y modal Oscar
+│   │   └── TiempoVidaPanel.tsx    # Configuración de horas y monitor de alertas por correo
 │   ├── lib/
 │   │   ├── auth.ts                # Firma/verificación JWT (jose) y cifrado PBKDF2
-│   │   ├── db.ts                  # Motor de persistencia, roles y cálculo de estadísticas
-│   │   └── exportReports.ts       # Generación de reportes PDF (jsPDF) y Excel (XLSX)
-│   └── types/
-│       └── index.ts               # Contratos e interfaces TypeScript
+│   │   ├── db.ts                  # Motor de persistencia, 7 áreas oficiales y KPIs
+│   │   ├── exportReports.ts       # Generación de reportes PDF (jsPDF) y Excel (XLSX) con tiempo de vida
+│   │   ├── notifier.ts            # Servicio de envío de correos SMTP con Nodemailer
+│   │   ├── schedule.ts            # Motor y evaluación periódica de ventanas de encuestas
+│   │   └── utils.ts               # Utilidades de combinación de clases Tailwind
+│   ├── types/
+│   │   └── index.ts               # Contratos e interfaces TypeScript
+│   ├── instrumentation.ts         # Hook de arranque de Next.js para Node.js
+│   └── instrumentation-node.ts    # Intervalo de 60s para verificación de encuestas en segundo plano
+├── .env.example                   # Plantilla de variables de entorno para SMTP y alertas
 ├── DOCUMENTACION_ARQUITECTURA.md  # Documento maestro con los 19 entregables
-└── Especificaciones.txt           # Requerimientos originales del sistema
+├── ER.md                          # Modelo Entidad-Relación y diccionario detallado de datos
+├── Especificaciones.txt           # Requerimientos originales del sistema
+└── memoria.md                     # Memoria técnica exhaustiva del proyecto
 ```
 
 ---
@@ -248,62 +281,79 @@ CheckList/
 
 ```mermaid
 sequenceDiagram
-    actor J as Jefe de Depto. (Infra / Control / Mant)
+    actor J as Colaborador / Encargado (ej. Alejandro Puente #2001)
     participant UI as ChecklistWizard (Tarjetas)
-    participant M as Modal "¿Seguro que deseas enviar?"
+    participant M as Modal Confirmación / Modal Oscar
     participant API as Backend API REST
     participant DB as Base de Datos & Auditoría
     actor A as Administrador General (Oscar Mercado)
-    participant AD as AdminDashboard
+    participant AD as AdminDashboard & TiempoVidaPanel
+    participant SCHED as Background Scheduler (Cada 60s)
+    participant SMTP as Nodemailer SMTP
 
-    Note over J,DB: FASE 1: Identificación y Respuesta del Checklist
-    J->>UI: Ingresa No. Empleado (ej. 1001 Roberto Méndez)
-    UI->>API: GET /api/employees?numero=1001
-    API->>DB: Consulta datos de Infraestructura y preguntas activas
-    DB-->>UI: Autocompleta Nombre, Área y carga tarjetas
-    J->>UI: Responde cada tarjeta (Sí / No con motivo y fotos)
+    Note over J,DB: FASE 1: Identificación y Selección Multi-Área (Máx. 2)
+    J->>UI: Ingresa No. Empleado 2001
+    UI->>API: GET /api/employees?numero=2001
+    API->>DB: Consulta datos de Alejandro Puente (Área 1: Infraestructura, Área 2: Ind. 4.0)
+    DB-->>UI: Retorna perfil con 2 áreas
+    UI->>UI: Despliega selector para elegir el área a evaluar hoy
+    J->>UI: Selecciona área y revisa fecha (bloqueo fechas futuras, máx. 5 días)
+    opt Si fecha tiene más de 5 días de retraso
+        UI->>M: Abre modal de Autorización de Oscar Mercado
+        A->>M: Ingresa contraseña administrativa y justificación
+        M->>UI: Desbloquea captura de encuesta atrasada
+    end
 
-    Note over J,M: FASE 2: Confirmación de Seguridad y Cambio de Respuestas
+    Note over J,DB: FASE 2: Captura en Tarjetas e Incidencias
+    J->>UI: Responde reactivos técnicos (Sí / No con motivo y fotos)
     J->>UI: Presiona "Finalizar y Guardar Checklist"
-    UI->>M: Abre Modal de Confirmación con Resumen (Total Sí vs No)
-    opt Si el Jefe desea corregir alguna respuesta
-        J->>M: Hace clic en "Cambiar" sobre una pregunta específica
-        M->>UI: Cierra modal y transporta al usuario directo a esa tarjeta
-        J->>UI: Corrige la respuesta (cambia Sí/No o edita motivo)
-        J->>UI: Vuelve a presionar "Finalizar y Guardar"
-    end
-    J->>M: Presiona "Sí, Seguro: Enviar Definitivamente"
-    M->>API: POST /api/checklists (respuestas + evidencias)
+    UI->>M: Despliega modal de confirmación con botón interactivo "Cambiar" por reactivo
+    J->>M: Confirma "Sí, Seguro: Enviar Definitivamente"
+    M->>API: POST /api/checklists (respuestas, fotos y fecha)
+    API->>API: Asigna hora local y evalúa estado_tiempo ('EN_TIEMPO' | 'FUERA_DE_TIEMPO')
     API->>DB: Guarda encuesta, fotos en cascada y auditoría
-    DB-->>UI: Confirma Folio único y % de Cumplimiento
+    DB-->>UI: Confirma Folio único, % Cumplimiento y sello horario
 
-    Note over A,AD: FASE 3: Supervisión Exclusiva del Administrador
-    A->>AD: Accede a Dashboard & Admin
-    alt Si no ha iniciado sesión
-        AD->>A: Presenta pantalla de Login Exclusivo para Oscar Mercado
-        A->>AD: Ingresa credenciales (1000 / admin123)
-        AD->>API: POST /api/auth
-        API-->>AD: Emite JWT de Administrador y cookie HttpOnly
+    Note over SCHED,SMTP: FASE 3: Monitoreo en Segundo Plano y Alertas Automáticas
+    loop Cada 60 segundos
+        SCHED->>DB: Comprueba áreas con ventana cerrada (horaActual > horaFin)
+        opt Si un colaborador no completó su encuesta del día
+            SCHED->>SMTP: Envía correo de notificación (puentealejandro491@gmail.com)
+            SMTP-->>SCHED: Confirmación de entrega
+            SCHED->>DB: Registra evento en 'notificaciones' y 'auditoria'
+        end
     end
-    AD->>API: GET /api/checklists (KPIs, estadísticas, reportes)
-    A->>AD: Supervisa encuestas, exporta PDF/Excel o gestiona áreas/preguntas
-    A->>AD: Presiona "Cerrar Sesión" -> DELETE /api/auth (invalida sesión)
+
+    Note over A,AD: FASE 4: Supervisión, Incidencias en Acordeón y Gestión de Horarios
+    A->>AD: Inicia sesión exclusiva (1000 / admin123)
+    AD->>API: GET /api/checklists
+    API-->>AD: Retorna KPIs, encuestas con Día y Fecha, y datos de Incidencias/Cumplimiento
+    A->>AD: Explora el panel interactivo desplegando incidencias por área con fotos
+    opt Si modifica tiempo de vida
+        A->>AD: Modifica horaInicio/horaFin en TiempoVidaPanel y guarda
+        AD->>API: PUT /api/areas
+        API->>DB: Actualiza horario del área y registra evento en auditoría
+    end
 ```
 
 ---
 
 ## 12. Dashboard Administrativo y Fórmulas de KPIs
 
-El módulo ejecutivo implementa las fórmulas exactas definidas en la especificación:
+El módulo ejecutivo implementa las fórmulas exactas y mecanismos de supervisión visual solicitados:
 
 $$\text{Cumplimiento General (\%)} = \left( \frac{\text{Total de respuestas Sí}}{\text{Total de respuestas}} \right) \times 100$$
 
 $$\text{Porcentaje de Incidencias (\%)} = \left( \frac{\text{Total de respuestas No}}{\text{Total de respuestas}} \right) \times 100$$
 
-Incluye desglose automático en 3 horizontes temporales:
-- **Diario:** Checklists de hoy, cumplimiento del día, respuestas Sí/No y detección automática del **Área con más incidencias**.
-- **Semanal:** Cumplimiento de los últimos 7 días, curva de tendencia diaria e incidencias semanales.
-- **Mensual:** Evolución histórica intermensual y **Ranking competitivo entre áreas**.
+### 12.1 Panel Interactivo de Incidencias / Cumplimiento (Acordeón por Área)
+- **Ubicación Estratégica:** Situado directamente al lado de los widgets de KPI.
+- **Selector Superior de Pestañas:** Permite conmutar entre **Incidencias** (seleccionada primero por defecto) y **Cumplimiento**.
+- **Agrupación y Despliegue en Acordeón:** Presenta las 7 áreas oficiales. Al hacer clic en un área, se despliegan sus incidencias detalladas con fecha, folio, código de reactivo, empleado responsable, motivo obligatorio y fotografía de evidencia en miniatura ampliable.
+
+### 12.2 Métrica y Trazabilidad del Tiempo de Vida
+- Cada encuesta realizada almacena la hora exacta de registro y el sello `EN_TIEMPO` o `FUERA_DE_TIEMPO`.
+- La tabla de encuestas del Dashboard y la sección de reportes exponen el **Día de la Semana y Fecha** (ej. `Mar, 20/10/2026`) y el indicador de puntualidad sin requerir abrir el modal "Ver Encuesta".
 
 ---
 
@@ -311,19 +361,18 @@ Incluye desglose automático en 3 horizontes temporales:
 
 1. **Autenticación JWT (JSON Web Tokens) y Acceso Administrativo Restringido:**
    - Emisión de tokens firmados con algoritmo `HS256` (`jose`), tiempo de expiración de 12 horas y transporte en cookies seguras `HttpOnly` + cabecera `Authorization: Bearer`.
-   - **Custodia Exclusiva de Oscar Mercado:** El módulo de Dashboard, KPIs, configuración de preguntas, áreas, personal y reportes exige credenciales de Administrador General (`rolCodigo: 'ADMIN'`). Peticiones de usuarios no administradores a `/api/auth` son rechazadas inmediatamente con `HTTP 403`.
-2. **Cierre de Sesión Seguro (Logout con Auditoría):**
-   - El endpoint `DELETE /api/auth` revoca la cookie `smartcheck_token`, finaliza la sesión activa del Administrador y asienta un evento `LOGOUT` en la bitácora inmutable de auditoría.
-3. **Segregación Operativa para Jefes de Departamento:**
-   - Los jefes de las áreas de **Infraestructura**, **Control** y **Mantenimiento** se identifican mediante su número de empleado para responder inspecciones. No cuentan con privilegios administrativos para modificar KPIs, borrar registros ni editar plantillas de preguntas ajenas a su competencia.
-4. **Mecanismo Defensivo de Confirmación y Modificación Previa:**
-   - Antes de persistir cualquier encuesta en la base de datos, el cliente intercepta el envío y despliega un diálogo modal de confirmación con el resumen de la captura, permitiendo al jefe de área verificar y cambiar cualquier respuesta antes del guardado formal.
-5. **Contraseñas Cifradas con Derivación Criptográfica:**
-   - Uso de `PBKDF2-SHA256` con 10,000 iteraciones y sal criptográfica (`PASSWORD_SALT`), comparadas en tiempo constante (`crypto.timingSafeEqual`) para inmunidad ante ataques de canal lateral (*timing attacks*).
-6. **Validación Defensiva Multimedia:**
-   - Verificación estricta de extensiones y firmas MIME (`image/jpeg`, `image/png`, `image/webp`), compresión en canvas y validación estricta de obligatoriedad de motivos en respuestas negativas.
-7. **Trazabilidad y Bitácora de Auditoría:**
-   - Cada login exitoso, logout, creación/eliminación de área o pregunta, y alta de empleado genera una traza auditable con IP y actor en `auditoria`.
+   - **Custodia Exclusiva de Oscar Mercado:** El centro de mando administrativo exige rol `ADMIN`. Intentos de acceso de otros usuarios son rechazados con `HTTP 403`.
+2. **Política Restrictiva de Fechas y Autorización Extemporánea:**
+   - Prohibición estricta de fechas futuras (`max={today}`).
+   - La captura de encuestas de más de 5 días de antigüedad requiere la autorización presencial de **Oscar Mercado** mediante validación criptográfica de su contraseña y justificación técnica en `auditoria`. Ni el administrador puede autorizar fechas futuras.
+3. **Regla de Negocio Multi-Área Blindada:**
+   - Se valida tanto en interfaz como en la API REST que un colaborador no pueda tener más de 2 áreas asignadas ni la misma área duplicada como primaria y secundaria.
+4. **Segregación Operativa para Encargados:**
+   - Los encargados de las 7 áreas industriales oficiales únicamente pueden responder cuestionarios correspondientes a sus áreas asignadas, sin privilegios para alterar métricas ni borrar historial.
+5. **Aislamiento Seguro en Despacho de Correos SMTP:**
+   - El subsistema de notificaciones aplica la variable defensiva `MAIL_SOLO_DESTINATARIOS` para restringir los envíos durante etapas de prueba exclusivamente a destinatarios autorizados como `puentealejandro491@gmail.com`.
+6. **Contraseñas Cifradas y Trazabilidad Inmutable:**
+   - Derivación `PBKDF2-SHA256` con 10,000 iteraciones y registro de cada operación en la bitácora `auditoria` con IP, actor y marca de tiempo.
 
 ---
 

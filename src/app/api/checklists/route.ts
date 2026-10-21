@@ -177,7 +177,6 @@ export async function GET(req: NextRequest) {
         numeroEmpleado: emp.numeroEmpleado,
         nombreCompleto: emp.nombreCompleto,
         areaNombre: emp.areaNombre,
-        rolCodigo: emp.rolCodigo,
         activo: emp.activo,
         ...st,
       };
@@ -229,7 +228,7 @@ export async function GET(req: NextRequest) {
       const v = getVentana(area);
       const ev = estadoVentana(area, ahora);
       const esperados = db.empleados.filter(
-        (e) => e.activo && e.rolCodigo !== 'ADMIN' && (e.areaId === area.id || e.areaIdSecundaria === area.id)
+        (e) => e.activo && e.numeroEmpleado !== '1000' && (e.areaId === area.id || e.areaIdSecundaria === area.id)
       );
       const delAreaHoy = db.checklists
         .filter((c) => c.areaId === area.id && c.fechaOperacion === today)
@@ -384,7 +383,7 @@ export async function POST(req: NextRequest) {
         }
         if (!autorizado && autorizacionAdmin.password) {
           const oscar = db.empleados.find(
-            (e) => (e.numeroEmpleado === '1000' || e.rolCodigo === 'ADMIN') && e.activo
+            (e) => e.numeroEmpleado === '1000' && e.activo
           );
           if (oscar) {
             const valid = oscar.passwordHash

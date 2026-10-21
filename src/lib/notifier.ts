@@ -81,7 +81,7 @@ export function obtenerPendientesVencidos(db: DatabaseSchema, now = new Date()):
   for (const area of db.areas) {
     if (estadoVentana(area, now).estado !== 'CERRADA') continue;
     for (const emp of db.empleados) {
-      if (!emp.activo || emp.rolCodigo === 'ADMIN') continue;
+      if (!emp.activo || emp.numeroEmpleado === '1000') continue;
       if (emp.areaId !== area.id && emp.areaIdSecundaria !== area.id) continue;
       const contesto = db.checklists.some(
         (c) => c.empleadoId === emp.id && c.areaId === area.id && c.fechaOperacion === hoy

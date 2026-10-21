@@ -170,8 +170,6 @@ flowchart TB
 
 ```mermaid
 erDiagram
-    ROLES ||--o{ USUARIOS : "asigna"
-    ROLES ||--o{ EMPLEADOS : "define_permisos"
     AREAS ||--o{ EMPLEADOS : "adscribe_primaria_y_secundaria_max_2"
     AREAS ||--o{ PREGUNTAS : "contiene"
     AREAS ||--o{ CHECKLISTS : "evalua_con_horario"
@@ -190,19 +188,18 @@ erDiagram
 
 ## 8. Diseño Completo de Base de Datos
 
-El script DDL completo para producción en **PostgreSQL** se encuentra en [`database/schema_postgresql.sql`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/database/schema_postgresql.sql). Incluye las **11 tablas del sistema**:
+Los scripts DDL completos para producción en **PostgreSQL** y **MySQL Server 8.0+** se encuentran en [`database/schema_postgresql.sql`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/database/schema_postgresql.sql) y [`ER/schema_mysql.sql`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/ER/schema_mysql.sql). Tras la **eliminación formal de la tabla roles**, el sistema opera con **10 tablas normalizadas** (con asignación directa de rol en las credenciales administrativas de usuarios y tokens JWT):
 
-1. **`roles`**: Catálogo RBAC (`ADMIN`, `SUPERVISOR`, `OPERADOR`) con permisos en `JSONB`.
-2. **`areas`**: Las 7 áreas industriales oficiales (**MES**, **Ind. 4.0**, **Infraestructura**, **Staff IT**, **Digitalizacion**, **SAP**, **Soporte Manufactura**) con sus columnas de tiempo de vida `hora_inicio` (default `'07:00'`) y `hora_fin` (default `'08:30'`).
-3. **`usuarios`**: Cuentas con `password_hash` cifrado (PBKDF2), control de bloqueos y último acceso.
-4. **`empleados`**: Padrón con índice único en `numero_empleado` y soporte para asignación multi-área (`area_id` principal y `area_id_secundaria`, máximo 2 áreas).
-5. **`preguntas`**: Reactivos técnicos dinámicos asociados a `area_id`, con orden secuencial y criticidad.
-6. **`checklists`**: Cabecera con folio único, fecha de operación (estrictamente `<= hoy`), `hora_registro`, estado de vigencia horaria (`estado_tiempo`: `EN_TIEMPO` o `FUERA_DE_TIEMPO`) y KPIs precalculados.
-7. **`respuestas`**: Detalle por pregunta con `CONSTRAINT chk_motivo_obligatorio_en_no` que impide a nivel de motor registrar `respuesta = FALSE` sin `motivo_no`.
-8. **`evidencias`**: Metadatos y URL de imágenes fotográficas con validación `CHECK (formato IN ('JPG', 'JPEG', 'PNG', 'WEBP'))`.
-9. **`estadisticas`**: Agregaciones analíticas diarias, semanales y mensuales para optimizar consultas del Dashboard.
-10. **`notificaciones`**: Registro y trazabilidad de alertas automáticas enviadas vía correo electrónico (Nodemailer) a colaboradores con encuestas pendientes tras el cierre de su ventana horaria.
-11. **`auditoria`**: Bitácora inmutable de eventos con `datos_anteriores` y `datos_nuevos` en `JSONB`.
+1. **`areas`**: Las 7 áreas industriales oficiales (**MES**, **Ind. 4.0**, **Infraestructura**, **Staff IT**, **Digitalizacion**, **SAP**, **Soporte Manufactura**) con sus columnas de tiempo de vida `hora_inicio` (default `'07:00'`) y `hora_fin` (default `'08:30'`).
+2. **`usuarios`**: Cuentas con `password_hash` cifrado (PBKDF2), rol administrativo directo (`ADMIN`, `SUPERVISOR`, `OPERADOR`), control de bloqueos y último acceso.
+3. **`empleados`**: Padrón con índice único en `numero_empleado` y soporte para asignación multi-área (`area_id` principal y `area_id_secundaria`, máximo 2 áreas).
+4. **`preguntas`**: Reactivos técnicos dinámicos asociados a `area_id`, con orden secuencial y criticidad.
+5. **`checklists`**: Cabecera con folio único, fecha de operación (estrictamente `<= hoy`), `hora_registro`, estado de vigencia horaria (`estado_tiempo`: `EN_TIEMPO` o `FUERA_DE_TIEMPO`) y KPIs precalculados.
+6. **`respuestas`**: Detalle por pregunta con `CONSTRAINT chk_motivo_obligatorio_en_no` que impide a nivel de motor registrar `respuesta = FALSE` sin `motivo_no`.
+7. **`evidencias`**: Metadatos y URL de imágenes fotográficas con validación `CHECK (formato IN ('JPG', 'JPEG', 'PNG', 'WEBP'))`.
+8. **`estadisticas`**: Agregaciones analíticas diarias, semanales y mensuales para optimizar consultas del Dashboard.
+9. **`notificaciones`**: Registro y trazabilidad de alertas automáticas enviadas vía correo electrónico (Nodemailer) a colaboradores con encuestas pendientes tras el cierre de su ventana horaria.
+10. **`auditoria`**: Bitácora inmutable de eventos con `datos_anteriores` y `datos_nuevos` en `JSONB`.
 
 ---
 
@@ -215,7 +212,7 @@ El script DDL completo para producción en **PostgreSQL** se encuentra en [`data
 | `DELETE` | `/api/auth` | Cierra la sesión administrativa, destruye la cookie `smartcheck_token` y registra el evento `LOGOUT` en auditoría. |
 | `GET` | `/api/employees?numero={n}` | Busca al colaborador por nómina y devuelve su perfil, permitiendo detectar adscripción multi-área (`areaId` y `areaIdSecundaria`) y retornando las preguntas correspondientes. |
 | `POST` | `/api/employees` | Alta de colaboradores admitiendo asignación de hasta 2 áreas con validación contra duplicidad. |
-| `PUT` | `/api/employees` | Edita asignaciones de áreas (máx. 2), rol o estado activo/inactivo. |
+| `PUT` | `/api/employees` | Edita asignaciones de áreas (máx. 2) o estado activo/inactivo. |
 | `GET` | `/api/areas` | Lista las 7 áreas oficiales con conteo de preguntas, empleados y sus rangos horarios (`horaInicio`, `horaFin`). |
 | `POST` | `/api/areas` | Crea una nueva área dinámica con 3 preguntas operativas base y horario default `07:00` - `08:30`. |
 | `PUT` | `/api/areas` | Permite a **Oscar Mercado** modificar la ventana del tiempo de vida (`horaInicio`, `horaFin`) de cualquier área, validando formato `HH:MM`. |
@@ -359,7 +356,8 @@ $$\text{Porcentaje de Incidencias (\%)} = \left( \frac{\text{Total de respuestas
 
 ## 13. Estrategia de Seguridad y Segregación de Roles
 
-1. **Autenticación JWT (JSON Web Tokens) y Acceso Administrativo Restringido:**
+1. **Autenticación JWT, Acceso Administrativo Restringido y Eliminación de la Tabla Roles:**
+   - **Eliminación de la tabla `roles`:** Se suprimió la tabla física de roles del esquema de base de datos para optimizar el rendimiento y simplicidad arquitectónica. El control de acceso basado en roles (RBAC) se gestiona de forma directa mediante la columna `rol` en las cuentas administrativas (`usuarios.rol`) y aserciones tipadas estrictamente en TypeScript (`RoleCode`) dentro del payload de los tokens JWT (`JWTPayloadUser`), erradicando sobrecostes de JOINs contra un catálogo inmutable.
    - Emisión de tokens firmados con algoritmo `HS256` (`jose`), tiempo de expiración de 12 horas y transporte en cookies seguras `HttpOnly` + cabecera `Authorization: Bearer`.
    - **Custodia Exclusiva de Oscar Mercado:** El centro de mando administrativo exige rol `ADMIN`. Intentos de acceso de otros usuarios son rechazados con `HTTP 403`.
 2. **Política Restrictiva de Fechas y Autorización Extemporánea:**

@@ -10,7 +10,6 @@ import {
   Evidencia,
   Pregunta,
   RespuestaItem,
-  Role,
 } from '@/types';
 import { hashPassword } from './auth';
 import { DEFAULT_HORA_FIN, DEFAULT_HORA_INICIO, evaluarTiempo, localHHMM } from './schedule';
@@ -50,33 +49,6 @@ function createSampleEvidenceSvgDataUrl(title: string, area: string, date: strin
 function buildInitialDatabase(): DatabaseSchema {
   const nowIso = new Date().toISOString();
   const defaultAdminPass = hashPassword('admin123');
-
-  const roles: Role[] = [
-    {
-      id: 1,
-      codigo: 'ADMIN',
-      nombre: 'Administrador General',
-      descripcion: 'Control total de usuarios, áreas, plantillas de checklist, dashboard y auditoría.',
-      permisos: ['*'],
-      activo: true,
-    },
-    {
-      id: 2,
-      codigo: 'SUPERVISOR',
-      nombre: 'Supervisor de Área',
-      descripcion: 'Supervisión ejecutiva de KPIs, reportes y seguimiento de incidencias.',
-      permisos: ['dashboard.view', 'reports.export', 'checklist.execute', 'incidents.manage'],
-      activo: true,
-    },
-    {
-      id: 3,
-      codigo: 'OPERADOR',
-      nombre: 'Especialista Operativo',
-      descripcion: 'Ejecución de checklists diarios en campo y captura de evidencias.',
-      permisos: ['checklist.execute'],
-      activo: true,
-    },
-  ];
 
   const areas: Area[] = [
     {
@@ -169,7 +141,6 @@ function buildInitialDatabase(): DatabaseSchema {
       areaNombre: 'Infraestructura',
       areaIdSecundaria: 4,
       areaNombreSecundaria: 'Staff IT',
-      rolCodigo: 'ADMIN',
       activo: true,
       passwordHash: defaultAdminPass,
       createdAt: nowIso,
@@ -185,7 +156,6 @@ function buildInitialDatabase(): DatabaseSchema {
       areaNombre: 'Infraestructura',
       areaIdSecundaria: 2,
       areaNombreSecundaria: 'Ind. 4.0',
-      rolCodigo: 'OPERADOR',
       activo: true,
       passwordHash: defaultAdminPass,
       createdAt: nowIso,
@@ -199,7 +169,6 @@ function buildInitialDatabase(): DatabaseSchema {
       puesto: 'Jefe de Sistemas MES',
       areaId: 1,
       areaNombre: 'MES',
-      rolCodigo: 'SUPERVISOR',
       activo: true,
       passwordHash: defaultAdminPass,
       createdAt: nowIso,
@@ -213,7 +182,6 @@ function buildInitialDatabase(): DatabaseSchema {
       puesto: 'Jefa de Industria 4.0',
       areaId: 2,
       areaNombre: 'Ind. 4.0',
-      rolCodigo: 'SUPERVISOR',
       activo: true,
       passwordHash: defaultAdminPass,
       createdAt: nowIso,
@@ -227,7 +195,6 @@ function buildInitialDatabase(): DatabaseSchema {
       puesto: 'Jefe de Infraestructura',
       areaId: 3,
       areaNombre: 'Infraestructura',
-      rolCodigo: 'SUPERVISOR',
       activo: true,
       passwordHash: defaultAdminPass,
       createdAt: nowIso,
@@ -243,7 +210,6 @@ function buildInitialDatabase(): DatabaseSchema {
       areaNombre: 'Digitalizacion',
       areaIdSecundaria: 1,
       areaNombreSecundaria: 'MES',
-      rolCodigo: 'OPERADOR',
       activo: true,
       passwordHash: defaultAdminPass,
       createdAt: nowIso,
@@ -257,7 +223,6 @@ function buildInitialDatabase(): DatabaseSchema {
       puesto: 'Ingeniero de Soporte a Manufactura',
       areaId: 7,
       areaNombre: 'Soporte Manufactura',
-      rolCodigo: 'OPERADOR',
       activo: true,
       passwordHash: defaultAdminPass,
       createdAt: nowIso,
@@ -271,7 +236,6 @@ function buildInitialDatabase(): DatabaseSchema {
       puesto: 'Especialista en Módulos SAP',
       areaId: 6,
       areaNombre: 'SAP',
-      rolCodigo: 'OPERADOR',
       activo: true,
       passwordHash: defaultAdminPass,
       createdAt: nowIso,
@@ -285,7 +249,6 @@ function buildInitialDatabase(): DatabaseSchema {
       puesto: 'Líder de Mesa de Ayuda Staff IT',
       areaId: 4,
       areaNombre: 'Staff IT',
-      rolCodigo: 'OPERADOR',
       activo: true,
       passwordHash: defaultAdminPass,
       createdAt: nowIso,
@@ -301,7 +264,6 @@ function buildInitialDatabase(): DatabaseSchema {
       areaNombre: 'Soporte Manufactura',
       areaIdSecundaria: 6,
       areaNombreSecundaria: 'SAP',
-      rolCodigo: 'OPERADOR',
       activo: true,
       passwordHash: defaultAdminPass,
       createdAt: nowIso,
@@ -954,7 +916,6 @@ function buildInitialDatabase(): DatabaseSchema {
   ];
 
   return {
-    roles,
     areas: areas.map((a) => ({
       ...a,
       horaInicio: a.horaInicio || DEFAULT_HORA_INICIO,

@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
         e.numeroEmpleado.toLowerCase() === cleanNum.toLowerCase() ||
         e.numeroEmpleado.toLowerCase() === String(numeroEmpleado).trim().toLowerCase();
       const matchAlias =
-        (cleanNum.toLowerCase() === 'admin' && e.rolCodigo === 'ADMIN') ||
+        (cleanNum.toLowerCase() === 'admin' && e.numeroEmpleado === '1000') ||
         (cleanNum.toLowerCase() === 'oscar' && e.nombreCompleto.toLowerCase().includes('oscar mercado')) ||
         (cleanNum.toLowerCase() === 'oscar.mercado' && e.nombreCompleto.toLowerCase().includes('oscar mercado'));
       return matchNum || matchAlias;
@@ -44,8 +44,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // El Dashboard y la administración son exclusivos para el Administrador General (Oscar Mercado)
-    if (empleado.rolCodigo !== 'ADMIN') {
+    // El Dashboard y la administración son exclusivos para el Administrador General (Oscar Mercado, emp #1000)
+    if (empleado.numeroEmpleado !== '1000' && !empleado.nombreCompleto.toLowerCase().includes('oscar mercado')) {
       return NextResponse.json(
         {
           error:
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
       nombreCompleto: empleado.nombreCompleto,
       areaId: empleado.areaId,
       areaNombre: empleado.areaNombre,
-      rolCodigo: empleado.rolCodigo,
+      rolCodigo: 'ADMIN' as const,
     };
 
     const token = await signToken(payload);

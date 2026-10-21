@@ -6,15 +6,6 @@ export type ImageFormat = 'JPG' | 'PNG' | 'WEBP';
 
 export type CaptureOrigin = 'CAMARA' | 'GALERIA' | 'DRAG_DROP';
 
-export interface Role {
-  id: number;
-  codigo: RoleCode;
-  nombre: string;
-  descripcion: string;
-  permisos: string[];
-  activo: boolean;
-}
-
 export interface Area {
   id: number;
   codigo: string;
@@ -59,7 +50,6 @@ export interface Empleado {
   areaNombre: string;
   areaIdSecundaria?: number | null;
   areaNombreSecundaria?: string | null;
-  rolCodigo: RoleCode;
   activo: boolean;
   passwordHash?: string;
   createdAt: string;
@@ -160,7 +150,6 @@ export interface EstadisticaRegistro {
 }
 
 export interface DatabaseSchema {
-  roles: Role[];
   areas: Area[];
   empleados: Empleado[];
   preguntas: Pregunta[];

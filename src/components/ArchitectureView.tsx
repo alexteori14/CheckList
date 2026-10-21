@@ -112,7 +112,7 @@ export default function ArchitectureView() {
                     PostgreSQL + Azure Blob Storage
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed text-pretty">
-                    Esquema relacional 3FN en <code>database/schema_postgresql.sql</code> con 10 tablas normalizadas, llaves primarias UUID/Serial, llaves foráneas, índices compuestos, triggers de actualización y bitácora inmutable de auditoría.
+                    Esquema relacional 3FN en <code>database/schema_postgresql.sql</code> y <code>ER/schema_mysql.sql</code> con tablas normalizadas (arquitectura simplificada sin tabla de roles), llaves primarias UUID/Serial, llaves foráneas, índices compuestos, triggers de actualización y bitácora inmutable de auditoría.
                   </p>
                 </div>
               </div>
@@ -121,14 +121,13 @@ export default function ArchitectureView() {
             {activeTab === 'bd' && (
               <div className="pt-6 space-y-4">
                 <p className="text-xs text-slate-600 text-pretty">
-                  Las <strong>10 tablas obligatorias</strong> solicitadas en la Sección 10 de <code>Especificaciones.txt</code> están implementadas y su DDL completo se encuentra en <code>database/schema_postgresql.sql</code>:
+                  Las tablas relacionales del sistema (tras la <strong>eliminación formal de la tabla roles</strong> y la integración directa del rol en las credenciales administrativas de usuarios) están implementadas en <code>database/schema_postgresql.sql</code> y <code>ER/schema_mysql.sql</code>:
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 tabular-nums">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 tabular-nums">
                   {[
-                    { name: 'roles', desc: 'PK: id | Código (ADMIN, SUPERVISOR, OPERADOR) y permisos JSONB.' },
                     { name: 'areas', desc: 'PK: id | MES, Ind. 4.0, Infraestructura, Staff IT, Digitalizacion, SAP, Soporte Manufactura + áreas dinámicas.' },
-                    { name: 'usuarios', desc: 'PK: uuid | Credenciales cifradas PBKDF2/Bcrypt, rol_id (FK) y bloqueos.' },
-                    { name: 'empleados', desc: 'PK: uuid | Índice único en numero_empleado, area_id (FK) y rol_id (FK).' },
+                    { name: 'usuarios', desc: 'PK: uuid | Credenciales cifradas PBKDF2/Bcrypt, rol administrativo directo (ADMIN, SUPERVISOR) y bloqueos.' },
+                    { name: 'empleados', desc: 'PK: uuid | Padrón operativo físico: índice único en numero_empleado, area_id (FK) y adscripción multi-área.' },
                     { name: 'preguntas', desc: 'PK: id | Banco dinámico por area_id (FK), criticidad y orden.' },
                     { name: 'checklists', desc: 'PK: uuid | Folio único, empleado_id (FK), area_id (FK), fecha y KPIs.' },
                     { name: 'respuestas', desc: 'PK: uuid | CHECK constraint: exige motivo_no obligatorio cuando respuesta = FALSE.' },

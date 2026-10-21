@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { readDb, writeDb, registerAudit } from '@/lib/db';
 import { hashPassword } from '@/lib/auth';
-import { Area, Empleado, RoleCode } from '@/types';
+import { Area, Empleado } from '@/types';
 
 export const dynamic = 'force-dynamic';
 
@@ -54,7 +54,7 @@ export async function GET(req: NextRequest) {
     .filter((e) => includeInactive || e.activo)
     .map(({ passwordHash: _ph, ...rest }) => rest);
 
-  return NextResponse.json({ empleados: list, areas: db.areas, roles: db.roles });
+  return NextResponse.json({ empleados: list, areas: db.areas });
 }
 
 export async function POST(req: NextRequest) {
@@ -67,7 +67,6 @@ export async function POST(req: NextRequest) {
       areaIdSecundaria,
       correo,
       puesto,
-      rolCodigo,
       password,
     } = body;
 
@@ -109,10 +108,6 @@ export async function POST(req: NextRequest) {
     const secArea = areaIdSecundaria
       ? db.areas.find((a) => a.id === Number(areaIdSecundaria)) || null
       : null;
-    const selectedRole: RoleCode =
-      rolCodigo && ['ADMIN', 'SUPERVISOR', 'OPERADOR'].includes(rolCodigo)
-        ? rolCodigo
-        : 'OPERADOR';
 
     const nowIso = new Date().toISOString();
     const newEmpleado: Empleado = {
@@ -125,7 +120,6 @@ export async function POST(req: NextRequest) {
       areaNombre: selectedArea.nombre,
       areaIdSecundaria: secArea ? secArea.id : null,
       areaNombreSecundaria: secArea ? secArea.nombre : null,
-      rolCodigo: selectedRole,
       activo: true,
       passwordHash: hashPassword(password ? String(password) : 'admin123'),
       createdAt: nowIso,
@@ -140,7 +134,7 @@ export async function POST(req: NextRequest) {
       accion: 'ALTA_USUARIO',
       entidad: 'Empleado',
       entidadId: newEmpleado.id,
-      detalles: `Alta de empleado #${newEmpleado.numeroEmpleado} (${newEmpleado.nombreCompleto}) en área ${newEmpleado.areaNombre} con rol ${newEmpleado.rolCodigo}`,
+      detalles: `Alta de empleado #${newEmpleado.numeroEmpleado} (${newEmpleado.nombreCompleto}) en área ${newEmpleado.areaNombre}`,
     });
 
     writeDb(db);
@@ -167,7 +161,6 @@ export async function PUT(req: NextRequest) {
       areaIdSecundaria,
       correo,
       puesto,
-      rolCodigo,
       activo,
     } = body;
 
@@ -241,9 +234,6 @@ export async function PUT(req: NextRequest) {
     if (current.areaIdSecundaria && current.areaIdSecundaria === current.areaId) {
       current.areaIdSecundaria = null;
       current.areaNombreSecundaria = null;
-    }
-    if (rolCodigo !== undefined) {
-      current.rolCodigo = rolCodigo as RoleCode;
     }
     if (typeof activo === 'boolean') {
       current.activo = activo;

@@ -1105,7 +1105,7 @@ export default function ChecklistWizard({
               </p>
               <div className="flex flex-wrap gap-2">
                 {catalogoEmpleados
-                  .filter((emp) => emp.rolCodigo !== 'ADMIN')
+                  .filter((emp) => emp.numeroEmpleado !== '1000')
                   .slice(0, 8)
                   .map((emp) => {
                   const selected = numeroEmpleadoInput === emp.numeroEmpleado;
@@ -1249,8 +1249,7 @@ export default function ChecklistWizard({
                         {empleadoEncontrado.nombreCompleto}
                       </p>
                       <p className="text-xs text-slate-600">
-                        {empleadoEncontrado.puesto || 'Especialista Operativo'} • Rol:{' '}
-                        {empleadoEncontrado.rolCodigo}
+                        {empleadoEncontrado.puesto || 'Especialista Operativo'}
                       </p>
                     </div>
                   </div>

@@ -165,7 +165,6 @@ interface DashboardApiResponse {
     numeroEmpleado: string;
     nombreCompleto: string;
     areaNombre: string;
-    rolCodigo: RoleCode;
     activo: boolean;
     totalChecklists: number;
     totalRespuestas: number;
@@ -330,13 +329,11 @@ export default function AdminDashboard() {
     nombreCompleto: string;
     areaId: number;
     areaIdSecundaria: number;
-    rolCodigo: RoleCode;
   }>({
     numeroEmpleado: '',
     nombreCompleto: '',
     areaId: 1,
     areaIdSecundaria: 0,
-    rolCodigo: 'OPERADOR',
   });
   const [userMessage, setUserMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
 
@@ -542,7 +539,6 @@ export default function AdminDashboard() {
         nombreCompleto: userForm.nombreCompleto.trim(),
         areaId: userForm.areaId,
         areaIdSecundaria: userForm.areaIdSecundaria > 0 ? userForm.areaIdSecundaria : null,
-        rolCodigo: userForm.rolCodigo,
       };
 
       const res = await fetch('/api/employees', {
@@ -568,7 +564,6 @@ export default function AdminDashboard() {
         nombreCompleto: '',
         areaId: areas[0]?.id || 1,
         areaIdSecundaria: 0,
-        rolCodigo: 'OPERADOR',
       });
       fetchAllData();
     } catch {
@@ -2446,27 +2441,6 @@ export default function AdminDashboard() {
                     </p>
                   </div>
 
-                  <div>
-                    <label htmlFor="u-rol" className="block text-xs font-bold text-slate-800 mb-1">
-                      Rol en Plataforma
-                    </label>
-                    <select
-                      id="u-rol"
-                      value={userForm.rolCodigo}
-                      onChange={(e) =>
-                        setUserForm((prev) => ({
-                          ...prev,
-                          rolCodigo: e.target.value as RoleCode,
-                        }))
-                      }
-                      className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-xs font-semibold bg-white"
-                    >
-                      <option value="OPERADOR">OPERADOR / ENCARGADO DE ÁREA</option>
-                      <option value="SUPERVISOR">SUPERVISOR</option>
-                      <option value="ADMIN">ADMINISTRADOR GENERAL</option>
-                    </select>
-                  </div>
-
                   <div className="flex items-center gap-2 pt-2">
                     <button
                       type="submit"
@@ -2484,7 +2458,6 @@ export default function AdminDashboard() {
                             nombreCompleto: '',
                             areaId: areas[0]?.id || 1,
                             areaIdSecundaria: 0,
-                            rolCodigo: 'OPERADOR',
                           });
                         }}
                         className="px-4 py-3 rounded-lg bg-slate-100 text-slate-800 font-bold text-xs"
@@ -2508,7 +2481,6 @@ export default function AdminDashboard() {
                         <th className="py-3 px-3"># Emp.</th>
                         <th className="py-3 px-3">Nombre Completo</th>
                         <th className="py-3 px-3">Áreas Asignadas (Máx. 2)</th>
-                        <th className="py-3 px-3">Rol</th>
                         <th className="py-3 px-3">Estado</th>
                         <th className="py-3 px-3 text-right">Acciones</th>
                       </tr>
@@ -2536,11 +2508,6 @@ export default function AdminDashboard() {
                             </div>
                           </td>
                           <td className="py-3 px-3">
-                            <span className="px-2 py-0.5 rounded bg-slate-100 font-bold text-slate-800">
-                              {emp.rolCodigo}
-                            </span>
-                          </td>
-                          <td className="py-3 px-3">
                             {emp.activo ? (
                               <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-900 border border-emerald-200 font-bold">
                                 <Check className="size-3" /> Activo
@@ -2562,7 +2529,6 @@ export default function AdminDashboard() {
                                   nombreCompleto: emp.nombreCompleto,
                                   areaId: emp.areaId,
                                   areaIdSecundaria: emp.areaIdSecundaria || 0,
-                                  rolCodigo: emp.rolCodigo,
                                 });
                               }}
                               className="p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700"

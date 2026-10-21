@@ -47,6 +47,7 @@ import {
   ChevronUp,
   Camera,
   AlertTriangle,
+  Mail,
 } from 'lucide-react';
 import {
   Area,
@@ -268,6 +269,33 @@ function getFormatoDiaYFecha(fechaStr?: string, createdAt?: string) {
   };
 }
 
+/**
+ * Genera un correo corporativo sugerido a partir del nombre completo del empleado.
+ * Remueve títulos (Ing., Lic., etc.), acentos y caracteres especiales,
+ * resultando en formato nombre.apellido@empresa.com o fallback con número de empleado.
+ */
+function generarCorreoSugerido(nombreCompleto: string, numeroEmpleado?: string): string {
+  const nombreLimpio = (nombreCompleto || '')
+    .trim()
+    .replace(/^(ing\.|lic\.|dr\.|dra\.|mtro\.|mtra\.|prof\.|c\.|sr\.|sra\.)\s+/i, '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, '')
+    .trim();
+
+  const partes = nombreLimpio.split(/\s+/).filter(Boolean);
+  if (partes.length >= 2) {
+    return `${partes[0]}.${partes[1]}@empresa.com`;
+  } else if (partes.length === 1) {
+    return `${partes[0]}@empresa.com`;
+  } else if (numeroEmpleado && numeroEmpleado.trim()) {
+    const cleanNum = numeroEmpleado.trim().replace(/^emp-?/i, '');
+    return `empleado${cleanNum}@empresa.com`;
+  }
+  return '';
+}
+
 export default function AdminDashboard() {
   const shouldReduceMotion = useReducedMotion();
 
@@ -322,20 +350,33 @@ export default function AdminDashboard() {
   const [confirmDeleteQuestion, setConfirmDeleteQuestion] = useState<Pregunta | null>(null);
   const [confirmDeleteArea, setConfirmDeleteArea] = useState<Area | null>(null);
 
-  // Alta / Edición de Empleados (sin campo correo, hasta 2 áreas máx. por empleado)
+  // Alta / Edición de Empleados (con correo autocompletado y editable, hasta 2 áreas máx. por empleado)
   const [editingUser, setEditingUser] = useState<Empleado | null>(null);
   const [userForm, setUserForm] = useState<{
     numeroEmpleado: string;
     nombreCompleto: string;
+    correo: string;
     areaId: number;
     areaIdSecundaria: number;
   }>({
     numeroEmpleado: '',
     nombreCompleto: '',
+    correo: '',
     areaId: 1,
     areaIdSecundaria: 0,
   });
+  const [correoEditadoManualmente, setCorreoEditadoManualmente] = useState<boolean>(false);
   const [userMessage, setUserMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
+
+  // Modificación rápida de correo en la tabla de empleados
+  const [editingCorreoEmpId, setEditingCorreoEmpId] = useState<string | null>(null);
+  const [editingCorreoValor, setEditingCorreoValor] = useState<string>('');
+  const [savingCorreoId, setSavingCorreoId] = useState<string | null>(null);
+  const [correoTableFeedback, setCorreoTableFeedback] = useState<{
+    id: string;
+    type: 'ok' | 'err';
+    msg: string;
+  } | null>(null);
 
   // Creación de Área Dinámica (solo Nombre del Área, sin código corto ni encargado)
   const [newAreaName, setNewAreaName] = useState<string>('');
@@ -537,6 +578,7 @@ export default function AdminDashboard() {
         ...(editingUser ? { id: editingUser.id } : {}),
         numeroEmpleado: userForm.numeroEmpleado.trim(),
         nombreCompleto: userForm.nombreCompleto.trim(),
+        correo: userForm.correo.trim(),
         areaId: userForm.areaId,
         areaIdSecundaria: userForm.areaIdSecundaria > 0 ? userForm.areaIdSecundaria : null,
       };
@@ -556,18 +598,64 @@ export default function AdminDashboard() {
         type: 'ok',
         text: editingUser
           ? `Empleado #${data.empleado.numeroEmpleado} actualizado correctamente.`
-          : `Empleado #${data.empleado.numeroEmpleado} (${data.empleado.nombreCompleto}) dado de alta con éxito.`,
+          : `Empleado #${data.empleado.numeroEmpleado} (${data.empleado.nombreCompleto}) dado de alta con éxito (Correo: ${data.empleado.correo || 'N/A'}).`,
       });
       setEditingUser(null);
+      setCorreoEditadoManualmente(false);
       setUserForm({
         numeroEmpleado: '',
         nombreCompleto: '',
+        correo: '',
         areaId: areas[0]?.id || 1,
         areaIdSecundaria: 0,
       });
       fetchAllData();
     } catch {
       setUserMessage({ type: 'err', text: 'Error de conexión al guardar usuario.' });
+    }
+  };
+
+  const handleSaveInlineCorreo = async (emp: Empleado) => {
+    const nuevoCorreo = editingCorreoValor.trim();
+    setSavingCorreoId(emp.id);
+    setCorreoTableFeedback(null);
+    try {
+      const res = await fetch('/api/employees', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: emp.id,
+          correo: nuevoCorreo,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setCorreoTableFeedback({
+          id: emp.id,
+          type: 'err',
+          msg: data.error || 'Error al actualizar el correo electrónico.',
+        });
+        return;
+      }
+
+      setEmpleados((prev) =>
+        prev.map((e) => (e.id === emp.id ? { ...e, correo: nuevoCorreo } : e))
+      );
+      setEditingCorreoEmpId(null);
+      setCorreoTableFeedback({
+        id: emp.id,
+        type: 'ok',
+        msg: `Correo del empleado #${emp.numeroEmpleado} (${emp.nombreCompleto}) actualizado exitosamente a: ${nuevoCorreo || '(sin correo)'}.`,
+      });
+      fetchAllData();
+    } catch {
+      setCorreoTableFeedback({
+        id: emp.id,
+        type: 'err',
+        msg: 'Error de conexión al actualizar el correo electrónico.',
+      });
+    } finally {
+      setSavingCorreoId(null);
     }
   };
 
@@ -2328,7 +2416,7 @@ export default function AdminDashboard() {
           )}
 
           {/* =====================================================================
-              SECCIÓN 5: ADMINISTRACIÓN DE EMPLEADOS (Sin correo electrónico)
+              SECCIÓN 5: ADMINISTRACIÓN DE EMPLEADOS (Con gestión de correo)
              ===================================================================== */}
           {activeSection === 'usuarios' && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -2340,7 +2428,7 @@ export default function AdminDashboard() {
                   </span>
                 </h3>
                 <p className="text-xs text-slate-600 mb-4 text-pretty">
-                  Identificación directa por Número de Empleado y Nombre Completo.
+                  Identificación directa por Número de Empleado, Nombre Completo y Correo Corporativo.
                 </p>
 
                 {userMessage && (
@@ -2367,9 +2455,16 @@ export default function AdminDashboard() {
                       type="text"
                       required
                       value={userForm.numeroEmpleado}
-                      onChange={(e) =>
-                        setUserForm((prev) => ({ ...prev, numeroEmpleado: e.target.value }))
-                      }
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setUserForm((prev) => {
+                          const next = { ...prev, numeroEmpleado: val };
+                          if (!editingUser && !correoEditadoManualmente && !prev.nombreCompleto.trim()) {
+                            next.correo = generarCorreoSugerido('', val);
+                          }
+                          return next;
+                        });
+                      }}
                       placeholder="Ej. 2007"
                       className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-xs font-semibold tabular-nums"
                     />
@@ -2384,12 +2479,58 @@ export default function AdminDashboard() {
                       type="text"
                       required
                       value={userForm.nombreCompleto}
-                      onChange={(e) =>
-                        setUserForm((prev) => ({ ...prev, nombreCompleto: e.target.value }))
-                      }
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setUserForm((prev) => {
+                          const next = { ...prev, nombreCompleto: val };
+                          if (!editingUser && !correoEditadoManualmente) {
+                            next.correo = generarCorreoSugerido(val, prev.numeroEmpleado);
+                          }
+                          return next;
+                        });
+                      }}
                       placeholder="Ej. Ing. Mariana López"
                       className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-xs font-semibold"
                     />
+                  </div>
+
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <label htmlFor="u-correo" className="block text-xs font-bold text-slate-800">
+                        Correo Electrónico <span className="text-slate-500 font-normal">(Autocompletado)</span>
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const sug = generarCorreoSugerido(userForm.nombreCompleto, userForm.numeroEmpleado);
+                          setUserForm((prev) => ({ ...prev, correo: sug }));
+                          setCorreoEditadoManualmente(false);
+                        }}
+                        className="text-[11px] font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1 hover:underline"
+                        title="Generar correo corporativo automáticamente según el nombre"
+                      >
+                        <RefreshCw className="size-2.5" /> Auto-sugerir
+                      </button>
+                    </div>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <Mail className="size-3.5" />
+                      </div>
+                      <input
+                        id="u-correo"
+                        type="email"
+                        value={userForm.correo}
+                        onChange={(e) => {
+                          setCorreoEditadoManualmente(true);
+                          setUserForm((prev) => ({ ...prev, correo: e.target.value }));
+                        }}
+                        placeholder="Ej. nombre.apellido@empresa.com"
+                        className="w-full rounded-lg border border-slate-300 pl-9 pr-3.5 py-2.5 text-xs font-mono font-medium focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-white"
+                      />
+                    </div>
+                    <p className="text-[11px] text-slate-500 mt-1">
+                      Se autocompleta en automático al capturar el nombre, pero puedes modificarlo libremente si contiene algún error o requiere una cuenta externa (ej. Gmail).
+                    </p>
                   </div>
 
                   <div>
@@ -2453,9 +2594,11 @@ export default function AdminDashboard() {
                         type="button"
                         onClick={() => {
                           setEditingUser(null);
+                          setCorreoEditadoManualmente(false);
                           setUserForm({
                             numeroEmpleado: '',
                             nombreCompleto: '',
+                            correo: '',
                             areaId: areas[0]?.id || 1,
                             areaIdSecundaria: 0,
                           });
@@ -2474,12 +2617,35 @@ export default function AdminDashboard() {
                   Directorio de Empleados y Encargados Registrados ({empleados.length})
                 </h3>
 
+                {correoTableFeedback && (
+                  <div
+                    role="status"
+                    className={cn(
+                      'p-3 rounded-lg text-xs font-bold mb-4 flex items-center justify-between',
+                      correoTableFeedback.type === 'ok'
+                        ? 'bg-emerald-50 text-emerald-900 border border-emerald-200'
+                        : 'bg-rose-50 text-rose-900 border border-rose-200'
+                    )}
+                  >
+                    <span>{correoTableFeedback.msg}</span>
+                    <button
+                      type="button"
+                      onClick={() => setCorreoTableFeedback(null)}
+                      className="text-slate-500 hover:text-slate-800 p-1"
+                      title="Cerrar mensaje"
+                    >
+                      <X className="size-3.5" />
+                    </button>
+                  </div>
+                )}
+
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse text-xs tabular-nums">
                     <thead>
                       <tr className="border-b border-slate-200 text-slate-600">
                         <th className="py-3 px-3"># Emp.</th>
                         <th className="py-3 px-3">Nombre Completo</th>
+                        <th className="py-3 px-3">Correo Electrónico</th>
                         <th className="py-3 px-3">Áreas Asignadas (Máx. 2)</th>
                         <th className="py-3 px-3">Estado</th>
                         <th className="py-3 px-3 text-right">Acciones</th>
@@ -2491,8 +2657,94 @@ export default function AdminDashboard() {
                           <td className="py-3 px-3 font-mono font-bold text-blue-700">
                             #{emp.numeroEmpleado}
                           </td>
-                          <td className="py-3 px-3 font-bold text-slate-900">
+                          <td className="py-3 px-3 font-bold text-slate-900 whitespace-nowrap">
                             {emp.nombreCompleto}
+                          </td>
+                          <td className="py-3 px-3">
+                            {editingCorreoEmpId === emp.id ? (
+                              <div className="flex items-center gap-1.5 min-w-[240px]">
+                                <input
+                                  type="email"
+                                  value={editingCorreoValor}
+                                  onChange={(e) => setEditingCorreoValor(e.target.value)}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                      e.preventDefault();
+                                      handleSaveInlineCorreo(emp);
+                                    } else if (e.key === 'Escape') {
+                                      setEditingCorreoEmpId(null);
+                                    }
+                                  }}
+                                  autoFocus
+                                  placeholder="nombre.apellido@empresa.com"
+                                  className="w-full text-xs font-mono px-2 py-1 rounded border border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-600 bg-white"
+                                />
+                                <button
+                                  type="button"
+                                  disabled={savingCorreoId === emp.id}
+                                  onClick={() => handleSaveInlineCorreo(emp)}
+                                  className="p-1.5 rounded bg-emerald-600 hover:bg-emerald-700 text-white disabled:opacity-50 transition-colors shadow-sm"
+                                  title="Guardar correo (Enter)"
+                                >
+                                  {savingCorreoId === emp.id ? (
+                                    <RefreshCw className="size-3 animate-spin" />
+                                  ) : (
+                                    <Check className="size-3" />
+                                  )}
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={savingCorreoId === emp.id}
+                                  onClick={() => setEditingCorreoEmpId(null)}
+                                  className="p-1.5 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 transition-colors"
+                                  title="Cancelar edición (Esc)"
+                                >
+                                  <X className="size-3" />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setEditingCorreoValor(generarCorreoSugerido(emp.nombreCompleto, emp.numeroEmpleado))
+                                  }
+                                  className="px-1.5 py-1 text-[10px] font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 shrink-0"
+                                  title="Generar correo corporativo sugerido"
+                                >
+                                  Auto
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="flex items-center justify-between gap-1 group/mail py-0.5">
+                                <div className="flex items-center gap-1.5 min-w-0">
+                                  <Mail className="size-3.5 text-slate-400 shrink-0" />
+                                  {emp.correo ? (
+                                    <span
+                                      className="font-mono text-slate-700 text-xs truncate max-w-[200px]"
+                                      title={emp.correo}
+                                    >
+                                      {emp.correo}
+                                    </span>
+                                  ) : (
+                                    <span className="text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded text-[11px] font-semibold">
+                                      Sin correo asignado
+                                    </span>
+                                  )}
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setEditingCorreoEmpId(emp.id);
+                                    setEditingCorreoValor(
+                                      emp.correo || generarCorreoSugerido(emp.nombreCompleto, emp.numeroEmpleado)
+                                    );
+                                  }}
+                                  className="opacity-70 group-hover/mail:opacity-100 hover:bg-blue-50 text-blue-600 p-1 rounded transition-all"
+                                  title="Modificar correo electrónico"
+                                  aria-label={`Modificar correo de ${emp.nombreCompleto}`}
+                                >
+                                  <Edit3 className="size-3" />
+                                </button>
+                              </div>
+                            )}
                           </td>
                           <td className="py-3 px-3 font-semibold text-slate-800">
                             <div className="flex flex-wrap gap-1 items-center">
@@ -2518,15 +2770,17 @@ export default function AdminDashboard() {
                               </span>
                             )}
                           </td>
-                          <td className="py-3 px-3 text-right space-x-1.5">
+                          <td className="py-3 px-3 text-right space-x-1.5 whitespace-nowrap">
                             <button
                               type="button"
                               aria-label={`Editar empleado ${emp.nombreCompleto}`}
                               onClick={() => {
                                 setEditingUser(emp);
+                                setCorreoEditadoManualmente(true);
                                 setUserForm({
                                   numeroEmpleado: emp.numeroEmpleado,
                                   nombreCompleto: emp.nombreCompleto,
+                                  correo: emp.correo || '',
                                   areaId: emp.areaId,
                                   areaIdSecundaria: emp.areaIdSecundaria || 0,
                                 });

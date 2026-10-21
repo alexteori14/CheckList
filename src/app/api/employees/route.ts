@@ -86,6 +86,7 @@ export async function POST(req: NextRequest) {
 
     const db = readDb();
     const cleanNumero = String(numeroEmpleado).trim();
+    const cleanNombre = String(nombreCompleto).trim();
 
     const exists = db.empleados.some(
       (e) => e.numeroEmpleado.toLowerCase() === cleanNumero.toLowerCase()
@@ -109,12 +110,33 @@ export async function POST(req: NextRequest) {
       ? db.areas.find((a) => a.id === Number(areaIdSecundaria)) || null
       : null;
 
+    let finalCorreo = correo !== undefined && String(correo).trim() !== ''
+      ? String(correo).trim()
+      : '';
+    if (!finalCorreo) {
+      const base = cleanNombre
+        .replace(/^(ing\.|lic\.|dr\.|dra\.|mtro\.|mtra\.|prof\.|c\.|sr\.|sra\.)\s+/i, '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, '')
+        .trim();
+      const partes = base.split(/\s+/).filter(Boolean);
+      if (partes.length >= 2) {
+        finalCorreo = `${partes[0]}.${partes[1]}@empresa.com`;
+      } else if (partes.length === 1) {
+        finalCorreo = `${partes[0]}@empresa.com`;
+      } else {
+        finalCorreo = `empleado${cleanNumero}@empresa.com`;
+      }
+    }
+
     const nowIso = new Date().toISOString();
     const newEmpleado: Empleado = {
       id: `emp-${Date.now()}`,
       numeroEmpleado: cleanNumero,
-      nombreCompleto: String(nombreCompleto).trim(),
-      correo: correo ? String(correo).trim() : '',
+      nombreCompleto: cleanNombre,
+      correo: finalCorreo,
       puesto: puesto ? String(puesto).trim() : 'Especialista de Área',
       areaId: selectedArea.id,
       areaNombre: selectedArea.nombre,
@@ -134,7 +156,7 @@ export async function POST(req: NextRequest) {
       accion: 'ALTA_USUARIO',
       entidad: 'Empleado',
       entidadId: newEmpleado.id,
-      detalles: `Alta de empleado #${newEmpleado.numeroEmpleado} (${newEmpleado.nombreCompleto}) en área ${newEmpleado.areaNombre}`,
+      detalles: `Alta de empleado #${newEmpleado.numeroEmpleado} (${newEmpleado.nombreCompleto}) con correo ${newEmpleado.correo} en área ${newEmpleado.areaNombre}`,
     });
 
     writeDb(db);
@@ -242,13 +264,18 @@ export async function PUT(req: NextRequest) {
     current.updatedAt = new Date().toISOString();
     db.empleados[idx] = current;
 
+    const isOnlyEmail = correo !== undefined && nombreCompleto === undefined && areaId === undefined;
     registerAudit(db, {
       actorIdentificador: 'Administrador',
       modulo: 'USUARIOS',
-      accion: typeof activo === 'boolean' && !nombreCompleto ? (activo ? 'ACTIVAR_USUARIO' : 'DESACTIVAR_USUARIO') : 'EDITAR_USUARIO',
+      accion: typeof activo === 'boolean' && !nombreCompleto
+        ? (activo ? 'ACTIVAR_USUARIO' : 'DESACTIVAR_USUARIO')
+        : (isOnlyEmail ? 'MODIFICAR_CORREO_USUARIO' : 'EDITAR_USUARIO'),
       entidad: 'Empleado',
       entidadId: current.id,
-      detalles: `Actualización de usuario #${current.numeroEmpleado} (${current.nombreCompleto}) - Estado Activo: ${current.activo}`,
+      detalles: isOnlyEmail
+        ? `Modificación de correo de usuario #${current.numeroEmpleado} (${current.nombreCompleto}) a: ${current.correo || '(vacío)'}`
+        : `Actualización de usuario #${current.numeroEmpleado} (${current.nombreCompleto}) - Correo: ${current.correo || 'N/A'} - Estado Activo: ${current.activo}`,
     });
 
     writeDb(db);

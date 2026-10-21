@@ -415,8 +415,8 @@ Cada subcarpeta dentro de `src/app/api/` expone un endpoint RESTful bajo el est�
 - **`GET /api/employees`:**
   - Si recibe el parámetro `?numero=XXXX`, busca al empleado activo (aceptando formatos como `2001` o `EMP-2001`). Devuelve su perfil completo, incluyendo su área primaria (`areaId`), su área secundaria (`areaIdSecundaria`, si cuenta con ella) y las preguntas activas correspondientes. Esto permite al asistente de checklist detectar si el empleado es multi-área y ofrecerle el selector interactivo.
   - Si no recibe `numero`, devuelve la lista completa de empleados y áreas para el panel administrativo (sin campos ni filtros de rol en empleados).
-- **`POST /api/employees`:** Da de alta un nuevo empleado de planta validando campos obligatorios (`numeroEmpleado`, `nombreCompleto`, `puesto`, `areaId`), unicidad del número de nómina y la regla de multi-área: permite asignar hasta un máximo estricto de 2 áreas (`areaId` y `areaIdSecundaria`), validando a nivel de API que el área secundaria no sea idéntica a la primaria. No requiere ni asigna rol de sistema.
-- **`PUT /api/employees`:** Permite al Administrador General actualizar datos, cambiar o añadir la segunda área (respetando el límite de 2 y evitando duplicidades) o suspender la cuenta (`activo: false`).
+- **`POST /api/employees`:** Da de alta un nuevo empleado de planta validando campos obligatorios (`numeroEmpleado`, `nombreCompleto`, `puesto`, `areaId`), unicidad del número de nómina, persistencia de `correo` (autocompletado corporativo o personalizado) y la regla de multi-área: permite asignar hasta un máximo estricto de 2 áreas (`areaId` y `areaIdSecundaria`), validando a nivel de API que el área secundaria no sea idéntica a la primaria. No requiere ni asigna rol de sistema.
+- **`PUT /api/employees`:** Permite al Administrador General actualizar datos completos o de forma puntual (como el `correo` electrónico en línea desde la tabla), cambiar o añadir la segunda área (respetando el límite de 2 y evitando duplicidades) o suspender la cuenta (`activo: false`). Registra eventos `MODIFICAR_CORREO_USUARIO` o `EDITAR_USUARIO` en la bitácora de auditoría.
 
 #### 3. [`src/app/api/areas/route.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/app/api/areas/route.ts)
 - **`GET /api/areas`:** Devuelve todas las áreas activas (incluyendo las 7 áreas oficiales: MES, Ind. 4.0, Infraestructura, Staff IT, Digitalizacion, SAP, Soporte Manufactura) con sus horas de vigencia operativa (`horaInicio`, `horaFin`) y su conteo de preguntas y personal.
@@ -490,7 +490,7 @@ Cada subcarpeta dentro de `src/app/api/` expone un endpoint RESTful bajo el est�
 - **Qué hace:** Centro de mando ejecutivo exclusivo para el Administrador General (**Oscar Mercado**).
 - **Cómo funciona internamente:**
   - **Login Administrativo Blindado y Logout:** Exige credenciales del Administrador General (`1000` / `admin123`) con cookie JWT y botón de Cerrar Sesión.
-  - **Gestión de Personal de Planta Limpia:** El formulario de alta de nuevo empleado no contiene selector de rol (solicita Número, Nombre, Puesto, Área Principal y Área Secundaria opcional). En la tabla de empleados se eliminó la columna y valor de "Rol", presentando una vista limpia y enfocada en la función operativa.
+  - **Gestión de Personal de Planta Limpia y Control de Correo:** El formulario de alta de nuevo empleado no contiene selector de rol (solicita Número, Nombre, Correo Corporativo autocompletado y modificable, Área Principal y Área Secundaria opcional). En la tabla de empleados se presenta la columna directa de **Correo Electrónico** con edición rápida en línea (*inline quick edit*) para subsanar errores de captura o datos desactualizados en la base de datos sin fricción.
   - **Tabla de Encuestas Realizadas con Día y Fecha:** Muestra explícitamente el día de la semana y fecha (ej. `Mar, 20/10/2026`) directamente en la fila principal, eliminando la necesidad de abrir el modal "Ver Encuesta" para conocer el día.
   - **Panel Interactivo de Incidencias / Cumplimiento:**
     - Ubicado estratégicamente a un lado de los KPIs de cumplimiento.
@@ -807,3 +807,89 @@ A petición expresa de la dirección operativa, se depuraron las áreas prelimin
       - En la Sección 8, se actualizó la descripción a 10 tablas normalizadas, retirando el ítem `roles` y actualizando `usuarios`.
       - En la Sección 9 (APIs REST), se ajustó la descripción del endpoint `PUT /api/employees`.
       - En la Sección 13 (Estrategia de Seguridad), se incluyó la justificación técnica de la eliminación de la tabla `roles` y la gestión directa a través de JWT y `usuarios.rol`.
+
+
+### 5.11 Diagnóstico y Hoja de Ruta del Sistema de Alertas por Correo y Microsoft Teams (Tiempo de Vida)
+
+- **Contexto Operativo:**
+  Se auditó el mecanismo de despacho de notificaciones automáticas y de prueba hacia el correo personal de **Alejandro Puente** (`puentealejandro491@gmail.com`) tras reportarse que los correos de encuestas no contestadas dentro de la ventana de vigencia no estaban llegando a la bandeja de entrada.
+
+- **Hallazgos Técnicos y Diagnóstico de Causas:**
+  1. **Inexistencia de Variables de Entorno (`.env.local` / `.env`):**
+     - En el directorio raíz únicamente se encontraba la plantilla de referencia [`.env.example`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/.env.example).
+     - La función guardián `mailConfigurado()` en [`src/lib/notifier.ts`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/src/lib/notifier.ts) evalúa la presencia de `process.env.SMTP_USER` y `process.env.SMTP_PASS`.
+     - Al no existir credenciales remitentes en memoria, el despachador `enviarCorreo()` aborta la llamada antes de abrir sockets de red, devolviendo `{ estado: 'SIN_CONFIGURAR', detalle: 'Faltan SMTP_USER / SMTP_PASS en .env.local...' }`.
+     - Se constató en [`database/smartcheck_db.json`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/database/smartcheck_db.json) que tanto los disparos automáticos del scheduler como las pruebas manuales quedaron debidamente capturadas pero asentadas como `SIN_CONFIGURAR`.
+  2. **Condición de Negocio de Encuestas Vencidas:**
+     - La función evaluadora `obtenerPendientesVencidos()` descarta a cualquier colaborador que ya cuente con un checklist enviado hoy para su área respectiva.
+     - Se verificó que el empleado **Alejandro Puente** (`#2001`) ya había registrado sus checklists del día 21/10/2026 para sus dos áreas asignadas (*Infraestructura* e *Ind. 4.0*), por lo que el scheduler en segundo plano operaba correctamente al no emitir alertas extemporáneas a su nombre.
+  3. **Seguridad y Métodos de Autenticación en Servidores de Correo:**
+     - **Google / Gmail:** Requiere obligatoriamente que la cuenta remitente cuente con Verificación en 2 Pasos y una *Contraseña de Aplicación* de 16 caracteres (generada en `myaccount.google.com/apppasswords`), impidiendo el uso de contraseñas ordinarias.
+
+- **Alternativas y Hoja de Ruta para Próximas Sesiones:**
+  1. **Vía A — Despliegue con Gmail SMTP:**
+     - Crear el archivo `.env.local` en la raíz copiando `.env.example`.
+     - Configurar `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=465`, usuario remitente y la contraseña de aplicación de 16 letras de Google.
+     - Probar el botón *"Correo de prueba a Alejandro Puente"* desde el componente `TiempoVidaPanel.tsx`.
+  2. **Vía B — Despliegue con Cuenta Corporativa Microsoft 365 / Outlook (Teams):**
+     - Parámetros: `SMTP_HOST=smtp.office365.com`, `SMTP_PORT=587`, `secure: false` (STARTTLS) con credenciales empresariales.
+     - Consideración técnica: Muchas organizaciones corporativas restringen por directiva de TI el protocolo *SMTP AUTH básico* mediante políticas de Acceso Condicional y MFA, lo que puede requerir habilitación por parte del administrador de TI de la empresa.
+  3. **Vía C — Integración Nativa con Microsoft Teams vía Webhook (Recomendada para Planta):**
+     - Elimina por completo la dependencia de contraseñas de correo, puertos SMTP y posibles bloqueos de firewalls corporativos.
+     - Configuración de un *Incoming Webhook* o *Workflows* en el canal correspondiente de Microsoft Teams.
+     - El backend despacha un payload JSON con *Adaptive Cards* mostrando semáforos de advertencia, el área vencida y el personal pendiente, entregando la notificación en tiempo real a computadoras y teléfonos del equipo de trabajo.
+
+---
+
+### 5.12 Gestión Integral de Correo de Empleados: Autocompletado Inteligente en Alta y Modificación Rápida en Tabla
+
+- **Contexto Operativo y Problemática Resuelta:**
+  Durante la operación cotidiana del sistema, existía el riesgo de que el correo electrónico de un colaborador se capturara de manera errónea, contuviera faltas tipográficas o requiriera actualización debido a cambios de cuenta o reasignación a bandejas externas (ej. `puentealejandro491@gmail.com` para Alejandro Puente).
+  Dado que el motor de despacho de notificaciones automáticas de encuestas vencidas ([`src/lib/notifier.ts`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/src/lib/notifier.ts)) depende directamente del atributo `emp.correo` para alertar al personal operativo, un correo ausente o incorrecto provocaba omisiones en el envío.
+  Para subsanar este flujo sin fricción, se implementó un mecanismo doble:
+  1. **Autocompletado predictivo en el alta:** Al ingresar el nombre completo del empleado, el sistema calcula de inmediato el correo institucional estándar.
+  2. **Flexibilidad de modificación inmediata:** Permite al Administrador alterar el correo sugerido en el formulario antes de guardar o corregirlo directamente en la tabla de empleados sin tener que recrear registros ni abrir formularios pesados.
+
+- **Detalle de la Implementación Técnica:**
+
+  1. **Algoritmo de Normalización y Auto-Generación ([`AdminDashboard.tsx`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/src/components/AdminDashboard.tsx)):**
+     - Se desarrolló la función `generarCorreoSugerido(nombreCompleto, numeroEmpleado)`.
+     - Depura títulos y prefijos profesionales mediante expresiones regulares: `Ing.`, `Lic.`, `Dr.`, `Dra.`, `Mtro.`, `Prof.`, etc.
+     - Aplica normalización Unicode NFD para erradicar tildes y caracteres diacríticos (`é` -> `e`, `ñ` -> `n`, etc.).
+     - Remueve puntuaciones y caracteres no alfanuméricos.
+     - Estructura el correo corporativo bajo la nomenclatura `primerNombre.primerApellido@empresa.com`.
+     - Si solo se proporciona un nombre, utiliza `nombre@empresa.com`.
+     - Si no se cuenta con nombre pero sí con número de empleado, genera `empleado{numero}@empresa.com`.
+
+  2. **Comportamiento Reactivo No Intrusivo en el Formulario de Alta:**
+     - En el estado del formulario `userForm` se incorporó el atributo `correo: string`.
+     - Se añadió la bandera booleana `correoEditadoManualmente`.
+     - Mientras el usuario capture el nombre o número de nómina y no haya interactuado directamente con el campo de correo, la sugerencia se actualiza en tiempo real.
+     - En el momento en que el Administrador edita manualmente la caja de texto (para ingresar un dominio particular o corregir un apellido), `correoEditadoManualmente` se fija en `true`, respetando estrictamente la personalización del usuario y previniendo sobreescrituras automáticas.
+     - Se integró el botón interactivo *"Auto-sugerir"* (`<RefreshCw />`) para permitir al usuario restablecer la sugerencia automatizada con un solo clic.
+
+  3. **Visualización y Modificación Rápida en Línea (Inline Quick Edit) en la Tabla de Directorio:**
+     - Se incorporó la cabecera `<th className="py-3 px-3">Correo Electrónico</th>` en la tabla de personal.
+     - **Modo Lectura:** Muestra el ícono corporativo `Mail`, la dirección tipificada en fuente monospace `font-mono`, o un badge de advertencia `Sin correo asignado` si el campo está vacío. Acompaña a la fila un botón con ícono de lápiz (`Edit3`) para activar la edición inmediata.
+     - **Modo Edición en Línea (`editingCorreoEmpId`):**
+       - Transforma la celda en un campo de texto interactivo con foco automático (`autoFocus`).
+       - Provee atajos de teclado: `Enter` para guardar inmediatamente y `Escape` para cancelar la acción.
+       - Botón verde de confirmación (`Check`) con indicador de carga `RefreshCw animate-spin` mientras persiste en servidor.
+       - Botón gris de cancelación (`X`) para revertir cambios sin alterar el estado.
+       - Botón *"Auto"* que rellena al instante el input con el formato corporativo normalizado correspondiente al nombre del colaborador.
+     - **Persistencia Asíncrona Reactiva:**
+       - Invoca `PUT /api/employees` enviando `{ id: emp.id, correo: nuevoCorreo }`.
+       - Actualiza atómicamente el estado local de `empleados` en React, reflejando el cambio al instante en todas las vistas, selectores y métricas del sistema.
+       - Despliega banners de retroalimentación claros (`correoTableFeedback`) confirmando el éxito o reportando fallas de red.
+
+  4. **Edición Integral desde el Asistente Lateral:**
+     - Al hacer clic en el botón general de "Editar empleado" de la fila, el formulario lateral precarga el correo actual (`emp.correo`) y activa el modo de edición para modificar de forma conjunta número, nombre, correo y áreas asignadas.
+
+  5. **Respaldo y Auditoría en Backend ([`src/app/api/employees/route.ts`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/src/app/api/employees/route.ts)):**
+     - En `POST /api/employees`: Se valida y persiste `correo`. Si el cliente no suministra uno, el servidor aplica un generador de respaldo corporativo idéntico antes de almacenar en base de datos.
+     - En `PUT /api/employees`: Se admite la actualización exclusiva de `correo`. Si la petición sólo modifica este atributo, el registro en la bitácora inmutable de auditoría se asienta con la acción especializada `MODIFICAR_CORREO_USUARIO` y el detalle:
+       `"Modificación de correo de usuario #{numeroEmpleado} ({nombreCompleto}) a: {nuevoCorreo}"`.
+
+- **Control de Calidad y Pruebas Realizadas:**
+  - `npx tsc --noEmit`: Validación estricta de tipos TypeScript sin errores.
+  - `npm run build`: Compilación completa de producción en Next.js App Router (14.2.18) con generación estática y rutas dinámicas validadas al 100%.

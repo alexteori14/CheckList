@@ -3776,7 +3776,7 @@
       "totalNo": 0,
       "porcentajeCumplimiento": 100,
       "porcentajeIncidencias": 0,
-      "calculadoEn": "2026-10-22T13:40:13.638Z"
+      "calculadoEn": "2026-10-22T13:54:43.845Z"
     },
     {
       "id": "stat-diario-2-2026-10-22",
@@ -3790,7 +3790,7 @@
       "totalNo": 2,
       "porcentajeCumplimiento": 75,
       "porcentajeIncidencias": 25,
-      "calculadoEn": "2026-10-22T13:40:13.638Z"
+      "calculadoEn": "2026-10-22T13:54:43.845Z"
     },
     {
       "id": "stat-diario-3-2026-10-22",
@@ -3804,7 +3804,7 @@
       "totalNo": 0,
       "porcentajeCumplimiento": 100,
       "porcentajeIncidencias": 0,
-      "calculadoEn": "2026-10-22T13:40:13.638Z"
+      "calculadoEn": "2026-10-22T13:54:43.845Z"
     },
     {
       "id": "stat-diario-4-2026-10-22",
@@ -3818,7 +3818,7 @@
       "totalNo": 1,
       "porcentajeCumplimiento": 75,
       "porcentajeIncidencias": 25,
-      "calculadoEn": "2026-10-22T13:40:13.638Z"
+      "calculadoEn": "2026-10-22T13:54:43.845Z"
     },
     {
       "id": "stat-diario-5-2026-10-22",
@@ -3832,7 +3832,7 @@
       "totalNo": 0,
       "porcentajeCumplimiento": 100,
       "porcentajeIncidencias": 0,
-      "calculadoEn": "2026-10-22T13:40:13.638Z"
+      "calculadoEn": "2026-10-22T13:54:43.845Z"
     },
     {
       "id": "stat-diario-6-2026-10-22",
@@ -3846,7 +3846,7 @@
       "totalNo": 0,
       "porcentajeCumplimiento": 100,
       "porcentajeIncidencias": 0,
-      "calculadoEn": "2026-10-22T13:40:13.638Z"
+      "calculadoEn": "2026-10-22T13:54:43.845Z"
     },
     {
       "id": "stat-diario-7-2026-10-22",
@@ -3860,10 +3860,21 @@
       "totalNo": 1,
       "porcentajeCumplimiento": 75,
       "porcentajeIncidencias": 25,
-      "calculadoEn": "2026-10-22T13:40:13.638Z"
+      "calculadoEn": "2026-10-22T13:54:43.845Z"
     }
   ],
   "auditoria": [
+    {
+      "id": "aud-1792677283845-7frv",
+      "actorIdentificador": "1000 - Oscar Mercado",
+      "modulo": "SEGURIDAD_JWT",
+      "accion": "LOGIN_EXITOSO",
+      "entidad": "Empleado",
+      "entidadId": "emp-1000",
+      "detalles": "Inicio de sesión administrativo autorizado para el Administrador General Oscar Mercado",
+      "ipAddress": "127.0.0.1",
+      "createdAt": "2026-10-22T13:54:43.845Z"
+    },
     {
       "id": "aud-1792676413638-qb0t",
       "actorIdentificador": "1000 - Oscar Mercado",

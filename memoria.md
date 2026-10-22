@@ -42,13 +42,11 @@ Se diseñó y construyó una aplicación web empresarial Full-Stack (**SmartChec
    - **Medición en Dashboard:** Panel interactivo `TiempoVidaPanel` en la pantalla principal que monitorea el % de encuestas en tiempo vs fuera de tiempo del filtro activo, desglose por área y lista de empleados pendientes.
    - **Medición en Encuestas Realizadas y Reportes:** Columna "Tiempo de vida" que etiqueta cada encuesta como `En tiempo` o `Fuera de tiempo` con la hora exacta de captura.
    - **Criterio de Evaluación:** Una encuesta se considera `EN_TIEMPO` si se realiza el mismo día de su fecha de operación y dentro de la ventana horaria del área. Si se contesta fuera de horario se permite registrarla pero queda marcada como `FUERA_DE_TIEMPO`.
-7. **Sistema Automatizado de Notificaciones por Correo:**
-   - Si la ventana de tiempo de vida de un área cierra y hay empleados asignados que no han contestado su encuesta, el sistema genera y envía automáticamente una notificación por correo electrónico.
-   - Servicio en segundo plano mediante `instrumentation.ts` y `instrumentation-node.ts` que se ejecuta cada minuto en el servidor.
-   - Integración con `nodemailer` vía SMTP seguro (compatible con Gmail y contraseñas de aplicación).
-   - Configurado para pruebas con el correo personal de **Alejandro Puente**: `puentealejandro491@gmail.com`.
-   - Botones de acción rápida en el Dashboard: *"Guardar horarios"*, *"Verificar vencidos y enviar correos"* y *"Correo de prueba a Alejandro Puente"*.
-   - Historial de notificaciones en base de datos (`notificaciones`) y registro en `auditoria`.
+7. **Preservación Exclusiva del Correo como Credencial y Supresión Total de Envío de Notificaciones:**
+   - Se eliminó en todo el proyecto cualquier mecanismo de despacho de correos y alertas (librería `nodemailer`, transporte SMTP, scheduler en segundo plano `instrumentation.ts` e `instrumentation-node.ts`, y ruta `/api/notificaciones`).
+   - Se depuró la base de datos eliminando la tabla física y colección `notificaciones`.
+   - El atributo `correo` de cada empleado y usuario se mantiene **estricta y exclusivamente como credencial de acceso (login) e identidad de cuenta**, permitiendo que cada colaborador cuente con su correo corporativo y contraseña para ingresar a la plataforma.
+   - En el panel `TiempoVidaPanel`, se conservó la gestión administrativa de horarios de vida (`horaInicio` y `horaFin`) con el botón *"Guardar horarios"*, retirando los botones de envío manual y pruebas de correo.
 8. **Explorador Interactivo de Incidencias y Cumplimiento por Área (Dashboard):**
    - Panel ubicado al lado de los widgets de KPI de Cumplimiento.
    - Dispone de dos opciones en la parte superior:
@@ -79,42 +77,35 @@ flowchart TB
         UI_Nav["page.tsx\nBarra de Navegación con LayoutGroup"]
         UI_Wiz["ChecklistWizard.tsx\nTarjetas + Selector Multi-área + Cámara WebRTC + Drag & Drop"]
         UI_Adm["AdminDashboard.tsx\nKPIs + Recharts + Panel Incidencias/Cumplimiento + Admin"]
-        UI_TV["TiempoVidaPanel.tsx\nMonitoreo de Vida de Encuesta + Horarios + Notificaciones"]
+        UI_TV["TiempoVidaPanel.tsx\nMonitoreo de Vida de Encuesta + Parametrización Horarios"]
         UI_Doc["ArchitectureView.tsx\nVisor de Entregables Arquitectónicos"]
         PDF_XLS["exportReports.ts\nGenerador Local de PDF (jsPDF) y Excel (SheetJS)"]
     end
 
-    subgraph Servidor["Capa Backend API REST & Background Scheduler (Next.js App Router)"]
-        API_Auth["/api/auth\nLogin, Logout y Verificación JWT"]
-        API_Emp["/api/employees\nAutocompletado, Asignación Multi-área (Máx 2)"]
+    subgraph Servidor["Capa Backend API REST (Next.js App Router)"]
+        API_Auth["/api/auth\nLogin (Nómina o Correo), Logout y Verificación JWT"]
+        API_Emp["/api/employees\nAutocompletado, Asignación Multi-área (Máx 2) y Credencial Correo"]
         API_Area["/api/areas\nCrear/Eliminar Áreas y Modificar Tiempo de Vida"]
         API_Ques["/api/questions\nBanco de Reactivos por Área"]
         API_Chk["/api/checklists\nGuardado, Evaluación Tiempo Vida, KPIs e Incidencias"]
-        API_Not["/api/notificaciones\nEnvío de Correos y Verificación de Vencidos"]
         API_Aud["/api/audit\nConsulta de Bitácora Inmutable"]
-        SCH_Node["instrumentation.ts / instrumentation-node.ts\nScheduler en Segundo Plano (Cada Minuto)"]
     end
 
-    subgraph Core["Núcleo de Negocio, Seguridad y Notificaciones (src/lib/)"]
+    subgraph Core["Núcleo de Negocio, Seguridad y Persistencia (src/lib/)"]
         Lib_Auth["auth.ts\nFirma JWT (HS256) + Hash PBKDF2-SHA256"]
         Lib_DB["db.ts\nMotor Transaccional + Estadísticas + Auditoría"]
         Lib_Sch["schedule.ts\nEvaluación de Ventanas Horarias (EN_TIEMPO / FUERA_DE_TIEMPO)"]
-        Lib_Not["notifier.ts\nMotor Nodemailer + Anti-duplicados + Plantillas HTML"]
     end
 
-    subgraph Externo["Servicios de Correo y Persistencia"]
-        SMTP_SRV[("Servidor SMTP Gmail / Relay Seguro\n(puentealejandro491@gmail.com)")]
+    subgraph Externo["Persistencia de Datos"]
         JSON_DB[("smartcheck_db.json\nPersistencia Local Activa")]
-        SQL_DDL[("schema_mysql.sql\nDDL Relacional MySQL 8.0+ (11 Tablas)")]
+        SQL_DDL[("schema_mysql.sql\nDDL Relacional MySQL 8.0+ (9 Tablas)")]
     end
 
     UI_Nav --> UI_Wiz & UI_Adm & UI_Doc
     UI_Adm --> UI_TV & PDF_XLS
     UI_Wiz -->|GET empleado / POST checklist| API_Emp & API_Chk
-    UI_Adm -->|GET / POST / PUT / PATCH / DELETE| API_Auth & API_Emp & API_Area & API_Ques & API_Chk & API_Not & API_Aud
-    SCH_Node -->|Tick cada minuto| Lib_Not
-    API_Not --> Lib_Not
-    Lib_Not -->|SMTP TLS| SMTP_SRV
+    UI_Adm -->|GET / POST / PUT / PATCH / DELETE| API_Auth & API_Emp & API_Area & API_Ques & API_Chk & API_Aud
     API_Chk --> Lib_Sch & Lib_DB
     API_Area --> Lib_Sch & Lib_DB
     API_Auth --> Lib_Auth & Lib_DB
@@ -132,7 +123,7 @@ sequenceDiagram
     participant W as ChecklistWizard.tsx
     participant M as Modal "¿Seguro que deseas enviar?"
     participant API as /api/employees & /api/checklists
-    participant SCH as schedule.ts & notifier.ts
+    participant SCH as schedule.ts
     participant DB as db.ts (smartcheck_db.json)
     actor A as Administrador General (Oscar Mercado)
     participant D as AdminDashboard.tsx
@@ -171,17 +162,7 @@ sequenceDiagram
     API->>DB: Guarda checklist con estadoTiempo y horaRegistro
     DB-->>W: Confirma Folio único y % de Cumplimiento
 
-    Note over SCH,A: FASE 3: Monitoreo en Segundo Plano y Notificaciones por Correo
-    loop Cada 1 minuto (instrumentation scheduler)
-        SCH->>DB: Evalúa áreas cuya ventana de tiempo de vida cerró hoy
-        opt Si un empleado asignado no contestó su encuesta
-            SCH->>SCH: Verifica anti-duplicados (máx 1 correo por empleado/área/día)
-            SCH->>J: Envía correo SMTP a puentealejandro491@gmail.com
-            SCH->>DB: Registra notificación (ENVIADO / SIN_CONFIGURAR) y auditoría
-        end
-    end
-
-    Note over A,D: FASE 4: Centro de Control, Tiempo de Vida y Explorador de Incidencias
+    Note over A,D: FASE 3: Centro de Control, Tiempo de Vida y Explorador de Incidencias
     A->>D: Ingresa al Dashboard con credenciales (#1000 / admin123)
     D->>API: GET /api/checklists (calcula tiempoVida, KPIs y registros)
     API-->>D: Retorna métricas, tiempo de vida y checklists
@@ -244,21 +225,19 @@ C:\Users\alejpue5\Documents\proyectos\CheckList\
 ├── src/                           # Código fuente principal de la aplicación
 │   ├── types/                     # Contratos e interfaces de datos TypeScript (Empleado sin rol)
 │   │   └── index.ts
-│   ├── lib/                       # Lógica de negocio, base de datos, JWT, reportes, notificaciones y scheduler
+│   ├── lib/                       # Lógica de negocio, base de datos, JWT, reportes y schedule
 │   │   ├── auth.ts
 │   │   ├── db.ts
 │   │   ├── exportReports.ts
-│   │   ├── notifier.ts            # Servicio de envío de correos SMTP con Nodemailer
-│   │   ├── schedule.ts            # Motor y scheduler de evaluación de tiempo de vida y alertas
+│   │   ├── schedule.ts            # Motor de evaluación de ventanas de tiempo de vida
 │   │   └── utils.ts
 │   ├── app/                       # Enrutador principal y APIs REST (Next.js App Router)
 │   │   ├── api/
-│   │   │   ├── auth/route.ts
-│   │   │   ├── employees/route.ts # CRUD empleados y asignación multi-área (máx. 2, sin rol)
+│   │   │   ├── auth/route.ts      # Autenticación exclusiva con nómina o correo y contraseña
+│   │   │   ├── employees/route.ts # CRUD empleados, correo para login y asignación multi-área (máx. 2)
 │   │   │   ├── areas/route.ts     # CRUD y modificación de tiempo de vida (horaInicio/horaFin)
 │   │   │   ├── questions/route.ts
 │   │   │   ├── checklists/route.ts# Checklists, validación >5 días (Oscar) y métricas de tiempo
-│   │   │   ├── notificaciones/route.ts # Historial y disparo manual de alertas de tiempo de vida
 │   │   │   └── audit/route.ts
 │   │   ├── globals.css
 │   │   ├── layout.tsx
@@ -266,11 +245,9 @@ C:\Users\alejpue5\Documents\proyectos\CheckList\
 │   ├── components/                # Componentes visuales interactivos (React + Framer Motion)
 │   │   ├── ChecklistWizard.tsx    # Tarjetas, selector multi-área, fechas restrictivas y modal Oscar
 │   │   ├── AdminDashboard.tsx     # Dashboard, KPIs, explorador Incidencias/Cumplimiento (sin columna Rol)
-│   │   ├── TiempoVidaPanel.tsx    # Configuración de horas y monitor de estado de encuestas
+│   │   ├── TiempoVidaPanel.tsx    # Configuración de horas y monitor de tiempo de vida
 │   │   └── ArchitectureView.tsx
-│   ├── instrumentation.ts         # Hook de arranque de Next.js para activar el scheduler en Node.js
-│   └── instrumentation-node.ts    # Inicializador del intervalo periódico de verificación de ventanas
-├── .env.example                   # Plantilla de variables de entorno para SMTP y alertas
+├── .env.example                   # Plantilla de variables de entorno locales
 ├── .gemini/skills/impeccable/     # Motor y reglas de diseño Impeccable instaladas
 ├── .agent/skills/impeccable/      # Espejo de skills para agentes
 ├── DOCUMENTACION_ARQUITECTURA.md  # Los 19 entregables arquitectónicos de Especificaciones.txt
@@ -280,7 +257,7 @@ C:\Users\alejpue5\Documents\proyectos\CheckList\
 ├── package.json                   # Dependencias y scripts de ejecución
 ├── tailwind.config.ts             # Configuración de diseño y utilidades CSS
 ├── tsconfig.json                  # Configuración del compilador TypeScript
-├── next.config.mjs                # Configuración de Next.js (con instrumentationHook habilitado)
+├── next.config.mjs                # Configuración de Next.js
 └── postcss.config.mjs             # Procesador de estilos PostCSS + Autoprefixer
 ```
 
@@ -294,17 +271,16 @@ Esta carpeta reúne la ingeniería formal de base de datos relacional para el de
 - **Qué hace:** Script DDL de producción en SQL puro diseñado y validado específicamente para **MySQL Server 8.0+**.
 - **Cómo funciona internamente:**
   - Configura el entorno de ejecución: `ENGINE=InnoDB`, `DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci` para soporte total de caracteres internacionales y emojis.
-  - Implementa la arquitectura relacional normalizada en **Tercera Forma Normal (3FN)** con 10 tablas (optimizada tras la **eliminación de la tabla roles**):
+  - Implementa la arquitectura relacional normalizada en **Tercera Forma Normal (3FN)** con 9 tablas (optimizada tras la **eliminación de las tablas roles y notificaciones**):
     1. `areas`: 7 áreas oficiales (`MES`, `Ind. 4.0`, `Infraestructura`, `Staff IT`, `Digitalizacion`, `SAP`, `Soporte Manufactura`) con columnas `hora_inicio` y `hora_fin` (`VARCHAR(10)`).
     2. `usuarios`: Cuentas de acceso al sistema con rol administrativo embebido (`rol VARCHAR(50) DEFAULT 'ADMIN'`).
-    3. `empleados`: Personal operativo de planta. **Completamente desvinculado de roles de sistema**; cuenta con `numero_empleado` único, `nombre_completo`, `puesto`, `area_id` y `area_id_secundaria` (hasta 2 áreas por empleado).
+    3. `empleados`: Personal operativo de planta. **Completamente desvinculado de roles de sistema**; cuenta con `numero_empleado` único, `nombre_completo`, `correo` (credencial de login), `puesto`, `area_id` y `area_id_secundaria` (hasta 2 áreas por empleado).
     4. `preguntas`: Banco de reactivos por área con niveles de criticidad `ENUM('BAJA','MEDIA','ALTA','CRITICA')`.
     5. `checklists`: Encuestas realizadas identificadas por `folio` único (`CHAR(36)` UUID), empleado, área, fecha, `hora_registro`, estado de vigencia (`ENUM('EN_TIEMPO','FUERA_DE_TIEMPO')`) y porcentajes en `DECIMAL(5,2)`.
     6. `respuestas`: Ítems contestados (`TINYINT(1)` para booleano), con **CHECK constraint nativo de MySQL 8.0+** (`chk_motivo_obligatorio_en_no`) que impide guardar `respuesta = 0` si `motivo_no` es nulo o vacío.
     7. `evidencias`: Almacenamiento multimedia con `ENUM('JPG','JPEG','PNG','WEBP')` y orígenes `ENUM('CAMARA','GALERIA','DRAG_DROP')`.
     8. `estadisticas`: Registro pre-agregado para KPIs ejecutivos rápidos.
-    9. `notificaciones`: Registro de correos electrónicos y alertas disparadas por vencimiento de ventanas.
-    10. `auditoria`: Bitácora inmutable de eventos con actor, módulo, acción y diferencias en `JSON`.
+    9. `auditoria`: Bitácora inmutable de eventos con actor, módulo, acción y diferencias en `JSON`.
   - Índices B-Tree optimizados para consultas por fecha, folios, áreas y estados.
   - Generación automática de marcas temporales con `DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)`.
   - Inyección de datos semilla completos: 7 áreas oficiales, usuario Administrador General cifrado (PBKDF2-SHA256), preguntas base y empleados clave (Alejandro Puente en Infraestructura e Ind. 4.0).
@@ -328,8 +304,8 @@ Esta carpeta reúne la ingeniería formal de base de datos relacional para el de
 Sirve para almacenar tanto el esquema de desarrollo para PostgreSQL como la base de datos transaccional activa que utiliza el sistema localmente.
 
 #### 1. [`database/schema_postgresql.sql`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/database/schema_postgresql.sql)
-- **Qué hace:** Define la estructura DDL para PostgreSQL en 3FN, actualizado tras la **eliminación de la tabla roles** y sin campo de rol en `empleados`.
-- **Cómo funciona internamente:** Crea las 10 tablas normalizadas con tipos Postgres (`UUID`, `BOOLEAN`, `JSONB`), asegurando la eliminación de la tabla `roles` y asignando el rol administrativo directamente a `usuarios` (`rol VARCHAR(50)`), mientras que `empleados` representa únicamente al personal físico de piso de planta con adscripción a hasta 2 áreas (`area_id`, `area_id_secundaria`).
+- **Qué hace:** Define la estructura DDL para PostgreSQL en 3FN, actualizado tras la **eliminación de las tablas roles y notificaciones** y sin campo de rol en `empleados`.
+- **Cómo funciona internamente:** Crea las 9 tablas normalizadas con tipos Postgres (`UUID`, `BOOLEAN`, `JSONB`), asegurando la eliminación de las tablas `roles` y `notificaciones`, asignando el rol administrativo directamente a `usuarios` (`rol VARCHAR(50)`), mientras que `empleados` representa únicamente al personal físico de piso de planta con su credencial de correo y adscripción a hasta 2 áreas (`area_id`, `area_id_secundaria`).
 
 #### 2. [`database/smartcheck_db.json`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/database/smartcheck_db.json)
 - **Qué hace:** Archivo de base de datos relacional en formato JSON gestionado automáticamente por [`src/lib/db.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/lib/db.ts).
@@ -384,20 +360,14 @@ Contiene los motores centrales reutilizables por las rutas API, los componentes 
   - `exportToPDF(payload)`: Renderiza con `jsPDF` y `jspdf-autotable` el reporte ejecutivo con métricas, gráficos tabulares de cumplimiento e incidencias, además del detalle del estado de tiempo de vida (`EN_TIEMPO` / `FUERA_DE_TIEMPO`) y hora de registro de cada encuesta.
   - `exportToExcel(payload)`: Construye un libro de cálculo con 4 hojas analíticas (`Resumen_KPIs`, `Encuestas`, `Incidencias_No`, `Cumplimiento_Usuarios`) con formato profesional e indicadores de puntualidad.
 
-#### 4. [`src/lib/notifier.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/lib/notifier.ts)
-- **Qué hace:** Servicio centralizado de transporte de correo electrónico mediante el protocolo **SMTP** utilizando la biblioteca **`nodemailer`**.
+#### 4. [`src/lib/schedule.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/lib/schedule.ts)
+- **Qué hace:** Motor lógico de cálculo de tiempos de vida y evaluador de cumplimiento horario de encuestas.
 - **Cómo funciona internamente:**
-  - `createMailTransporter()`: Lee las variables de entorno (`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`). Si no se proveen credenciales externas, opera en modo de prueba/desarrollo registrando los envíos en la base de datos de auditoría.
-  - `sendSurveyExpirationAlert(...)`: Construye una plantilla HTML responsiva con encabezado institucional SmartCheck, destacando el área evaluada, la ventana límite no cumplida (ej. 07:00 - 08:30) y una llamada de atención para regularizar la captura a la brevedad.
-  - Aplica la variable defensiva `MAIL_SOLO_DESTINATARIOS` para evitar envíos no deseados durante fases de prueba, asegurando que correos como `puentealejandro491@gmail.com` reciban las alertas de forma controlada.
+  - `getVentana(area)`: Extrae y normaliza las horas `horaInicio` y `horaFin` con valores por defecto `07:00` y `08:30`.
+  - `estadoVentana(area, now)`: Determina en tiempo real si la ventana horaria del área se encuentra en estado `'ANTES'`, `'ABIERTA'` o `'CERRADA'`, calculando los minutos restantes para el cierre o para la apertura.
+  - `evaluarTiempo(area, fechaOperacion, createdAt)`: Compara la fecha y hora de registro contra la ventana `[horaInicio, horaFin]` del área, clasificando la encuesta con el sello inmutable `'EN_TIEMPO'` o `'FUERA_DE_TIEMPO'`.
 
-#### 5. [`src/lib/schedule.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/lib/schedule.ts)
-- **Qué hace:** Motor lógico de cálculo de tiempos de vida y evaluador periódico de cumplimiento de encuestas.
-- **Cómo funciona internamente:**
-  - `determinarEstadoTiempo(area, horaActual)`: Compara la hora militar (`HH:MM`) contra `horaInicio` y `horaFin` del área, clasificando la encuesta en `EN_TIEMPO` o `FUERA_DE_TIEMPO`.
-  - `evaluarVentanasYNotificar()`: Recorre todas las áreas activas en la fecha actual. Si la hora del servidor es posterior a `horaFin`, identifica a todos los empleados asignados a dicha área (primaria o secundaria) y verifica si ya enviaron un checklist para esa área hoy. Si no lo han hecho y no han sido notificados previamente hoy, dispara la alerta vía `sendSurveyExpirationAlert()`, registra el registro en `db.notificaciones` y documenta la traza en `db.auditoria`.
-
-#### 6. [`src/lib/utils.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/lib/utils.ts)
+#### 5. [`src/lib/utils.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/lib/utils.ts)
 - **Qué hace:** Provee la función utilitaria `cn(...inputs)` combinando `clsx` y `tailwind-merge` para clases CSS dinámicas libres de conflictos.
 
 ---
@@ -407,7 +377,7 @@ Contiene los motores centrales reutilizables por las rutas API, los componentes 
 Cada subcarpeta dentro de `src/app/api/` expone un endpoint RESTful bajo el estándar de Route Handlers de Next.js.
 
 #### 1. [`src/app/api/auth/route.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/app/api/auth/route.ts)
-- **`POST /api/auth`:** Recibe `numeroEmpleado` (o alias como `1000`, `admin`, `oscar`, `oscar.mercado`) y `password`. Busca al usuario en la base de datos, valida que esté activo y **aplica la regla de exclusividad administrativa:** valida que el usuario corresponda al Administrador General (**Oscar Mercado**, emp. `1000`); de lo contrario, rechaza la petición con `HTTP 403`, notificando que el centro de control es exclusivo de **Oscar Mercado** y que los jefes de departamento deben responder directamente sus encuestas en *"Realizar Checklist"*. Valida la contraseña con `verifyPassword`, genera el token JWT con `signToken`, registra el evento en `auditoria` y asienta la cookie segura `smartcheck_token`.
+- **`POST /api/auth`:** Recibe `numeroEmpleado` (admite número de nómina, correo electrónico registrado como `oscar.mercado@empresa.com` o alias como `admin`, `oscar`) y `password`. Busca al usuario en la base de datos, valida que esté activo y **aplica la regla de exclusividad administrativa:** valida que el usuario corresponda al Administrador General (**Oscar Mercado**, emp. `1000`); de lo contrario, rechaza la petición con `HTTP 403`, notificando que el centro de control es exclusivo de **Oscar Mercado** y que los colaboradores responden directamente sus encuestas en *"Realizar Checklist"*. Valida la contraseña con `verifyPassword`, genera el token JWT con `signToken`, registra el evento en `auditoria` y asienta la cookie segura `smartcheck_token`.
 - **`GET /api/auth`:** Lee el token desde `Bearer` o la cookie `smartcheck_token`, lo verifica con `verifyToken` y confirma que la sesión administrativa activa sea válida.
 - **`DELETE /api/auth`:** Finaliza la sesión administrativa, elimina la cookie `smartcheck_token` en el navegador y registra el evento `LOGOUT` con marca temporal y actor en `auditoria`.
 
@@ -443,11 +413,7 @@ Cada subcarpeta dentro de `src/app/api/` expone un endpoint RESTful bajo el est�
 - **`PATCH /api/checklists`:** Actualiza el estado de resolución de incidencias (`ABIERTA`, `EN_ATENCION`, `RESUELTA`).
 - **`DELETE /api/checklists?id={id}`:** Borra una encuesta en cascada, eliminando sus respuestas y archivos multimedia en `db.evidencias`.
 
-#### 6. [`src/app/api/notificaciones/route.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/app/api/notificaciones/route.ts)
-- **`GET /api/notificaciones`:** Devuelve el historial cronológico de alertas de tiempo de vida emitidas por correo electrónico.
-- **`POST /api/notificaciones`:** Disparador administrativo manual para ejecutar inmediatamente la rutina `evaluarVentanasYNotificar()` y despachar los correos a los colaboradores que no hayan completado su inspección en áreas cuya ventana ya concluyó.
-
-#### 7. [`src/app/api/audit/route.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/app/api/audit/route.ts)
+#### 6. [`src/app/api/audit/route.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/app/api/audit/route.ts)
 - **`GET /api/audit`:** Devuelve los últimos 100 registros de la bitácora inmutable de auditoría.
 
 ---
@@ -497,17 +463,16 @@ Cada subcarpeta dentro de `src/app/api/` expone un endpoint RESTful bajo el est�
     - Conmutador superior de pestañas: **Incidencias** (seleccionada por defecto) y **Cumplimiento**.
     - Agrupación por Área: Presenta las 7 áreas oficiales con sus respectivos contadores.
     - Despliegue en Acordeón al Clic: Al pulsar un área, se abre el desglose interactivo de fallas con fecha, folio, pregunta, empleado responsable, motivo capturado y fotografía de evidencia en miniatura ampliable.
-  - **Subsección "Tiempo de Vida":** Integra el componente `TiempoVidaPanel.tsx` para el control de horarios y notificaciones.
+  - **Subsección "Tiempo de Vida":** Integra el componente `TiempoVidaPanel.tsx` para la parametrización de horarios de apertura y cierre de inspecciones.
   - **Exportación Directa a PDF y Excel:** Botones ejecutivos en cabecera con soporte para filtros combinados.
 
 #### 3. [`src/components/TiempoVidaPanel.tsx`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/components/TiempoVidaPanel.tsx)
-- **Qué hace:** Módulo administrativo para la configuración de ventanas horarias y monitor de notificaciones automáticas por correo.
+- **Qué hace:** Módulo administrativo para la configuración de ventanas horarias y monitor de tiempo de vida de las encuestas en tiempo real.
 - **Cómo funciona internamente:**
   - Lista las 7 áreas industriales oficiales mostrando su `horaInicio` y `horaFin`.
-  - Permite a Oscar Mercado ajustar los horarios en vivo mediante inputs de hora y guardar vía `PUT /api/areas`.
-  - Muestra badges de estado en tiempo real: `ABIERTA` (en horario vigente), `POR INICIAR` o `CERRADA`.
-  - Botón interactivo "Ejecutar Verificación y Notificaciones Ahora" para invocar `POST /api/notificaciones`.
-  - Tabla de bitácora con los correos despachados por Nodemailer.
+  - Permite a Oscar Mercado ajustar los horarios en vivo mediante inputs de hora y guardar vía `PUT /api/areas` mediante el botón *"Guardar horarios"*.
+  - Muestra badges de estado en tiempo real: `ABIERTA` (en horario vigente con minutos restantes), `ANTES` (con minutos para abrir) o `CERRADA`.
+  - Muestra el resumen cuantitativo de encuestas en tiempo vs fuera de tiempo del filtro activo y la lista de colaboradores pendientes por contestar hoy.
 
 #### 4. [`src/components/ArchitectureView.tsx`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/components/ArchitectureView.tsx)
 - **Qué hace:** Visor interactivo dentro de la propia plataforma con los 19 entregables arquitectónicos, diccionario de datos y flujo de seguridad.
@@ -516,13 +481,10 @@ Cada subcarpeta dentro de `src/app/api/` expone un endpoint RESTful bajo el est�
 
 ### 3.8 Archivos de Configuración e Infraestructura en la Raíz del Proyecto
 
-- **[`src/instrumentation.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/instrumentation.ts) e [`src/instrumentation-node.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/instrumentation-node.ts):**
-  - Implementan el hook oficial `register()` de Next.js, habilitado mediante `experimental: { instrumentationHook: true }` en `next.config.mjs`.
-  - Condicionado al entorno Node.js (`process.env.NEXT_RUNTIME === 'nodejs'`), arranca un scheduler en segundo plano que ejecuta cada 60 segundos la función `evaluarVentanasYNotificar()`. Al expirar la ventana de un área sin encuesta realizada, envía automáticamente los correos de alerta vía Nodemailer.
 - **[`.env.example`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/.env.example):**
-  - Archivo de configuración modelo que detalla las variables SMTP (`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`) y la directiva de seguridad `MAIL_SOLO_DESTINATARIOS="puentealejandro491@gmail.com"` para testing controlado.
-- **[`package.json`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/package.json):** Declara dependencias de producción (incluyendo `nodemailer` y sus tipos `@types/nodemailer`).
-- **[`tailwind.config.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/tailwind.config.ts), [`tsconfig.json`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/tsconfig.json) y [`next.config.mjs`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/next.config.mjs):** Configuración del entorno de compilación, alias TypeScript y hooks del servidor.
+  - Archivo de configuración modelo que detalla las variables locales recomendadas (`JWT_SECRET`, `PORT`).
+- **[`package.json`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/package.json):** Declara dependencias de producción y scripts de ejecución (depurado de dependencias de correo).
+- **[`tailwind.config.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/tailwind.config.ts), [`tsconfig.json`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/tsconfig.json) y [`next.config.mjs`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/next.config.mjs):** Configuración del entorno de compilación, alias TypeScript y optimización de imágenes en el servidor.
 
 ---
 
@@ -809,44 +771,38 @@ A petición expresa de la dirección operativa, se depuraron las áreas prelimin
       - En la Sección 13 (Estrategia de Seguridad), se incluyó la justificación técnica de la eliminación de la tabla `roles` y la gestión directa a través de JWT y `usuarios.rol`.
 
 
-### 5.11 Diagnóstico y Hoja de Ruta del Sistema de Alertas por Correo y Microsoft Teams (Tiempo de Vida)
+### 5.11 Supresión Integral de Notificaciones, Envío de Correos y Erradicación de Tablas de Alertas
 
-- **Contexto Operativo:**
-  Se auditó el mecanismo de despacho de notificaciones automáticas y de prueba hacia el correo personal de **Alejandro Puente** (`puentealejandro491@gmail.com`) tras reportarse que los correos de encuestas no contestadas dentro de la ventana de vigencia no estaban llegando a la bandeja de entrada.
+- **Contexto y Decisión Arquitectónica:**
+  Se determinó la eliminación integral y definitiva de todos los componentes, librerías, tablas, tareas de fondo y rutas API dedicadas al despacho de notificaciones y correos electrónicos. La aplicación no efectúa envíos de alertas extemporáneas ni pruebas de correo, manteniendo el campo `correo` **única y exclusivamente como credencial de inicio de sesión y autenticación de cuentas de usuario**.
 
-- **Hallazgos Técnicos y Diagnóstico de Causas:**
-  1. **Inexistencia de Variables de Entorno (`.env.local` / `.env`):**
-     - En el directorio raíz únicamente se encontraba la plantilla de referencia [`.env.example`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/.env.example).
-     - La función guardián `mailConfigurado()` en [`src/lib/notifier.ts`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/src/lib/notifier.ts) evalúa la presencia de `process.env.SMTP_USER` y `process.env.SMTP_PASS`.
-     - Al no existir credenciales remitentes en memoria, el despachador `enviarCorreo()` aborta la llamada antes de abrir sockets de red, devolviendo `{ estado: 'SIN_CONFIGURAR', detalle: 'Faltan SMTP_USER / SMTP_PASS en .env.local...' }`.
-     - Se constató en [`database/smartcheck_db.json`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/database/smartcheck_db.json) que tanto los disparos automáticos del scheduler como las pruebas manuales quedaron debidamente capturadas pero asentadas como `SIN_CONFIGURAR`.
-  2. **Condición de Negocio de Encuestas Vencidas:**
-     - La función evaluadora `obtenerPendientesVencidos()` descarta a cualquier colaborador que ya cuente con un checklist enviado hoy para su área respectiva.
-     - Se verificó que el empleado **Alejandro Puente** (`#2001`) ya había registrado sus checklists del día 21/10/2026 para sus dos áreas asignadas (*Infraestructura* e *Ind. 4.0*), por lo que el scheduler en segundo plano operaba correctamente al no emitir alertas extemporáneas a su nombre.
-  3. **Seguridad y Métodos de Autenticación en Servidores de Correo:**
-     - **Google / Gmail:** Requiere obligatoriamente que la cuenta remitente cuente con Verificación en 2 Pasos y una *Contraseña de Aplicación* de 16 caracteres (generada en `myaccount.google.com/apppasswords`), impidiendo el uso de contraseñas ordinarias.
-
-- **Alternativas y Hoja de Ruta para Próximas Sesiones:**
-  1. **Vía A — Despliegue con Gmail SMTP:**
-     - Crear el archivo `.env.local` en la raíz copiando `.env.example`.
-     - Configurar `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=465`, usuario remitente y la contraseña de aplicación de 16 letras de Google.
-     - Probar el botón *"Correo de prueba a Alejandro Puente"* desde el componente `TiempoVidaPanel.tsx`.
-  2. **Vía B — Despliegue con Cuenta Corporativa Microsoft 365 / Outlook (Teams):**
-     - Parámetros: `SMTP_HOST=smtp.office365.com`, `SMTP_PORT=587`, `secure: false` (STARTTLS) con credenciales empresariales.
-     - Consideración técnica: Muchas organizaciones corporativas restringen por directiva de TI el protocolo *SMTP AUTH básico* mediante políticas de Acceso Condicional y MFA, lo que puede requerir habilitación por parte del administrador de TI de la empresa.
-  3. **Vía C — Integración Nativa con Microsoft Teams vía Webhook (Recomendada para Planta):**
-     - Elimina por completo la dependencia de contraseñas de correo, puertos SMTP y posibles bloqueos de firewalls corporativos.
-     - Configuración de un *Incoming Webhook* o *Workflows* en el canal correspondiente de Microsoft Teams.
-     - El backend despacha un payload JSON con *Adaptive Cards* mostrando semáforos de advertencia, el área vencida y el personal pendiente, entregando la notificación en tiempo real a computadoras y teléfonos del equipo de trabajo.
+- **Alcance de los Cambios Ejecutados:**
+  1. **Dependencias:**
+     - Desinstalación de `nodemailer` y `@types/nodemailer` de `package.json` y `package-lock.json`.
+  2. **Servicios y Tareas en Segundo Plano:**
+     - Eliminación de [`src/lib/notifier.ts`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/src/lib/notifier.ts), suprimiendo transportes SMTP y plantillas HTML de alerta.
+     - Eliminación de [`src/instrumentation.ts`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/src/instrumentation.ts) e [`src/instrumentation-node.ts`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/src/instrumentation-node.ts), suprimiendo el scheduler que ejecutaba revisiones periódicas cada 60 segundos.
+     - Remoción de la bandera `experimental.instrumentationHook` en `next.config.mjs`.
+  3. **Rutas de API:**
+     - Supresión completa del endpoint [`src/app/api/notificaciones/route.ts`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/src/app/api/notificaciones/route.ts).
+     - Actualización de [`src/app/api/auth/route.ts`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/src/app/api/auth/route.ts) para permitir autenticación indistinta mediante número de nómina o correo institucional más contraseña.
+  4. **Base de Datos y Modelado Físico (MySQL, PostgreSQL y JSON Local):**
+     - Eliminación de la tabla física `notificaciones` en [`ER/schema_mysql.sql`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/ER/schema_mysql.sql), reduciendo el modelo a 9 tablas relacionales normalizadas en 3FN.
+     - Depuración de la colección `notificaciones` y purga de trazas de auditoría de envío en [`database/smartcheck_db.json`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/database/smartcheck_db.json).
+     - Eliminación de `NotificacionCorreo` e interfaces asociadas en [`src/types/index.ts`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/src/types/index.ts).
+     - Regeneración programática del diagrama relacional oficial [`ER/ER_Diagrama_Fisico.svg`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/ER/ER_Diagrama_Fisico.svg) mediante [`ER/generate_erd_svg.js`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/ER/generate_erd_svg.js).
+  5. **Componente Visual `TiempoVidaPanel.tsx`:**
+     - Retiro de botones *"Verificar vencidos y enviar correos"* y *"Correo de prueba a Alejandro Puente"*.
+     - Supresión del banner de advertencia *"SMTP sin configurar"* y de la tabla de *"Últimos correos"*.
+     - Preservación limpia del monitoreo de vigencia (`horaInicio` y `horaFin`), semáforos de estado (`ABIERTA`, `ANTES`, `CERRADA`), métricas cuantitativas y botón *"Guardar horarios"*.
 
 ---
 
-### 5.12 Gestión Integral de Correo de Empleados: Autocompletado Inteligente en Alta y Modificación Rápida en Tabla
+### 5.12 Gestión Integral de Correo de Empleados: Credencial de Acceso y Modificación Rápida en Tabla
 
-- **Contexto Operativo y Problemática Resuelta:**
-  Durante la operación cotidiana del sistema, existía el riesgo de que el correo electrónico de un colaborador se capturara de manera errónea, contuviera faltas tipográficas o requiriera actualización debido a cambios de cuenta o reasignación a bandejas externas (ej. `puentealejandro491@gmail.com` para Alejandro Puente).
-  Dado que el motor de despacho de notificaciones automáticas de encuestas vencidas ([`src/lib/notifier.ts`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/src/lib/notifier.ts)) depende directamente del atributo `emp.correo` para alertar al personal operativo, un correo ausente o incorrecto provocaba omisiones en el envío.
-  Para subsanar este flujo sin fricción, se implementó un mecanismo doble:
+- **Contexto Operativo y Propósito:**
+  El correo electrónico institucional de cada colaborador constituye un identificador unívoco y credencial de autenticación para el acceso a la plataforma (permitiendo ingresar con nómina o correo y contraseña).
+  Para garantizar que cada empleado cuente con su dirección de correo correcta y sin fricción de captura, se implementó:
   1. **Autocompletado predictivo en el alta:** Al ingresar el nombre completo del empleado, el sistema calcula de inmediato el correo institucional estándar.
   2. **Flexibilidad de modificación inmediata:** Permite al Administrador alterar el correo sugerido en el formulario antes de guardar o corregirlo directamente en la tabla de empleados sin tener que recrear registros ni abrir formularios pesados.
 
@@ -893,3 +849,48 @@ A petición expresa de la dirección operativa, se depuraron las áreas prelimin
 - **Control de Calidad y Pruebas Realizadas:**
   - `npx tsc --noEmit`: Validación estricta de tipos TypeScript sin errores.
   - `npm run build`: Compilación completa de producción en Next.js App Router (14.2.18) con generación estática y rutas dinámicas validadas al 100%.
+
+---
+
+### 5.13 Registro Maestro de Erradicación de Notificaciones y SMTP (22 de Octubre de 2026)
+
+Por requerimiento expreso del usuario (*"elimines en todo el proyecto todo lo referente a mandar notificaciones, los correos y etc.....(solo dejalo el correo para que cada usuario tengan su contraseña y correo para acceder a su cuenta) incluyendo en la base de datos"*), se ejecutó una depuración total y exhaustiva en cada capa del sistema:
+
+#### 1. Archivos Físicamente Eliminados del Proyecto
+- `src/lib/notifier.ts`: Motor de transporte Nodemailer, plantillas HTML y evaluador de vencimientos.
+- `src/instrumentation.ts` e `src/instrumentation-node.ts`: Scheduler de ejecución periódica en segundo plano cada 60s.
+- `src/app/api/notificaciones/route.ts` (y su directorio contenedor): Endpoint REST de notificaciones y pruebas SMTP.
+
+#### 2. Dependencias Desinstaladas
+- `nodemailer` (v10.1.7) y `@types/nodemailer` (v8.0.2) desinstalados formalmente de `package.json` y `package-lock.json`.
+
+#### 3. Base de Datos Relacional y Persistencia Local
+- **MySQL Server 8.0+ ([`ER/schema_mysql.sql`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/ER/schema_mysql.sql)):** Eliminación de la tabla `notificaciones` y reducción del modelo relacional físico a **9 tablas normalizadas en 3FN**.
+- **PostgreSQL ([`database/schema_postgresql.sql`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/database/schema_postgresql.sql)):** Verificado y consolidado en 9 tablas relacionales en 3FN sin entidad de notificaciones.
+- **Base de datos local activa ([`database/smartcheck_db.json`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/database/smartcheck_db.json)):** Purgada la clave `"notificaciones": [...]` y eliminadas todas las trazas de auditoría asociadas a `NOTIFICACIONES` o envíos de correo.
+- **Diagrama EER ([`ER/ER_Diagrama_Fisico.svg`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/ER/ER_Diagrama_Fisico.svg)):** Regenerado mediante [`ER/generate_erd_svg.js`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/ER/generate_erd_svg.js) eliminando la tabla y los conectores relacionales hacia áreas y empleados.
+
+#### 4. Tipos de Dominio y Contratos TypeScript
+- **[`src/types/index.ts`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/src/types/index.ts):** Eliminada la interfaz `NotificacionCorreo` y retirada la propiedad opcional `notificaciones` de `DatabaseSchema`.
+
+#### 5. Interfaz de Usuario y Experiencia en Frontend
+- **[`src/components/TiempoVidaPanel.tsx`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/src/components/TiempoVidaPanel.tsx):** 
+  - Retirados los botones *"Verificar vencidos y enviar correos"* y *"Correo de prueba a Alejandro Puente"*.
+  - Eliminado el aviso *"SMTP sin configurar"* y la tabla de *"Últimos correos"*.
+  - Se conserva la funcionalidad clave del Tiempo de Vida: configuración de horario (`horaInicio` y `horaFin`), semáforos de apertura y cierre, conteo de cumplimiento y botón *"Guardar horarios"*.
+- **[`src/components/AdminDashboard.tsx`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/src/components/AdminDashboard.tsx):** Formulario de login adaptado con etiqueta y placeholder explícito: *"Número de Empleado o Correo Electrónico"*.
+
+#### 6. Autenticación y Credenciales de Usuario
+- **[`src/app/api/auth/route.ts`](file:///C:/Users/alejpue5/Documents/Proyectos/CheckList/src/app/api/auth/route.ts):** El backend de autenticación admite tanto el número de nómina (ej. `1000`) como la dirección de correo registrada (ej. `oscar.mercado@empresa.com`) junto con la contraseña para iniciar sesión.
+
+#### 7. Validación Integral y Pruebas Superadas
+- `npx tsc --noEmit`: 0 errores de tipado TypeScript.
+- `npm run build`: Compilación exitosa en producción de Next.js App Router (14.2.18).
+- Batería automatizada de 9 pruebas de integración ejecutada contra servidor local:
+  - Búsqueda de empleado (#2001, Alejandro Puente con 2 áreas y correo preservado): **Aprobado**.
+  - Login por número de nómina (`1000` / `admin123`): **Aprobado**.
+  - Login por correo institucional (`oscar.mercado@empresa.com` / `admin123`): **Aprobado**.
+  - Consulta de catálogo de 7 áreas oficiales: **Aprobado**.
+  - Agregación analítica de checklists y tiempo de vida: **Aprobado**.
+  - Verificación de supresión de `/api/notificaciones` (retorno `404 Not Found`): **Aprobado**.
+  - Modificación y guardado de horarios operativos (`PUT /api/areas`): **Aprobado**.

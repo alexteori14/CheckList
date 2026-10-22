@@ -106,9 +106,6 @@
     <path d="M 780 405 L 780 450 L 890 450 L 890 870 L 1020 870 L 1020 910" fill="none" stroke="#374151" stroke-width="1.25" stroke-dasharray="6,4"/>
     <line x1="786" y1="412" x2="774" y2="412" stroke="#222" stroke-width="1.3"/><line x1="786" y1="417" x2="774" y2="417" stroke="#222" stroke-width="1.3"/>
     <line x1="1020" y1="910" x2="1014" y2="900" stroke="#222" stroke-width="1.3"/><line x1="1020" y1="910" x2="1026" y2="900" stroke="#222" stroke-width="1.3"/><line x1="1014" y1="895" x2="1026" y2="895" stroke="#222" stroke-width="1.3"/>
-    <path d="M 480 340 L 405 340 L 405 940 L 240 940 L 240 970" fill="none" stroke="#374151" stroke-width="1.25" stroke-dasharray="6,4"/>
-    <line x1="473" y1="346" x2="473" y2="334" stroke="#222" stroke-width="1.3"/><line x1="468" y1="346" x2="468" y2="334" stroke="#222" stroke-width="1.3"/>
-    <line x1="240" y1="970" x2="234" y2="960" stroke="#222" stroke-width="1.3"/><line x1="240" y1="970" x2="246" y2="960" stroke="#222" stroke-width="1.3"/><line x1="234" y1="955" x2="246" y2="955" stroke="#222" stroke-width="1.3"/>
     <path d="M 960 240 L 430 240 L 430 650 L 380 650" fill="none" stroke="#374151" stroke-width="1.25" stroke-dasharray="6,4"/>
     <line x1="953" y1="246" x2="953" y2="234" stroke="#222" stroke-width="1.3"/><circle cx="946" cy="240" r="3.5" fill="#ffffff" stroke="#222" stroke-width="1.2"/>
     <line x1="387" y1="644" x2="387" y2="656" stroke="#222" stroke-width="1.3"/><circle cx="394" cy="650" r="3.5" fill="#ffffff" stroke="#222" stroke-width="1.2"/>
@@ -118,9 +115,6 @@
     <path d="M 380 700 L 440 700 L 440 940 L 480 940" fill="none" stroke="#374151" stroke-width="1.25" stroke-dasharray="6,4"/>
     <line x1="387" y1="694" x2="387" y2="706" stroke="#222" stroke-width="1.3"/><line x1="392" y1="694" x2="392" y2="706" stroke="#222" stroke-width="1.3"/>
     <line x1="480" y1="940" x2="470" y2="946" stroke="#222" stroke-width="1.3"/><line x1="480" y1="940" x2="470" y2="934" stroke="#222" stroke-width="1.3"/><line x1="465" y1="946" x2="465" y2="934" stroke="#222" stroke-width="1.3"/>
-    <path d="M 140 785 L 140 970" fill="none" stroke="#374151" stroke-width="1.25" stroke-dasharray="6,4"/>
-    <line x1="146" y1="792" x2="134" y2="792" stroke="#222" stroke-width="1.3"/><line x1="146" y1="797" x2="134" y2="797" stroke="#222" stroke-width="1.3"/>
-    <line x1="140" y1="970" x2="134" y2="960" stroke="#222" stroke-width="1.3"/><line x1="140" y1="970" x2="146" y2="960" stroke="#222" stroke-width="1.3"/><line x1="134" y1="955" x2="146" y2="955" stroke="#222" stroke-width="1.3"/>
     <path d="M 830 960 L 900 960 L 900 680 L 960 680" fill="none" stroke="#111827" stroke-width="1.5" />
     <line x1="837" y1="954" x2="837" y2="966" stroke="#222" stroke-width="1.3"/><line x1="842" y1="954" x2="842" y2="966" stroke="#222" stroke-width="1.3"/>
     <line x1="960" y1="680" x2="950" y2="686" stroke="#222" stroke-width="1.3"/><line x1="960" y1="680" x2="950" y2="674" stroke="#222" stroke-width="1.3"/><line x1="945" y1="686" x2="945" y2="674" stroke="#222" stroke-width="1.3"/>
@@ -630,70 +624,6 @@
       <rect x="1" y="286" width="318" height="18" fill="#ffffff"/>
       <circle cx="12" cy="295" r="2" fill="#475569"/>
       <text x="22" y="299" font-size="10" font-weight="normal" fill="#475569">idx_evidencias_checklist</text>
-    </g>
-
-    <!-- TABLE: notificaciones -->
-    <g transform="translate(50, 970)" filter="url(#tableShadow)">
-      <rect x="0" y="0" width="320" height="332" rx="4" fill="#ffffff" stroke="#3c6f9e" stroke-width="1.2"/>
-      <path d="M 0 4 Q 0 0 4 0 L 316 0 Q 320 0 320 4 L 320 28 L 0 28 Z" fill="url(#wbHeader)"/>
-      <line x1="0" y1="28" x2="320" y2="28" stroke="#355e86" stroke-width="1"/>
-      <use href="#ico-tbl" x="8" y="8"/>
-      <text x="28" y="19" font-size="12" font-weight="bold" fill="#ffffff" letter-spacing="0.3">notificaciones</text>
-      <polygon points="305,11 313,11 309,17" fill="#ffffff" fill-opacity="0.8"/>
-      <use href="#ico-pk" x="8" y="31"/>
-      <text x="28" y="42" font-size="11" font-weight="600" fill="#1f2937">id</text>
-      <text x="310" y="42" font-size="10" font-weight="500" fill="#4b5563" text-anchor="end">CHAR(36)</text>
-      <rect x="1" y="48" width="318" height="20" fill="#fafbfc"/>
-      <use href="#ico-fk" x="8" y="51"/>
-      <text x="28" y="62" font-size="11" font-weight="600" fill="#1f2937">empleado_id</text>
-      <text x="310" y="62" font-size="10" font-weight="500" fill="#4b5563" text-anchor="end">CHAR(36)</text>
-      <use href="#ico-fk" x="8" y="71"/>
-      <text x="28" y="82" font-size="11" font-weight="600" fill="#1f2937">area_id</text>
-      <text x="310" y="82" font-size="10" font-weight="500" fill="#4b5563" text-anchor="end">INT</text>
-      <rect x="1" y="88" width="318" height="20" fill="#fafbfc"/>
-      <use href="#ico-nn" x="8" y="91"/>
-      <text x="28" y="102" font-size="11"  fill="#1f2937">fecha</text>
-      <text x="310" y="102" font-size="10" font-weight="500" fill="#4b5563" text-anchor="end">DATE</text>
-      <use href="#ico-nn" x="8" y="111"/>
-      <text x="28" y="122" font-size="11"  fill="#1f2937">tipo</text>
-      <text x="310" y="122" font-size="10" font-weight="500" fill="#4b5563" text-anchor="end">VARCHAR(50)</text>
-      <rect x="1" y="128" width="318" height="20" fill="#fafbfc"/>
-      <use href="#ico-nn" x="8" y="131"/>
-      <text x="28" y="142" font-size="11"  fill="#1f2937">destinatario</text>
-      <text x="310" y="142" font-size="10" font-weight="500" fill="#4b5563" text-anchor="end">VARCHAR(150)</text>
-      <use href="#ico-nn" x="8" y="151"/>
-      <text x="28" y="162" font-size="11"  fill="#1f2937">estado</text>
-      <text x="310" y="162" font-size="10" font-weight="500" fill="#4b5563" text-anchor="end">ENUM</text>
-      <rect x="1" y="168" width="318" height="20" fill="#fafbfc"/>
-      <use href="#ico-null" x="8" y="171"/>
-      <text x="28" y="182" font-size="11"  fill="#1f2937">detalle</text>
-      <text x="310" y="182" font-size="10" font-weight="500" fill="#4b5563" text-anchor="end">TEXT</text>
-      <use href="#ico-nn" x="8" y="191"/>
-      <text x="28" y="202" font-size="11"  fill="#1f2937">intentos</text>
-      <text x="310" y="202" font-size="10" font-weight="500" fill="#4b5563" text-anchor="end">SMALLINT</text>
-      <rect x="1" y="208" width="318" height="20" fill="#fafbfc"/>
-      <use href="#ico-null" x="8" y="211"/>
-      <text x="28" y="222" font-size="11"  fill="#1f2937">enviado_en</text>
-      <text x="310" y="222" font-size="10" font-weight="500" fill="#4b5563" text-anchor="end">DATETIME</text>
-      <use href="#ico-nn" x="8" y="231"/>
-      <text x="28" y="242" font-size="11"  fill="#1f2937">created_at</text>
-      <text x="310" y="242" font-size="10" font-weight="500" fill="#4b5563" text-anchor="end">DATETIME</text>
-      <g transform="translate(0, 248)">
-        <rect x="0" y="0" width="320" height="22" fill="url(#wbIndex)"/>
-        <line x1="0" y1="0" x2="320" y2="0" stroke="#abb2bb" stroke-width="0.8"/>
-        <line x1="0" y1="22" x2="320" y2="22" stroke="#abb2bb" stroke-width="0.8"/>
-        <polygon points="9,7 9,15 15,11" fill="#475569"/>
-        <text x="20" y="15" font-size="11" font-weight="bold" fill="#334155">Indexes</text>
-      </g>
-      <rect x="1" y="270" width="318" height="18" fill="#ffffff"/>
-      <circle cx="12" cy="279" r="2" fill="#92400e"/>
-      <text x="22" y="283" font-size="10" font-weight="bold" fill="#92400e">PRIMARY</text>
-      <rect x="1" y="288" width="318" height="18" fill="#f8fafc"/>
-      <circle cx="12" cy="297" r="2" fill="#475569"/>
-      <text x="22" y="301" font-size="10" font-weight="normal" fill="#475569">idx_notificaciones_fecha_area</text>
-      <rect x="1" y="306" width="318" height="18" fill="#ffffff"/>
-      <circle cx="12" cy="315" r="2" fill="#475569"/>
-      <text x="22" y="319" font-size="10" font-weight="normal" fill="#475569">idx_notificaciones_empleado</text>
     </g>
 
     <!-- TABLE: estadisticas -->

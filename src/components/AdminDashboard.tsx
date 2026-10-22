@@ -874,7 +874,7 @@ export default function AdminDashboard() {
           )}
           <div>
             <label htmlFor="login-emp" className="block text-xs font-bold text-slate-800 mb-1">
-              Número de Empleado o Usuario
+              Número de Empleado o Correo Electrónico
             </label>
             <input
               id="login-emp"
@@ -882,7 +882,7 @@ export default function AdminDashboard() {
               value={loginNumero}
               onChange={(e) => setLoginNumero(e.target.value)}
               className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm font-semibold tabular-nums focus:border-blue-600"
-              placeholder="1000"
+              placeholder="1000 o correo@empresa.com"
             />
           </div>
           <div>

@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { AlertTriangle, CheckCircle2, Clock, Mail, Save, Send, Timer } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { AlertTriangle, CheckCircle2, Clock, Save, Timer } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { estadoVentana, formatMinutos } from '@/lib/schedule';
-import type { NotificacionCorreo } from '@/types';
 
 export interface TiempoVidaArea {
   areaId: number;
@@ -16,7 +15,7 @@ export interface TiempoVidaArea {
   contestadas: number;
   enTiempo: number;
   fueraDeTiempo: number;
-  pendientes: Array<{ numeroEmpleado: string; nombreCompleto: string; correo: string }>;
+  pendientes: Array<{ numeroEmpleado: string; nombreCompleto: string; correo?: string }>;
 }
 
 export interface TiempoVidaData {
@@ -40,28 +39,11 @@ export default function TiempoVidaPanel({ data, compact = false, onChanged }: Pr
   const [edits, setEdits] = useState<Record<number, { ini: string; fin: string }>>({});
   const [msg, setMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
   const [busy, setBusy] = useState<string>('');
-  const [notifs, setNotifs] = useState<NotificacionCorreo[]>([]);
-  const [mailOk, setMailOk] = useState<boolean>(true);
 
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 15000);
     return () => clearInterval(t);
   }, []);
-
-  const loadNotifs = useCallback(async () => {
-    try {
-      const r = await fetch('/api/notificaciones', { cache: 'no-store' });
-      const d = await r.json();
-      setNotifs(d.notificaciones || []);
-      setMailOk(Boolean(d.configurado));
-    } catch {
-      /* sin conexión */
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!compact) loadNotifs();
-  }, [compact, loadNotifs, data]);
 
   const dirty = useMemo(
     () =>
@@ -94,53 +76,6 @@ export default function TiempoVidaPanel({ data, compact = false, onChanged }: Pr
       onChanged();
     } catch {
       setMsg({ type: 'err', text: 'Error de conexión al guardar.' });
-    } finally {
-      setBusy('');
-    }
-  };
-
-  const verificar = async () => {
-    setBusy('verificar');
-    setMsg(null);
-    try {
-      const r = await fetch('/api/notificaciones', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ accion: 'verificar' }),
-      });
-      const d = await r.json();
-      setMsg({
-        type: d.errores > 0 ? 'err' : 'ok',
-        text: `Pendientes vencidos: ${d.evaluados} • Correos enviados: ${d.enviados} • Errores: ${d.errores}${
-          d.sinConfigurar ? ` • Sin configurar SMTP: ${d.sinConfigurar}` : ''
-        }`,
-      });
-      loadNotifs();
-    } catch {
-      setMsg({ type: 'err', text: 'Error al verificar encuestas vencidas.' });
-    } finally {
-      setBusy('');
-    }
-  };
-
-  const prueba = async () => {
-    setBusy('prueba');
-    setMsg(null);
-    try {
-      const r = await fetch('/api/notificaciones', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ accion: 'prueba', numeroEmpleado: '2001' }),
-      });
-      const d = await r.json();
-      setMsg(
-        d.ok
-          ? { type: 'ok', text: `Correo de prueba enviado a ${d.destinatario}.` }
-          : { type: 'err', text: d.detalle || d.error || 'No se pudo enviar el correo de prueba.' }
-      );
-      loadNotifs();
-    } catch {
-      setMsg({ type: 'err', text: 'Error de conexión al enviar la prueba.' });
     } finally {
       setBusy('');
     }
@@ -283,33 +218,8 @@ export default function TiempoVidaPanel({ data, compact = false, onChanged }: Pr
               <Save className="size-4" />
               <span>Guardar horarios{dirty.length > 0 ? ` (${dirty.length})` : ''}</span>
             </button>
-            <button
-              type="button"
-              disabled={busy !== ''}
-              onClick={verificar}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 disabled:opacity-60 text-white text-xs font-bold"
-            >
-              <Send className="size-4" />
-              <span>{busy === 'verificar' ? 'Verificando…' : 'Verificar vencidos y enviar correos'}</span>
-            </button>
-            <button
-              type="button"
-              disabled={busy !== ''}
-              onClick={prueba}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 disabled:opacity-60 text-amber-900 border border-amber-300 text-xs font-bold"
-            >
-              <Mail className="size-4" />
-              <span>{busy === 'prueba' ? 'Enviando…' : 'Correo de prueba a Alejandro Puente'}</span>
-            </button>
           </div>
 
-          {!mailOk && (
-            <p className="text-xs p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-900">
-              <strong>SMTP sin configurar:</strong> crea <code>.env.local</code> a partir de <code>.env.example</code> con la
-              cuenta Gmail remitente y su contraseña de aplicación, y reinicia el servidor. Mientras tanto los intentos
-              quedan registrados como &ldquo;SIN_CONFIGURAR&rdquo;.
-            </p>
-          )}
           {msg && (
             <p
               role="status"
@@ -322,42 +232,6 @@ export default function TiempoVidaPanel({ data, compact = false, onChanged }: Pr
             >
               {msg.text}
             </p>
-          )}
-
-          {notifs.length > 0 && (
-            <div className="overflow-x-auto">
-              <p className="text-xs font-bold text-slate-800 mb-1.5">Últimos correos</p>
-              <table className="w-full text-left border-collapse text-xs">
-                <tbody className="divide-y divide-slate-100">
-                  {notifs.slice(0, 5).map((n) => (
-                    <tr key={n.id}>
-                      <td className="py-1.5 pr-3 font-mono text-slate-600 whitespace-nowrap">
-                        {new Date(n.enviadoEn).toLocaleString('es-MX')}
-                      </td>
-                      <td className="py-1.5 pr-3 font-semibold">{n.nombreEmpleado}</td>
-                      <td className="py-1.5 pr-3">{n.areaNombre}</td>
-                      <td className="py-1.5 pr-3">{n.destinatario}</td>
-                      <td className="py-1.5 pr-3">
-                        <span
-                          className={cn(
-                            'px-2 py-0.5 rounded font-bold',
-                            n.estado === 'ENVIADO'
-                              ? 'bg-emerald-50 text-emerald-800'
-                              : n.estado === 'ERROR'
-                              ? 'bg-rose-50 text-rose-800'
-                              : 'bg-amber-50 text-amber-800'
-                          )}
-                          title={n.detalle}
-                        >
-                          {n.tipo === 'PRUEBA' ? 'PRUEBA · ' : ''}
-                          {n.estado}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
           )}
         </div>
       )}

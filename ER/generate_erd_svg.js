@@ -157,27 +157,6 @@ const tables = [
     indexes: ['PRIMARY', 'idx_evidencias_respuesta', 'idx_evidencias_checklist']
   },
   {
-    id: 'notificaciones',
-    name: 'notificaciones',
-    x: 50,
-    y: 970,
-    width: 320,
-    columns: [
-      { name: 'id', type: 'CHAR(36)', icon: 'pk' },
-      { name: 'empleado_id', type: 'CHAR(36)', icon: 'fk' },
-      { name: 'area_id', type: 'INT', icon: 'fk' },
-      { name: 'fecha', type: 'DATE', icon: 'nn' },
-      { name: 'tipo', type: 'VARCHAR(50)', icon: 'nn' },
-      { name: 'destinatario', type: 'VARCHAR(150)', icon: 'nn' },
-      { name: 'estado', type: 'ENUM', icon: 'nn' },
-      { name: 'detalle', type: 'TEXT', icon: 'null' },
-      { name: 'intentos', type: 'SMALLINT', icon: 'nn' },
-      { name: 'enviado_en', type: 'DATETIME', icon: 'null' },
-      { name: 'created_at', type: 'DATETIME', icon: 'nn' },
-    ],
-    indexes: ['PRIMARY', 'idx_notificaciones_fecha_area', 'idx_notificaciones_empleado']
-  },
-  {
     id: 'estadisticas',
     name: 'estadisticas',
     x: 960,
@@ -248,9 +227,6 @@ const lines = [
   // 7. areas -> estadisticas (area_id) through middle gap X=890
   { points: [[780, 405], [780, 450], [890, 450], [890, 870], [1020, 870], [1020, 910]], dashed: true, fromEnd: '1', toEnd: 'N', fromDir: 'bottom', toDir: 'top' },
   
-  // 8. areas -> notificaciones (area_id) through left corridor X=410
-  { points: [[480, 340], [405, 340], [405, 940], [240, 940], [240, 970]], dashed: true, fromEnd: '1', toEnd: 'N', fromDir: 'left', toDir: 'top' },
-  
   // 9. usuarios -> empleados (usuario_id) through upper horizontal corridor
   { points: [[960, 240], [430, 240], [430, 650], [380, 650]], dashed: true, fromEnd: '0..1', toEnd: '0..1', fromDir: 'left', toDir: 'right' },
   
@@ -259,9 +235,6 @@ const lines = [
   
   // 11. empleados -> checklists (empleado_id)
   { points: [[380, 700], [440, 700], [440, 940], [480, 940]], dashed: true, fromEnd: '1', toEnd: 'N', fromDir: 'right', toDir: 'left' },
-  
-  // 12. empleados -> notificaciones (empleado_id) straight down
-  { points: [[140, 785], [140, 970]], dashed: true, fromEnd: '1', toEnd: 'N', fromDir: 'bottom', toDir: 'top' },
   
   // 13. checklists -> respuestas (checklist_id)
   { points: [[830, 960], [900, 960], [900, 680], [960, 680]], dashed: false, fromEnd: '1', toEnd: 'N', fromDir: 'right', toDir: 'left' },

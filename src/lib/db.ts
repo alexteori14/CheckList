@@ -927,7 +927,6 @@ function buildInitialDatabase(): DatabaseSchema {
     evidencias,
     estadisticas,
     auditoria,
-    notificaciones: [],
   };
 }
 
@@ -982,7 +981,7 @@ export function readDb(): DatabaseSchema {
     if (!hasToday && parsed.checklists.length > 0) {
       // Actualizar fechas relativas si el archivo fue creado otro día
       const fresh = buildInitialDatabase();
-      // Conservar la configuración del administrador (tiempo de vida por área) y la bitácora de correos
+      // Conservar la configuración del administrador (tiempo de vida por área)
       fresh.areas.forEach((a) => {
         const prev = parsed.areas.find((p) => p.id === a.id);
         if (prev) {
@@ -990,11 +989,9 @@ export function readDb(): DatabaseSchema {
           a.horaFin = prev.horaFin || a.horaFin;
         }
       });
-      fresh.notificaciones = parsed.notificaciones || [];
       fs.writeFileSync(DB_FILE, JSON.stringify(fresh, null, 2), 'utf-8');
       return fresh;
     }
-    if (!parsed.notificaciones) parsed.notificaciones = [];
     return parsed;
   } catch {
     const initial = buildInitialDatabase();

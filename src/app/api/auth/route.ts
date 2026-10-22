@@ -16,23 +16,25 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const cleanNum = String(numeroEmpleado).trim().replace(/^EMP-/i, '');
+    const rawInput = String(numeroEmpleado).trim();
+    const cleanNum = rawInput.replace(/^EMP-/i, '');
     const db = readDb();
 
     const empleado = db.empleados.find((e) => {
       const matchNum =
         e.numeroEmpleado.toLowerCase() === cleanNum.toLowerCase() ||
-        e.numeroEmpleado.toLowerCase() === String(numeroEmpleado).trim().toLowerCase();
+        e.numeroEmpleado.toLowerCase() === rawInput.toLowerCase();
+      const matchEmail = Boolean(e.correo && e.correo.trim().toLowerCase() === rawInput.toLowerCase());
       const matchAlias =
         (cleanNum.toLowerCase() === 'admin' && e.numeroEmpleado === '1000') ||
         (cleanNum.toLowerCase() === 'oscar' && e.nombreCompleto.toLowerCase().includes('oscar mercado')) ||
         (cleanNum.toLowerCase() === 'oscar.mercado' && e.nombreCompleto.toLowerCase().includes('oscar mercado'));
-      return matchNum || matchAlias;
+      return matchNum || matchEmail || matchAlias;
     });
 
     if (!empleado) {
       return NextResponse.json(
-        { error: 'Usuario no encontrado. Verifique el número de empleado de Administrador.' },
+        { error: 'Usuario no encontrado. Verifique el número de empleado o correo electrónico.' },
         { status: 401 }
       );
     }

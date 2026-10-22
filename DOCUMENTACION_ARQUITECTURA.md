@@ -12,11 +12,9 @@ El sistema **SmartCheck Enterprise** sigue una **Arquitectura Limpia Multicapa (
   - Desarrollada con **Next.js 14 + React 18 + TypeScript + Tailwind CSS**.
   - Enfocada en **Tarjetas Interactivas (Card-based UX)** con navegación táctil fluida, avance automático de 1 clic, selector dinámico para empleados con adscripción multi-área (hasta 2 áreas), panel interactivo de Incidencias/Cumplimiento con acordeón por área, barra de progreso animada, captura WebRTC/galería y gráficas ejecutivas con **Recharts**.
 - **Capa de Aplicación y Servicios de Negocio (API REST / Next.js Route Handlers):**
-  - Módulos desacoplados para Autenticación JWT (`AuthModule`), Padrón de Empleados y Multi-área (`EmployeesModule`), Catálogo de 7 Áreas Oficiales y Tiempo de Vida (`AreasModule`), Plantillas de Preguntas (`QuestionsModule`), Motor de Checklists, Políticas de Fechas y KPIs (`ChecklistsModule`), Notificaciones y Alertas SMTP (`NotificationsModule`) y Auditoría Inmutable (`AuditModule`).
-- **Capa de Tareas en Segundo Plano (Scheduler & Automation):**
-  - Hook nativo `instrumentation.ts` en Node.js que ejecuta un evaluador periódico cada 60 segundos (`schedule.ts`) para verificar el cierre de ventanas horarias y despachar correos de alerta mediante **Nodemailer** a colaboradores con encuestas pendientes.
+  - Módulos desacoplados para Autenticación JWT y Acceso por Correo/Nómina (`AuthModule`), Padrón de Empleados y Multi-área (`EmployeesModule`), Catálogo de 7 Áreas Oficiales y Tiempo de Vida (`AreasModule`), Plantillas de Preguntas (`QuestionsModule`), Motor de Checklists, Políticas de Fechas y KPIs (`ChecklistsModule`) y Auditoría Inmutable (`AuditModule`).
 - **Capa de Persistencia y Almacenamiento:**
-  - **Base de Datos Relacional:** **PostgreSQL** normalizada en 3FN con 11 tablas (esquema DDL completo en [`database/schema_postgresql.sql`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/database/schema_postgresql.sql)) + motor transaccional local autoinicializado en [`src/lib/db.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/lib/db.ts) para ejecución inmediata.
+  - **Base de Datos Relacional:** Esquema relacional normalizado en 3FN con 9 tablas (esquema DDL completo en [`database/schema_postgresql.sql`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/database/schema_postgresql.sql) y [`ER/schema_mysql.sql`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/ER/schema_mysql.sql)) + motor transaccional local autoinicializado en [`src/lib/db.ts`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/src/lib/db.ts) para ejecución inmediata.
   - **Almacenamiento de Evidencias Multimedia:** **Azure Blob Storage** / Data URLs optimizados con validación de formatos `JPG`, `PNG` y `WEBP`.
 
 ---
@@ -32,7 +30,7 @@ El sistema **SmartCheck Enterprise** sigue una **Arquitectura Limpia Multicapa (
 | **CU-05** | Confirmación de Envío y Modificación de Respuestas | Jefe de Depto. / Operador | Modal de confirmación previa con resumen cuantitativo y botón interactivo **"Cambiar"** por ítem para corregir respuestas antes de persistir la encuesta en base de datos. |
 | **CU-06** | Autenticación y Login Exclusivo de Administrador | Administrador General (Oscar Mercado) | Acceso protegido al centro de control mediante número de empleado (`1000`) y contraseña cifrada. Bloquea a usuarios no administradores (`HTTP 403`) e incluye botón de **Cerrar Sesión (Logout)** con auditoría. |
 | **CU-07** | Parametrización de Horarios y Tiempo de Vida | Administrador General (Oscar Mercado) | Modificación en vivo de `horaInicio` y `horaFin` de las 7 áreas industriales oficiales para delimitar la ventana operativa de captura. |
-| **CU-08** | Monitoreo y Disparo de Alertas por Correo | Administrador General / Scheduler | Envío automatizado de correos vía SMTP (Nodemailer) a empleados que no contestaron su encuesta al expirar el tiempo de vida del área (ej. `puentealejandro491@gmail.com`), con bitácora en la tabla `notificaciones`. |
+| **CU-08** | Monitoreo del Tiempo de Vida de Encuestas | Administrador General (Oscar Mercado) | Monitoreo en tiempo real del estado de vigencia y puntualidad de las encuestas por área (EN_TIEMPO / FUERA_DE_TIEMPO), porcentaje de cumplimiento y colaboradores pendientes. |
 | **CU-09** | Supervisión Ejecutiva de Incidencias y Cumplimiento | Administrador General (Oscar Mercado) | Visualización de KPIs y del nuevo panel interactivo agrupado por área con acordeón para explorar el detalle de fallas con fotos, además de la tabla de encuestas con columna visible de **Día y Fecha** y estado de tiempo de vida. |
 | **CU-10** | Exportación Ejecutiva a PDF y Excel | Administrador General (Oscar Mercado) | Descarga de reportes corporativos en horizontal con métricas consolidadas, detalle de incidencias y estado de puntualidad horaria. |
 
@@ -135,33 +133,25 @@ flowchart TB
         EX["Exportador PDF (jsPDF) & Excel (SheetJS)"]
     end
 
-    subgraph Background["Servicio en Segundo Plano (Node.js Runtime)"]
-        SCHED["Instrumentation Hook & Scheduler (schedule.ts)"]
-        SMTP["Servicio Notificador SMTP (Nodemailer)"]
-    end
-
     subgraph Backend["Capa API REST & Seguridad (Next.js App Router)"]
         JWT["Middleware & Auth JWT (HS256 + PBKDF2)"]
         EMP["Servicio Empleados & Multi-área (Máx 2)"]
         AREAS["Servicio 7 Áreas Oficiales & Tiempo de Vida"]
         CHK["Motor Checklists, Regla Fechas y Sello Tiempo"]
-        NOTIF["Servicio Notificaciones & Despacho Alertas"]
         AUD["Servicio de Auditoría Inmutable"]
     end
 
     subgraph Datos["Persistencia Empresarial"]
-        PG[("PostgreSQL 3FN\n(11 Tablas + Índices)")]
+        PG[("Base de Datos Relacional 3FN\n(9 Tablas + Índices)")]
         BLOB[("Azure Blob Storage\n(Evidencias JPG/PNG/WEBP)")]
     end
 
     M & T & D --> CW & AD & TVP
     AD & TVP --> EX
     CW & AD & TVP --> JWT
-    JWT --> EMP & AREAS & CHK & NOTIF & AUD
-    EMP & AREAS & CHK & NOTIF & AUD --> PG
+    JWT --> EMP & AREAS & CHK & AUD
+    EMP & AREAS & CHK & AUD --> PG
     CHK --> BLOB
-    SCHED --> NOTIF
-    NOTIF --> SMTP
 ```
 
 ---
@@ -174,11 +164,9 @@ erDiagram
     AREAS ||--o{ PREGUNTAS : "contiene"
     AREAS ||--o{ CHECKLISTS : "evalua_con_horario"
     AREAS ||--o{ ESTADISTICAS : "consolida"
-    AREAS ||--o{ NOTIFICACIONES : "origina_alerta_ventana"
     USUARIOS ||--o| EMPLEADOS : "vincula"
     USUARIOS ||--o{ AUDITORIA : "ejecuta"
     EMPLEADOS ||--o{ CHECKLISTS : "realiza"
-    EMPLEADOS ||--o{ NOTIFICACIONES : "recibe_correo_aviso"
     CHECKLISTS ||--|{ RESPUESTAS : "incluye"
     PREGUNTAS ||--o{ RESPUESTAS : "responde"
     RESPUESTAS ||--o| EVIDENCIAS : "adjunta_foto"
@@ -188,18 +176,17 @@ erDiagram
 
 ## 8. Diseño Completo de Base de Datos
 
-Los scripts DDL completos para producción en **PostgreSQL** y **MySQL Server 8.0+** se encuentran en [`database/schema_postgresql.sql`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/database/schema_postgresql.sql) y [`ER/schema_mysql.sql`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/ER/schema_mysql.sql). Tras la **eliminación formal de la tabla roles**, el sistema opera con **10 tablas normalizadas** (con asignación directa de rol en las credenciales administrativas de usuarios y tokens JWT):
+Los scripts DDL completos para producción en **PostgreSQL** y **MySQL Server 8.0+** se encuentran en [`database/schema_postgresql.sql`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/database/schema_postgresql.sql) y [`ER/schema_mysql.sql`](file:///C:/Users/alejpue5/Documents/proyectos/CheckList/ER/schema_mysql.sql). Tras la **eliminación formal de las tablas roles y notificaciones**, el sistema opera con **9 tablas normalizadas** (con credencial de acceso por correo y número de nómina, y roles administrativos directos):
 
 1. **`areas`**: Las 7 áreas industriales oficiales (**MES**, **Ind. 4.0**, **Infraestructura**, **Staff IT**, **Digitalizacion**, **SAP**, **Soporte Manufactura**) con sus columnas de tiempo de vida `hora_inicio` (default `'07:00'`) y `hora_fin` (default `'08:30'`).
 2. **`usuarios`**: Cuentas con `password_hash` cifrado (PBKDF2), rol administrativo directo (`ADMIN`, `SUPERVISOR`, `OPERADOR`), control de bloqueos y último acceso.
-3. **`empleados`**: Padrón con índice único en `numero_empleado` y soporte para asignación multi-área (`area_id` principal y `area_id_secundaria`, máximo 2 áreas).
+3. **`empleados`**: Padrón con índice único en `numero_empleado`, credencial de `correo` institucional y soporte para asignación multi-área (`area_id` principal y `area_id_secundaria`, máximo 2 áreas).
 4. **`preguntas`**: Reactivos técnicos dinámicos asociados a `area_id`, con orden secuencial y criticidad.
 5. **`checklists`**: Cabecera con folio único, fecha de operación (estrictamente `<= hoy`), `hora_registro`, estado de vigencia horaria (`estado_tiempo`: `EN_TIEMPO` o `FUERA_DE_TIEMPO`) y KPIs precalculados.
 6. **`respuestas`**: Detalle por pregunta con `CONSTRAINT chk_motivo_obligatorio_en_no` que impide a nivel de motor registrar `respuesta = FALSE` sin `motivo_no`.
 7. **`evidencias`**: Metadatos y URL de imágenes fotográficas con validación `CHECK (formato IN ('JPG', 'JPEG', 'PNG', 'WEBP'))`.
 8. **`estadisticas`**: Agregaciones analíticas diarias, semanales y mensuales para optimizar consultas del Dashboard.
-9. **`notificaciones`**: Registro y trazabilidad de alertas automáticas enviadas vía correo electrónico (Nodemailer) a colaboradores con encuestas pendientes tras el cierre de su ventana horaria.
-10. **`auditoria`**: Bitácora inmutable de eventos con `datos_anteriores` y `datos_nuevos` en `JSONB`.
+9. **`auditoria`**: Bitácora inmutable de eventos con `datos_anteriores` y `datos_nuevos` en `JSONB`.
 
 ---
 
@@ -223,8 +210,6 @@ Los scripts DDL completos para producción en **PostgreSQL** y **MySQL Server 8.
 | `POST` | `/api/checklists` | Valida y asienta la encuesta: bloquea fechas futuras (`max={today}`), exige autorización de Oscar Mercado para fechas de más de 5 días atrás, evalúa el sello `estadoTiempo` según la hora local y ventana del área, y exige motivo obligatorio en respuestas `No`. |
 | `PATCH` | `/api/checklists` | Actualiza el estado de resolución de una incidencia (`ABIERTA`, `EN_ATENCION`, `RESUELTA`). |
 | `DELETE` | `/api/checklists?id={id}` | Elimina una encuesta en cascada junto con sus respuestas y evidencias multimedia en `db.evidencias`. |
-| `GET` | `/api/notificaciones` | Devuelve la bitácora de correos y alertas emitidas por expiración de tiempo de vida. |
-| `POST` | `/api/notificaciones` | Disparador manual para evaluar inmediatamente el cierre de ventanas y enviar correos de notificación pendientes. |
 | `GET` | `/api/audit` | Devuelve los últimos 100 registros de la bitácora inmutable de operaciones. |
 
 ---
@@ -234,7 +219,7 @@ Los scripts DDL completos para producción en **PostgreSQL** y **MySQL Server 8.
 ```text
 CheckList/
 ├── database/
-│   ├── schema_postgresql.sql      # DDL completo PostgreSQL (11 tablas, índices y triggers)
+│   ├── schema_postgresql.sql      # DDL completo PostgreSQL (9 tablas, índices y triggers)
 │   └── smartcheck_db.json         # Base de datos relacional local autogenerada con 7 áreas oficiales
 ├── src/
 │   ├── app/
@@ -244,7 +229,6 @@ CheckList/
 │   │   │   ├── auth/route.ts      # API Autenticación JWT exclusiva de Oscar Mercado y Logout
 │   │   │   ├── checklists/route.ts# API Checklists, validación de fechas, tiempo de vida y KPIs
 │   │   │   ├── employees/route.ts # API Empleados y soporte multi-área (máximo 2 áreas)
-│   │   │   ├── notificaciones/route.ts # API Historial y disparo de alertas SMTP
 │   │   │   └── questions/route.ts # API Preguntas dinámicas por área
 │   │   ├── globals.css            # Estilos globales y utilidades Tailwind
 │   │   ├── layout.tsx             # Layout raíz
@@ -253,19 +237,16 @@ CheckList/
 │   │   ├── AdminDashboard.tsx     # Dashboard, KPIs, explorador Incidencias/Cumplimiento en acordeón y tabla
 │   │   ├── ArchitectureView.tsx   # Visor interactivo de arquitectura
 │   │   ├── ChecklistWizard.tsx    # Tarjetas, selector multi-área, fechas restrictivas y modal Oscar
-│   │   └── TiempoVidaPanel.tsx    # Configuración de horas y monitor de alertas por correo
+│   │   └── TiempoVidaPanel.tsx    # Configuración de horas y monitor de tiempo de vida
 │   ├── lib/
 │   │   ├── auth.ts                # Firma/verificación JWT (jose) y cifrado PBKDF2
 │   │   ├── db.ts                  # Motor de persistencia, 7 áreas oficiales y KPIs
 │   │   ├── exportReports.ts       # Generación de reportes PDF (jsPDF) y Excel (XLSX) con tiempo de vida
-│   │   ├── notifier.ts            # Servicio de envío de correos SMTP con Nodemailer
-│   │   ├── schedule.ts            # Motor y evaluación periódica de ventanas de encuestas
+│   │   ├── schedule.ts            # Motor y cálculo de ventanas de encuestas
 │   │   └── utils.ts               # Utilidades de combinación de clases Tailwind
 │   ├── types/
 │   │   └── index.ts               # Contratos e interfaces TypeScript
-│   ├── instrumentation.ts         # Hook de arranque de Next.js para Node.js
-│   └── instrumentation-node.ts    # Intervalo de 60s para verificación de encuestas en segundo plano
-├── .env.example                   # Plantilla de variables de entorno para SMTP y alertas
+├── .env.example                   # Plantilla de variables de entorno locales
 ├── DOCUMENTACION_ARQUITECTURA.md  # Documento maestro con los 19 entregables
 ├── ER.md                          # Modelo Entidad-Relación y diccionario detallado de datos
 ├── Especificaciones.txt           # Requerimientos originales del sistema
@@ -285,8 +266,6 @@ sequenceDiagram
     participant DB as Base de Datos & Auditoría
     actor A as Administrador General (Oscar Mercado)
     participant AD as AdminDashboard & TiempoVidaPanel
-    participant SCHED as Background Scheduler (Cada 60s)
-    participant SMTP as Nodemailer SMTP
 
     Note over J,DB: FASE 1: Identificación y Selección Multi-Área (Máx. 2)
     J->>UI: Ingresa No. Empleado 2001
@@ -311,17 +290,7 @@ sequenceDiagram
     API->>DB: Guarda encuesta, fotos en cascada y auditoría
     DB-->>UI: Confirma Folio único, % Cumplimiento y sello horario
 
-    Note over SCHED,SMTP: FASE 3: Monitoreo en Segundo Plano y Alertas Automáticas
-    loop Cada 60 segundos
-        SCHED->>DB: Comprueba áreas con ventana cerrada (horaActual > horaFin)
-        opt Si un colaborador no completó su encuesta del día
-            SCHED->>SMTP: Envía correo de notificación (puentealejandro491@gmail.com)
-            SMTP-->>SCHED: Confirmación de entrega
-            SCHED->>DB: Registra evento en 'notificaciones' y 'auditoria'
-        end
-    end
-
-    Note over A,AD: FASE 4: Supervisión, Incidencias en Acordeón y Gestión de Horarios
+    Note over A,AD: FASE 3: Supervisión, Incidencias en Acordeón y Gestión de Horarios
     A->>AD: Inicia sesión exclusiva (1000 / admin123)
     AD->>API: GET /api/checklists
     API-->>AD: Retorna KPIs, encuestas con Día y Fecha, y datos de Incidencias/Cumplimiento
@@ -367,9 +336,7 @@ $$\text{Porcentaje de Incidencias (\%)} = \left( \frac{\text{Total de respuestas
    - Se valida tanto en interfaz como en la API REST que un colaborador no pueda tener más de 2 áreas asignadas ni la misma área duplicada como primaria y secundaria.
 4. **Segregación Operativa para Encargados:**
    - Los encargados de las 7 áreas industriales oficiales únicamente pueden responder cuestionarios correspondientes a sus áreas asignadas, sin privilegios para alterar métricas ni borrar historial.
-5. **Aislamiento Seguro en Despacho de Correos SMTP:**
-   - El subsistema de notificaciones aplica la variable defensiva `MAIL_SOLO_DESTINATARIOS` para restringir los envíos durante etapas de prueba exclusivamente a destinatarios autorizados como `puentealejandro491@gmail.com`.
-6. **Contraseñas Cifradas y Trazabilidad Inmutable:**
+5. **Contraseñas Cifradas y Trazabilidad Inmutable:**
    - Derivación `PBKDF2-SHA256` con 10,000 iteraciones y registro de cada operación en la bitácora `auditoria` con IP, actor y marca de tiempo.
 
 ---

@@ -87,7 +87,7 @@ erDiagram
         char_36 id PK "UUID CHAR(36)"
         varchar_40 numero_empleado UK "Gafete / Nómina (1000, 2001)"
         varchar_180 nombre_completo "Nombre del colaborador"
-        varchar_150 correo "Notificaciones SMTP"
+        varchar_150 correo "Credencial y acceso institucional"
         varchar_120 puesto "Cargo laboral"
         int area_id FK "Área principal asignada"
         int area_id_secundaria FK "Área secundaria opcional (máx 2)"
@@ -157,20 +157,6 @@ erDiagram
         datetime created_at "Timestamp subida"
     }
 
-    NOTIFICACIONES {
-        char_36 id PK "UUID CHAR(36)"
-        char_36 empleado_id FK "empleados.id"
-        int area_id FK "areas.id"
-        date fecha "Jornada evaluada"
-        varchar_50 tipo "TIEMPO_VIDA_EXPIRADO"
-        varchar_150 destinatario "Correo SMTP destino"
-        enum estado "PENDIENTE | ENVIADO | ERROR"
-        text detalle "Respuesta servidor correo"
-        smallint intentos "Contador reintentos"
-        datetime enviado_en "Timestamp despacho"
-        datetime created_at "Alta de alerta"
-    }
-
     ESTADISTICAS {
         int id PK "AUTO_INCREMENT"
         enum periodo_tipo "DIARIO | SEMANAL | MENSUAL"
@@ -208,17 +194,15 @@ erDiagram
     AREAS ||..|{ PREGUNTAS : "3. contiene reactivos de (1:N)"
     AREAS ||..o{ CHECKLISTS : "4. agrupa inspecciones de (1:N)"
     AREAS ||..o{ ESTADISTICAS : "5. consolida KPIs de (1:N)"
-    AREAS ||..o{ NOTIFICACIONES : "6. detona alerta de vigencia para (1:N)"
-    USUARIOS ||..o| EMPLEADOS : "7. vincula credenciales de (1:1 opcional)"
-    USUARIOS ||..o{ AUDITORIA : "8. genera traza de seguridad (1:N)"
-    EMPLEADOS ||..o{ CHECKLISTS : "9. ejecuta y firma inspección (1:N)"
-    EMPLEADOS ||..o{ NOTIFICACIONES : "10. recibe correo de cierre (1:N)"
-    PREGUNTAS ||..o{ RESPUESTAS : "11. es evaluada en (1:N)"
-    CHECKLISTS ||..o{ EVIDENCIAS : "12. consolida galería multimedia (1:N)"
+    USUARIOS ||..o| EMPLEADOS : "6. vincula credenciales de (1:1 opcional)"
+    USUARIOS ||..o{ AUDITORIA : "7. genera traza de seguridad (1:N)"
+    EMPLEADOS ||..o{ CHECKLISTS : "8. ejecuta y firma inspección (1:N)"
+    PREGUNTAS ||..o{ RESPUESTAS : "9. es evaluada en (1:N)"
+    CHECKLISTS ||..o{ EVIDENCIAS : "10. consolida galería multimedia (1:N)"
 
     %% Relaciones Identificadoras (Líneas Continuas: --)
-    CHECKLISTS ||--|{ RESPUESTAS : "13. desglosa detalle atómico (1:N)"
-    RESPUESTAS ||--o| EVIDENCIAS : "14. respalda fotográficamente (1:1 opcional)"
+    CHECKLISTS ||--|{ RESPUESTAS : "11. desglosa detalle atómico (1:N)"
+    RESPUESTAS ||--o| EVIDENCIAS : "12. respalda fotográficamente (1:1 opcional)"
 ```
 
 ---
@@ -235,11 +219,9 @@ La siguiente matriz documenta formalmente la interconexión entre entidades en M
 | **`areas`** | `id` | **`preguntas`** | `area_id` | No Identificadora | $1:N$ | `CASCADE` | `CASCADE` | Cada pregunta pertenece a un área. Si el área es depurada, sus reactivos asociados se eliminan. |
 | **`areas`** | `id` | **`checklists`** | `area_id` | No Identificadora | $1:N$ | `CASCADE` | `RESTRICT` | Protege el historial de inspecciones concluidas; impide borrar áreas que cuenten con auditorías. |
 | **`areas`** | `id` | **`estadisticas`** | `area_id` | No Identificadora | $1:N$ (opc.) | `CASCADE` | `CASCADE` | Segmentación por departamento para KPIs (`NULL` para la métrica global de la planta). |
-| **`areas`** | `id` | **`notificaciones`** | `area_id` | No Identificadora | $1:N$ | `CASCADE` | `CASCADE` | Identifica el departamento cuya ventana operativa concluyó sin checklist registrado. |
 | **`usuarios`** | `id` | **`empleados`** | `usuario_id` | No Identificadora | $1:1$ (opc.) | `CASCADE` | `SET NULL` | Vincula al colaborador con credenciales de acceso administrativo al Centro de Control. |
 | **`usuarios`** | `id` | **`auditoria`** | `usuario_id` | No Identificadora | $1:N$ (opc.) | `CASCADE` | `SET NULL` | Si un usuario es revocado, la bitácora inmutable histórica preserva su registro. |
 | **`empleados`** | `id` | **`checklists`** | `empleado_id` | No Identificadora | $1:N$ | `CASCADE` | `RESTRICT` | Certifica la autoría de la inspección. Protege registros históricos contra borrado accidental. |
-| **`empleados`** | `id` | **`notificaciones`** | `empleado_id` | No Identificadora | $1:N$ | `CASCADE` | `CASCADE` | Destinatario del correo de aviso cuando no completó el checklist del área asignada. |
 | **`checklists`** | `id` | **`respuestas`** | `checklist_id` | Identificadora | $1:N$ | `CASCADE` | `CASCADE` | La respuesta no tiene sentido existencial sin su checklist contenedor. |
 | **`preguntas`** | `id` | **`respuestas`** | `pregunta_id` | No Identificadora | $1:N$ | `CASCADE` | `RESTRICT` | Impide borrar un ítem de inspección si ya cuenta con respuestas históricas asentadas. |
 | **`respuestas`** | `id` | **`evidencias`** | `respuesta_id` | Identificadora | $1:1$ (opc.) | `CASCADE` | `CASCADE` | Si una incidencia se elimina, la evidencia fotográfica asociada se purga. |
@@ -497,34 +479,7 @@ idx_estadisticas_area:                (area_id) [BTREE]
 
 ---
 
-### 5.9 Tabla: `notificaciones` (Control de Alertas de Tiempo de Vida)
-- **Base de Datos:** `smartcheck_db` | **Motor:** MySQL Server 8.0+ (InnoDB, ACID, utf8mb4)
-- **Propósito:** Registro y monitoreo de los correos electrónicos SMTP despachados automáticamente cuando vence la ventana horaria de un área sin encuesta registrada.
-
-| Clave | Columna | Tipo de Dato MySQL | Nulabilidad | Valor Default | Restricciones / Claves | Descripción Técnica |
-| :---: | :--- | :--- | :---: | :--- | :--- | :--- |
-| 🔑 | `id` | `CHAR(36)` | `NOT NULL` | — | `PRIMARY KEY` | Identificador universal único de la alerta. |
-| 🔴 | `empleado_id` | `CHAR(36)` | `NOT NULL` | — | `FK -> empleados(id)` | Colaborador notificado por omisión. |
-| 🔴 | `area_id` | `INT` | `NOT NULL` | — | `FK -> areas(id)` | Área técnica que concluyó su vigencia. |
-| 🔷 | `fecha` | `DATE` | `NOT NULL` | — | — | Jornada operativa evaluada (`YYYY-MM-DD`). |
-| 🔷 | `tipo` | `VARCHAR(50)` | `NOT NULL` | `'TIEMPO_VIDA_EXPIRADO'` | — | Plantilla de alerta emitida. |
-| 🔷 | `destinatario` | `VARCHAR(150)` | `NOT NULL` | — | — | Correo electrónico destino (ej. `puentealejandro491@gmail.com`). |
-| 🔷 | `estado` | `ENUM(...)` | `NOT NULL` | `'PENDIENTE'` | `ENUM('PENDIENTE','ENVIADO','ERROR')` | Estado de entrega por Nodemailer SMTP. |
-| ⚪ | `detalle` | `TEXT` | `NULL` | — | — | Respuesta del servidor SMTP o código de error. |
-| 🔷 | `intentos` | `SMALLINT` | `NOT NULL` | `0` | — | Contador de reintentos por falla de transporte. |
-| ⚪ | `enviado_en` | `DATETIME(3)` | `NULL` | — | — | Timestamp exacto de confirmación SMTP. |
-| 🔷 | `created_at` | `DATETIME(3)` | `NOT NULL` | `CURRENT_TIMESTAMP(3)` | — | Timestamp de encolamiento de la notificación. |
-
-```sql
--- Panel de Índices Físicos (Indexes)
-PRIMARY:                          PRIMARY (id) [BTREE, UNIQUE]
-idx_notificaciones_fecha_area:    (fecha, area_id, estado) [BTREE]
-idx_notificaciones_empleado:      (empleado_id) [BTREE]
-```
-
----
-
-### 5.10 Tabla: `auditoria` (Bitácora Inmutable de Seguridad y Trazabilidad)
+### 5.9 Tabla: `auditoria` (Bitácora Inmutable de Seguridad y Trazabilidad)
 - **Base de Datos:** `smartcheck_db` | **Motor:** MySQL Server 8.0+ (InnoDB, ACID, utf8mb4)
 - **Propósito:** Registro inmutable de operaciones CRUD, logins, logouts, cambios de horarios y eliminaciones para cumplimiento normativo e inspecciones.
 
@@ -564,8 +519,6 @@ sequenceDiagram
     participant API as Backend REST
     participant DB as Motor MySQL Server (InnoDB)
     actor Admin as Oscar Mercado (Admin)
-    participant Scheduler as Background Scheduler (Node.js)
-    participant SMTP as Servidor SMTP (Nodemailer)
 
     Note over Operador, DB: FASE 1: Identificación Rápida y Adscripción Multi-Área (Máx. 2)
     Operador->>UI: Digita No. Empleado (ej. "2001" Alejandro Puente)
@@ -621,19 +574,7 @@ sequenceDiagram
     DB-->>API: Confirmación con Folio Oficial generado
     API-->>UI: Despliega pantalla de éxito con Folio, % Cumplimiento y Sello de Tiempo
 
-    Note over Scheduler, SMTP: FASE 5: Background Scheduler y Alertas Automáticas SMTP
-    loop Cada 60 segundos en segundo plano
-        Scheduler->>DB: Consulta áreas activas cuya hora_fin haya vencido hoy
-        DB-->>Scheduler: Retorna áreas vencidas y nómina asignada (primarios y secundarios)
-        opt Si el empleado no ha registrado checklist de dicha área hoy
-            Scheduler->>SMTP: Despacha correo de notificación (ej. puentealejandro491@gmail.com)
-            SMTP-->>Scheduler: 250 OK: Mensaje entregado
-            Scheduler->>DB: INSERT INTO notificaciones (empleado_id, area_id, fecha, estado) VALUES (...)
-            Scheduler->>DB: INSERT INTO auditoria (modulo, accion...) VALUES (...)
-        end
-    end
-
-    Note over Admin, DB: FASE 6: Supervisión de Incidencias, Horarios y Reportes BI
+    Note over Admin, DB: FASE 5: Supervisión de Incidencias, Horarios y Reportes BI
     Admin->>UI: Inicia sesión administrativa (1000 / clave)
     UI->>API: GET /api/checklists (con filtros por área, día y fecha)
     DB-->>API: Retorna KPIs consolidados y explorador de incidencias
@@ -712,8 +653,8 @@ CREATE TABLE `respuestas` (
 
 1. **Migración a Motor Relacional MySQL Server 8.0+ (InnoDB):**
    El esquema aprovecha al 100% las capacidades avanzadas de **MySQL 8.0+**: validación nativa de `CHECK CONSTRAINTS`, tipos de datos nativos `JSON` para snapshots de auditoría, soporte de precisión de milisegundos en marcas temporales `DATETIME(3)` con actualización automática mediante `ON UPDATE CURRENT_TIMESTAMP(3)`, y codificación `utf8mb4_unicode_ci` con soporte para caracteres multilingües y emojis.
-2. **Eliminación Formal de la Tabla 'roles' y Desacoplamiento de Privilegios:**
-   Se eliminó por completo la tabla `roles` del modelo de datos de producción (reduciendo las entidades relacionales de 11 a 10 tablas normalizadas). Tanto en los colaboradores operativos de planta (`empleados`, desvinculados de roles informáticos) como en las cuentas administrativas (`usuarios`), los privilegios se manejan directamente: en `usuarios` mediante la columna `rol` ('ADMIN', 'SUPERVISOR', 'OPERADOR') y mediante tokens criptográficos JWT (`RoleCode`), suprimiendo la sobrecarga relacional de un catálogo estático de roles sin menoscabo de la seguridad.
+2. **Eliminación Formal de las Tablas 'roles' y 'notificaciones':**
+   Se eliminaron por completo las tablas `roles` y `notificaciones` del modelo de datos de producción (reduciendo las entidades relacionales a 9 tablas normalizadas de alto rendimiento). Los privilegios se gestionan de forma directa en `usuarios` (`rol`) y JWT, mientras que el campo `correo` de `empleados` y `usuarios` se preserva exclusivamente como credencial de acceso e identidad de cuenta, suprimiendo toda sobrecarga de tablas y colas de notificación.
 3. **Cumplimiento Estricto de la 3FN (Tercera Forma Normal):**
    No existen redundancias no controladas. Cada dato atómico posee una única fuente de verdad; los campos `numero_empleado` y `nombre_empleado` en `checklists` actúan únicamente como copias inmutables de asentamiento histórico para preservar la validez legal de las auditorías firmadas.
 4. **Soporte Nativo Multi-Área con Límite de 2 Departamentos:**

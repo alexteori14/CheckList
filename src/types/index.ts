@@ -24,22 +24,6 @@ export interface Area {
 
 export type EstadoTiempo = 'EN_TIEMPO' | 'FUERA_DE_TIEMPO';
 
-export interface NotificacionCorreo {
-  id: string;
-  empleadoId: string;
-  numeroEmpleado: string;
-  nombreEmpleado: string;
-  areaId: number;
-  areaNombre: string;
-  fecha: string; // YYYY-MM-DD de la encuesta no contestada
-  tipo: 'ENCUESTA_VENCIDA' | 'PRUEBA';
-  destinatario: string;
-  estado: 'ENVIADO' | 'ERROR' | 'SIN_CONFIGURAR';
-  detalle?: string;
-  intentos: number;
-  enviadoEn: string;
-}
-
 export interface Empleado {
   id: string;
   numeroEmpleado: string;
@@ -157,5 +141,4 @@ export interface DatabaseSchema {
   evidencias: Evidencia[];
   estadisticas: EstadisticaRegistro[];
   auditoria: AuditLog[];
-  notificaciones?: NotificacionCorreo[];
 }

@@ -2,7 +2,7 @@
 -- SMARTCHECK ENTERPRISE — ESQUEMA FÍSICO DE BASE DE DATOS PARA MYSQL SERVER 8.0+
 -- Motor: InnoDB | Codificación: utf8mb4 | Collation: utf8mb4_unicode_ci
 -- Cumple con Tercera Forma Normal (3FN) y Reglas de Integridad Referencial
--- Total de Entidades: 10 Tablas (Sin tabla de roles y sin rol en empleados)
+-- Total de Entidades: 9 Tablas (Sin tabla de roles, sin rol en empleados y sin notificaciones)
 -- =============================================================================
 
 SET NAMES utf8mb4;
@@ -216,29 +216,7 @@ CREATE TABLE `estadisticas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------------------------------
--- 10. TABLA: notificaciones (Registro y Auditoría de Alertas SMTP por Omisión)
--- -----------------------------------------------------------------------------
-DROP TABLE IF EXISTS `notificaciones`;
-CREATE TABLE `notificaciones` (
-  `id` CHAR(36) NOT NULL PRIMARY KEY,
-  `empleado_id` CHAR(36) NOT NULL,
-  `area_id` INT NOT NULL,
-  `fecha` DATE NOT NULL,
-  `tipo` VARCHAR(50) NOT NULL DEFAULT 'TIEMPO_VIDA_EXPIRADO',
-  `destinatario` VARCHAR(150) NOT NULL,
-  `estado` ENUM('PENDIENTE', 'ENVIADO', 'ERROR') NOT NULL DEFAULT 'PENDIENTE',
-  `detalle` TEXT NULL,
-  `intentos` SMALLINT NOT NULL DEFAULT 0,
-  `enviado_en` DATETIME(3) NULL,
-  `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-  KEY `idx_notificaciones_fecha_area` (`fecha`, `area_id`, `estado`),
-  KEY `idx_notificaciones_empleado` (`empleado_id`),
-  CONSTRAINT `fk_notificaciones_empleados` FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT `fk_notificaciones_areas` FOREIGN KEY (`area_id`) REFERENCES `areas` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- -----------------------------------------------------------------------------
--- 11. TABLA: auditoria (Bitácora Inmutable de Operaciones y Seguridad)
+-- 10. TABLA: auditoria (Bitácora Inmutable de Operaciones y Seguridad)
 -- -----------------------------------------------------------------------------
 DROP TABLE IF EXISTS `auditoria`;
 CREATE TABLE `auditoria` (
